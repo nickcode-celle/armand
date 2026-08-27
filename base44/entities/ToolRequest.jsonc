@@ -58,8 +58,97 @@
         },
         "limites": {
           "type": "string"
+        },
+        "faisable_directement": {
+          "type": "string"
+        },
+        "faisable_sous_conditions": {
+          "type": "string"
+        },
+        "a_verifier": {
+          "type": "string"
+        },
+        "non_realisable": {
+          "type": "string"
+        },
+        "conclusion_outil": {
+          "type": "string"
+        },
+        "solution_existante": {
+          "type": "string"
         }
       }
+    },
+    "classification": {
+      "type": "object",
+      "description": "Classification interne du probl\u00e8me (pour comparaison future)",
+      "properties": {
+        "categorie_principale": {
+          "type": "string"
+        },
+        "sous_categorie": {
+          "type": "string"
+        },
+        "secteur_activite": {
+          "type": "string"
+        },
+        "taches_principales": {
+          "type": "string"
+        },
+        "entrees": {
+          "type": "string"
+        },
+        "sorties": {
+          "type": "string"
+        },
+        "outils_actuels": {
+          "type": "string"
+        },
+        "frequence": {
+          "type": "string"
+        },
+        "temps_consacre": {
+          "type": "string"
+        },
+        "difficultes": {
+          "type": "string"
+        },
+        "automatisations_recherchees": {
+          "type": "string"
+        },
+        "complexite": {
+          "type": "string"
+        },
+        "fonctionnalites_proposees": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "string",
+      "enum": [
+        "validee"
+      ],
+      "description": "La proposition a \u00e9t\u00e9 valid\u00e9e par l'utilisateur"
+    },
+    "pricing": {
+      "type": "string",
+      "description": "Prix acceptable d\u00e9clar\u00e9 par l'utilisateur (valeur per\u00e7ue)"
+    },
+    "intention": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "maybe",
+        "no"
+      ],
+      "description": "Intention de construction : yes / maybe / no"
     },
     "status": {
       "type": "string",

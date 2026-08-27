@@ -4,6 +4,8 @@ import { Send, Loader2, ArrowLeft, Check, Pencil, Sparkles } from "lucide-react"
 import { base44 } from "@/api/base44Client";
 import ChatMessage from "@/components/armand/ChatMessage";
 import ToolProposal from "@/components/armand/ToolProposal";
+import PricingQuestion from "@/components/armand/PricingQuestion";
+import IntentionQuestion from "@/components/armand/IntentionQuestion";
 
 const INITIAL_MESSAGE = "Quelle tâche vous fait perdre du temps ?";
 
@@ -17,7 +19,10 @@ export default function Conversation() {
   const [ready, setReady] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState(null);
+  const [classification, setClassification] = useState(null);
   const [accepted, setAccepted] = useState(false);
+  const [pricing, setPricing] = useState(null);
+  const [intention, setIntention] = useState(null); // code: yes / maybe / no
   const [requested, setRequested] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -29,7 +34,7 @@ export default function Conversation() {
       top: scrollRef.current.scrollHeight,
       behavior: "smooth"
     });
-  }, [messages, loading, analysis, accepted, requested]);
+  }, [messages, loading, analysis, accepted, pricing, intention, requested, saving]);
 
   // Armand propose directement dès qu'il a assez d'informations
   useEffect(() => {
@@ -82,8 +87,11 @@ export default function Conversation() {
         messages
       });
       setAnalysis(res.data.analysis);
+      setClassification(res.data.classification || null);
       setAccepted(false);
       setRequested(false);
+      setPricing(null);
+      setIntention(null);
     } catch (err) {
       setAnalyzing(false);
     } finally {
@@ -93,13 +101,16 @@ export default function Conversation() {
 
   function handleModify() {
     setAnalysis(null);
+    setClassification(null);
     setReady(false);
     setAccepted(false);
     setRequested(false);
+    setPricing(null);
+    setIntention(null);
     setTimeout(() => inputRef.current?.focus(), 50);
   }
 
-  async function handleBuild() {
+  async function handleSave(intent) {
     setSaving(true);
     try {
       const summary =
@@ -109,6 +120,10 @@ export default function Conversation() {
         summary,
         conversation: messages,
         analysis,
+        classification,
+        validation: "validee",
+        pricing,
+        intention: intent,
         status: "requested"
       });
       setRequested(true);
@@ -117,6 +132,19 @@ export default function Conversation() {
     } finally {
       setSaving(false);
     }
+  }
+
+  function handleIntention(code) {
+    setIntention(code);
+    if (code !== "yes") {
+      // Le diagnostic seul suffit : on enregistre la fiche.
+      handleSave(code);
+    }
+    // Pour "yes", on attends le clic sur "Construire cet outil".
+  }
+
+  function handleBuild() {
+    handleSave("yes");
   }
 
   return (
@@ -175,7 +203,7 @@ export default function Conversation() {
             <div className="pt-4 space-y-5">
               <ToolProposal proposal={analysis} />
 
-              {/* Choix fin de proposition */}
+              {/* Étape 1 : validation ou modification */}
               {!accepted && !requested ? (
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
@@ -193,29 +221,56 @@ export default function Conversation() {
                     Modifier la proposition
                   </button>
                 </div>
-              ) : accepted && !requested ? (
-                <button
-                  onClick={handleBuild}
-                  disabled={saving}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-60 text-stone-900 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
-                >
-                  {saving ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Enregistrement…
-                    </>
-                  ) : (
-                    <>Construire cet outil</>
-                  )}
-                </button>
               ) : null}
 
+              {/* Étapes post-validation */}
+              {accepted && !requested && (
+                <div className="space-y-5">
+                  {!pricing && (
+                    <PricingQuestion onSelect={setPricing} disabled={saving} />
+                  )}
+
+                  {pricing && !intention && (
+                    <IntentionQuestion
+                      onSelect={(code) => handleIntention(code)}
+                      disabled={saving}
+                    />
+                  )}
+
+                  {intention === "yes" && (
+                    <button
+                      onClick={handleBuild}
+                      disabled={saving}
+                      className="w-full inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-60 text-stone-900 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
+                    >
+                      {saving ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Enregistrement…
+                        </>
+                      ) : (
+                        "Construire cet outil"
+                      )}
+                    </button>
+                  )}
+
+                  {intention && intention !== "yes" && saving && (
+                    <div className="inline-flex items-center gap-2 text-stone-500 text-[15px]">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Enregistrement de votre diagnostic…
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Confirmation finale */}
               {requested && (
                 <>
                   <div className="inline-flex items-center gap-2 bg-stone-900 text-stone-100 px-5 py-3.5 rounded-xl text-[15px]">
                     <Check className="w-4 h-4 text-amber-400" />
-                    Votre demande a été enregistrée. Nous allons étudier comment
-                    construire cet outil.
+                    {intention === "yes"
+                      ? "Votre demande a été enregistrée. Nous allons étudier comment construire cet outil."
+                      : "Merci. Votre diagnostic a été enregistré."}
                   </div>
                   <button
                     onClick={() => navigate("/")}
