@@ -1,0 +1,69 @@
+{
+  "name": "ToolRequest",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "R\u00e9sum\u00e9 court de la t\u00e2che probl\u00e9matique d\u00e9crite par l'utilisateur"
+    },
+    "conversation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant"
+            ]
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Conversation compl\u00e8te entre l'utilisateur et Armand"
+    },
+    "analysis": {
+      "type": "object",
+      "description": "Synth\u00e8se structur\u00e9e produite par Armand",
+      "properties": {
+        "probleme": {
+          "type": "string"
+        },
+        "processus": {
+          "type": "string"
+        },
+        "outils": {
+          "type": "string"
+        },
+        "temps_estime": {
+          "type": "string"
+        },
+        "taches_repetitives": {
+          "type": "string"
+        },
+        "possibilites_automatisation": {
+          "type": "string"
+        },
+        "outil_propose": {
+          "type": "string"
+        },
+        "proposition": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "requested"
+      ],
+      "default": "requested"
+    }
+  },
+  "required": [
+    "summary"
+  ]
+}
