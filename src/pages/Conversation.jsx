@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Send, Sparkles, Loader2, ArrowLeft, Check } from "lucide-react";
+import { Send, Loader2, ArrowLeft, Check, Pencil, Sparkles } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import ChatMessage from "@/components/armand/ChatMessage";
-import AnalysisView from "@/components/armand/AnalysisView";
+import ToolProposal from "@/components/armand/ToolProposal";
 
 const INITIAL_MESSAGE = "Quelle tâche vous fait perdre du temps ?";
 
@@ -17,6 +17,7 @@ export default function Conversation() {
   const [ready, setReady] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState(null);
+  const [accepted, setAccepted] = useState(false);
   const [requested, setRequested] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -28,10 +29,15 @@ export default function Conversation() {
       top: scrollRef.current.scrollHeight,
       behavior: "smooth"
     });
-  }, [messages, loading]);
+  }, [messages, loading, analysis, accepted, requested]);
 
-  const userMessageCount = messages.filter((m) => m.role === "user").length;
-  const canAnalyze = ready || userMessageCount >= 3;
+  // Armand propose directement dès qu'il a assez d'informations
+  useEffect(() => {
+    if (ready && !analysis && !analyzing && !loading) {
+      handleAnalyze();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, analysis, analyzing, loading]);
 
   async function handleSend(e) {
     e?.preventDefault();
@@ -59,8 +65,7 @@ export default function Conversation() {
         ...prev,
         {
           role: "assistant",
-          content:
-            "Pardon, j'ai eu un petit souci pour répondre. Pouvez-vous reformuler ?"
+          content: "Pardon, j'ai eu un petit souci. Pouvez-vous reformuler ?"
         }
       ]);
     } finally {
@@ -77,11 +82,21 @@ export default function Conversation() {
         messages
       });
       setAnalysis(res.data.analysis);
+      setAccepted(false);
+      setRequested(false);
     } catch (err) {
       setAnalyzing(false);
     } finally {
       setAnalyzing(false);
     }
+  }
+
+  function handleModify() {
+    setAnalysis(null);
+    setReady(false);
+    setAccepted(false);
+    setRequested(false);
+    setTimeout(() => inputRef.current?.focus(), 50);
   }
 
   async function handleBuild() {
@@ -144,74 +159,71 @@ export default function Conversation() {
             </div>
           )}
 
-          {/* Analyze button */}
-          {!analysis && canAnalyze && !loading && (
-            <div className="pt-2">
-              <button
-                onClick={handleAnalyze}
-                disabled={analyzing}
-                className="w-full inline-flex items-center justify-center gap-2 bg-amber-700 hover:bg-amber-800 disabled:opacity-60 text-amber-50 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
-              >
-                {analyzing ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Analyse en cours…
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4" />
-                    Analyser mon processus
-                  </>
-                )}
-              </button>
+          {analyzing && (
+            <div className="flex justify-start">
+              <div className="bg-white border border-stone-200/80 rounded-2xl rounded-bl-md px-5 py-4 shadow-sm">
+                <div className="flex items-center gap-2 text-stone-500">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+                  <span className="text-[14px]">Armand prépare sa proposition…</span>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Analysis */}
-          {analysis && (
+          {/* Proposition */}
+          {analysis && !analyzing && (
             <div className="pt-4 space-y-5">
-              <AnalysisView analysis={analysis} />
+              <ToolProposal proposal={analysis} />
 
-              {/* Proposal */}
-              <div className="bg-stone-900 text-stone-100 rounded-2xl p-6 sm:p-8">
-                <h2 className="font-display text-xl mb-3">
-                  La proposition d'Armand
-                </h2>
-                <p className="text-[15px] leading-relaxed text-stone-300 whitespace-pre-wrap mb-6">
-                  {analysis.proposition}
-                </p>
-
-                {!requested ? (
+              {/* Choix fin de proposition */}
+              {!accepted && !requested ? (
+                <div className="flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={handleBuild}
-                    disabled={saving}
-                    className="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-60 text-stone-900 px-6 py-3 rounded-full text-[15px] font-medium transition-colors"
+                    onClick={() => setAccepted(true)}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-stone-50 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
                   >
-                    {saving ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Enregistrement…
-                      </>
-                    ) : (
-                      <>Construire cet outil</>
-                    )}
+                    <Check className="w-4 h-4" />
+                    Cela correspond à mon besoin
                   </button>
-                ) : (
-                  <div className="inline-flex items-center gap-2 bg-stone-800 text-stone-200 px-5 py-3 rounded-full text-[15px]">
+                  <button
+                    onClick={handleModify}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-stone-300 hover:border-stone-400 text-stone-700 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
+                  >
+                    <Pencil className="w-4 h-4" />
+                    Modifier la proposition
+                  </button>
+                </div>
+              ) : accepted && !requested ? (
+                <button
+                  onClick={handleBuild}
+                  disabled={saving}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-60 text-stone-900 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
+                >
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Enregistrement…
+                    </>
+                  ) : (
+                    <>Construire cet outil</>
+                  )}
+                </button>
+              ) : null}
+
+              {requested && (
+                <>
+                  <div className="inline-flex items-center gap-2 bg-stone-900 text-stone-100 px-5 py-3.5 rounded-xl text-[15px]">
                     <Check className="w-4 h-4 text-amber-400" />
                     Votre demande a été enregistrée. Nous allons étudier comment
                     construire cet outil.
                   </div>
-                )}
-              </div>
-
-              {requested && (
-                <button
-                  onClick={() => navigate("/")}
-                  className="text-sm text-stone-500 hover:text-stone-900 transition-colors"
-                >
-                  Recommencer une nouvelle conversation
-                </button>
+                  <button
+                    onClick={() => navigate("/")}
+                    className="block text-sm text-stone-500 hover:text-stone-900 transition-colors"
+                  >
+                    Recommencer une nouvelle conversation
+                  </button>
+                </>
               )}
             </div>
           )}

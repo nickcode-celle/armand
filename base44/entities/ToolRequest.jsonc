@@ -27,30 +27,36 @@
     },
     "analysis": {
       "type": "object",
-      "description": "Synth\u00e8se structur\u00e9e produite par Armand",
+      "description": "Fiche de l'outil propos\u00e9 par Armand",
       "properties": {
-        "probleme": {
+        "nom_provisoire": {
           "type": "string"
         },
-        "processus": {
+        "probleme_resolu": {
           "type": "string"
         },
-        "outils": {
+        "fonctionnement": {
           "type": "string"
         },
-        "temps_estime": {
+        "automatise": {
           "type": "string"
         },
-        "taches_repetitives": {
+        "restant_a_faire": {
           "type": "string"
         },
-        "possibilites_automatisation": {
+        "temps_economise": {
           "type": "string"
         },
-        "outil_propose": {
+        "interfaces": {
           "type": "string"
         },
-        "proposition": {
+        "donnees_necessaires": {
+          "type": "string"
+        },
+        "difficulte": {
+          "type": "string"
+        },
+        "limites": {
           "type": "string"
         }
       }
