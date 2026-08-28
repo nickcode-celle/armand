@@ -5,11 +5,21 @@ function SolutionCard({ solution }) {
   return (
     <div className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6">
       <div className="flex items-start justify-between gap-4 mb-3">
-        <div>
+        <div className="flex items-center gap-3">
+          {solution.logo_url && (
+            <img
+              src={solution.logo_url}
+              alt={solution.nom}
+              className="h-9 w-auto max-w-[140px] object-contain"
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
+            />
+          )}
+          <div>
           <h3 className="font-display text-xl text-stone-900">{solution.nom}</h3>
           <p className="text-sm font-medium text-amber-700 mt-1">
             {solution.prix || "Tarif non communiqué"}
           </p>
+          </div>
         </div>
         {solution.site_officiel && (
           <a
@@ -30,7 +40,7 @@ function SolutionCard({ solution }) {
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-2">
-            Ce qui vous convient
+            Ce qui te convient
           </p>
           <div className="space-y-2">
             {solution.positifs?.map((item, i) => (
@@ -44,7 +54,7 @@ function SolutionCard({ solution }) {
 
         <div>
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-2">
-            Ce qui vous conviendra moins
+            Ce qui te conviendra moins
           </p>
           <div className="space-y-2">
             {solution.negatifs?.map((item, i) => (
@@ -119,10 +129,13 @@ export default function ToolProposal({ proposal }) {
         <p className="text-[16px] leading-relaxed font-medium text-stone-900 mb-4">
           {proposal.recommandation}
         </p>
-        <p className="flex items-start gap-2 text-[15px] text-stone-800">
-          <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-amber-700" />
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white px-5 py-3 rounded-xl text-[15px] font-medium transition-colors"
+        >
           <span>{proposal.question_finale}</span>
-        </p>
+          <ArrowRight className="w-4 h-4 shrink-0" />
+        </button>
       </div>
     </div>
   );
