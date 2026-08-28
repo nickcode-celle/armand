@@ -173,7 +173,7 @@ Réponds en français.`;
             : {}),
           generationConfig: {
             temperature: 0.2,
-            maxOutputTokens: action === "chat" ? 200 : 1000,
+            maxOutputTokens: action === "chat" ? 200 : 3000,
             thinkingConfig: {
               thinkingLevel: action === "chat" ? "minimal" : "low"
             },
