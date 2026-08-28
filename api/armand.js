@@ -59,9 +59,14 @@ PRÉSENTATION :
 - Les détails techniques et de faisabilité restent internes.
 - Présente au maximum 3 solutions existantes, uniquement les plus pertinentes.
 - Pour chaque solution existante : nom, prix vérifié si disponible, résumé très court, points positifs utiles pour CE client, points négatifs utiles pour CE client, site officiel.
+- Pour chaque solution existante, fournis aussi l'URL du logo officiel de la marque lorsqu'elle peut être vérifiée. Si le logo officiel n'est pas accessible, laisse ce champ vide plutôt que d'inventer une URL.
 - Ensuite, si pertinent, présente UNE solution ARMAND avec un nom commercial clair, ses avantages concrets et son prix si celui-ci peut être déterminé.
+- Une solution ARMAND ne doit pas simplement reproduire les solutions existantes. Cherche et présente les avantages supplémentaires réellement utiles au client : automatisation plus complète, maintien automatique des données à jour, suppression d'éléments devenus obsolètes, contrôle des doublons, meilleure restitution ou toute autre valeur ajoutée pertinente et réaliste pour ce besoin.
 - Termine par UNE recommandation claire.
-- Termine par UNE question simple invitant l'utilisateur à découvrir la solution recommandée.
+- Justifie explicitement et objectivement pourquoi la solution recommandée est meilleure pour CE besoin que les autres solutions présentées. La recommandation ne doit jamais donner l'impression que tu privilégies ARMAND parce qu'il s'agit de notre solution.
+- Si une solution existante est meilleure, recommande-la.
+- Si ARMAND est meilleur, indique précisément les différences concrètes qui justifient ce choix.
+- Termine par un libellé d'action très court destiné à un bouton, pas par une question rédigée. Exemple : "Montre-moi ARMAND Auto Stock".
 
 RÈGLE COMMERCIALE ARMAND :
 Lorsqu'une solution ARMAND est recommandée, présente-la comme une solution de notre catalogue.
@@ -75,6 +80,7 @@ La confiance passe avant la vente.
 Si une solution existante est réellement la meilleure, recommande-la honnêtement.
 Si ARMAND apporte une valeur supérieure réelle, explique simplement pourquoi et recommande ARMAND.
 
+Tutoie toujours l'utilisateur dans toute la proposition. N'utilise jamais "vous", "votre", "vos" ou leurs variantes de politesse.
 Réponds en français.`;
 
 
@@ -104,9 +110,10 @@ Réponds en français.`;
                 resume: { type: "string" },
                 positifs: { type: "array", items: { type: "string" } },
                 negatifs: { type: "array", items: { type: "string" } },
-                site_officiel: { type: "string" }
+                site_officiel: { type: "string" },
+          logo_url: { type: "string" }
               },
-              required: ["nom","prix","resume","positifs","negatifs","site_officiel"]
+              required: ["nom","prix","resume","positifs","negatifs","site_officiel","logo_url"]
             }
           },
           solution_armand: {
