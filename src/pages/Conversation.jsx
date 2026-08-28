@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Send, Loader2, ArrowLeft, Check, Pencil, Sparkles } from "lucide-react";
+import { Send, Loader2, ArrowLeft, Sparkles } from "lucide-react";
 import ChatMessage from "@/components/armand/ChatMessage";
 import ToolProposal from "@/components/armand/ToolProposal";
-import PricingQuestion from "@/components/armand/PricingQuestion";
-import IntentionQuestion from "@/components/armand/IntentionQuestion";
 import { base44 } from "@/api/base44Client";
 
 const INITIAL_MESSAGE = "Quelle tâche vous fait perdre du temps ?";
@@ -212,83 +210,12 @@ export default function Conversation() {
             <div className="pt-4 space-y-5">
               <ToolProposal proposal={analysis} />
 
-              {/* Étape 1 : validation ou modification */}
-              {!accepted && !requested ? (
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <button
-                    onClick={() => setAccepted(true)}
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-stone-50 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
-                  >
-                    <Check className="w-4 h-4" />
-                    Cela correspond à mon besoin
-                  </button>
-                  <button
-                    onClick={handleModify}
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-stone-300 hover:border-stone-400 text-stone-700 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
-                  >
-                    <Pencil className="w-4 h-4" />
-                    Modifier la proposition
-                  </button>
-                </div>
-              ) : null}
-
-              {/* Étapes post-validation */}
-              {accepted && !requested && (
-                <div className="space-y-5">
-                  {!pricing && (
-                    <PricingQuestion onSelect={setPricing} disabled={saving} />
-                  )}
-
-                  {pricing && !intention && (
-                    <IntentionQuestion
-                      onSelect={(code) => handleIntention(code)}
-                      disabled={saving}
-                    />
-                  )}
-
-                  {intention === "yes" && (
-                    <button
-                      onClick={handleBuild}
-                      disabled={saving}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-60 text-stone-900 px-6 py-3.5 rounded-xl text-[15px] font-medium transition-colors"
-                    >
-                      {saving ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Enregistrement…
-                        </>
-                      ) : (
-                        "Construire cet outil"
-                      )}
-                    </button>
-                  )}
-
-                  {intention && intention !== "yes" && saving && (
-                    <div className="inline-flex items-center gap-2 text-stone-500 text-[15px]">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Enregistrement de votre diagnostic…
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Confirmation finale */}
-              {requested && (
-                <>
-                  <div className="inline-flex items-center gap-2 bg-stone-900 text-stone-100 px-5 py-3.5 rounded-xl text-[15px]">
-                    <Check className="w-4 h-4 text-amber-400" />
-                    {intention === "yes"
-                      ? "Votre demande a été enregistrée. Nous allons étudier comment construire cet outil."
-                      : "Merci. Votre diagnostic a été enregistré."}
-                  </div>
-                  <button
-                    onClick={() => navigate("/")}
-                    className="block text-sm text-stone-500 hover:text-stone-900 transition-colors"
-                  >
-                    Recommencer une nouvelle conversation
-                  </button>
-                </>
-              )}
+              <button
+                onClick={handleModify}
+                className="text-sm text-stone-500 hover:text-stone-900 transition-colors"
+              >
+                Modifier ma demande
+              </button>
             </div>
           )}
         </div>
