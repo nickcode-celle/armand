@@ -1,125 +1,127 @@
 import React from "react";
-import {
-  Target, ListChecks, Zap, User, Clock, LayoutGrid, Database,
-  Gauge, AlertTriangle, ShieldCheck, ShieldQuestion, Search
-} from "lucide-react";
+import { ExternalLink, Check, Minus, Sparkles, ArrowRight } from "lucide-react";
 
-function Field({ icon: Icon, label, children }) {
+function SolutionCard({ solution }) {
   return (
-    <div className="border-t border-stone-200/70 pt-5">
-      <div className="flex items-center gap-2 mb-2">
-        <Icon className="w-4 h-4 text-amber-700" strokeWidth={1.75} />
-        <h3 className="text-[11px] font-semibold tracking-[0.12em] uppercase text-stone-500">
-          {label}
-        </h3>
+    <div className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6">
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <div>
+          <h3 className="font-display text-xl text-stone-900">{solution.nom}</h3>
+          <p className="text-sm font-medium text-amber-700 mt-1">
+            {solution.prix || "Tarif non communiqué"}
+          </p>
+        </div>
+        {solution.site_officiel && (
+          <a
+            href={solution.site_officiel}
+            target="_blank"
+            rel="noreferrer"
+            className="shrink-0 inline-flex items-center gap-1 text-xs text-stone-500 hover:text-stone-900"
+          >
+            Site officiel <ExternalLink className="w-3 h-3" />
+          </a>
+        )}
       </div>
-      <p className="text-[15px] leading-relaxed text-stone-700 whitespace-pre-wrap">
-        {children}
-      </p>
-    </div>
-  );
-}
 
-function FeasItem({ label, tone, children }) {
-  const tones = {
-    green: "border-emerald-200 bg-emerald-50/60 text-emerald-900",
-    amber: "border-amber-200 bg-amber-50/60 text-amber-900",
-    slate: "border-stone-200 bg-stone-50 text-stone-700",
-    red: "border-red-200 bg-red-50/60 text-red-900"
-  };
-  return (
-    <div className={`rounded-xl border px-4 py-3 ${tones[tone]}`}>
-      <p className="text-[11px] font-semibold tracking-[0.1em] uppercase mb-1 opacity-80">
-        {label}
+      <p className="text-[15px] leading-relaxed text-stone-700 mb-4">
+        {solution.resume}
       </p>
-      <p className="text-[14px] leading-relaxed whitespace-pre-wrap">{children}</p>
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-2">
+            Ce qui vous convient
+          </p>
+          <div className="space-y-2">
+            {solution.positifs?.map((item, i) => (
+              <div key={i} className="flex gap-2 text-sm text-stone-700">
+                <Check className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-2">
+            Ce qui vous conviendra moins
+          </p>
+          <div className="space-y-2">
+            {solution.negatifs?.map((item, i) => (
+              <div key={i} className="flex gap-2 text-sm text-stone-700">
+                <Minus className="w-4 h-4 mt-0.5 shrink-0 text-amber-700" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 export default function ToolProposal({ proposal }) {
+  const armand = proposal.solution_armand;
+
   return (
-    <div className="bg-white border border-stone-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
-      <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-amber-700 mb-2">
-        L'outil que je vous propose
-      </p>
-      <h2 className="font-display text-2xl text-stone-900 mb-1">
-        {proposal.nom_provisoire}
-      </h2>
-      <p className="text-sm text-stone-500 mb-6">
-        Voici l'outil imaginé à partir de ce que vous m'avez décrit.
-      </p>
-
-      <Field icon={Target} label="Problème résolu">
-        {proposal.probleme_resolu}
-      </Field>
-      <Field icon={ListChecks} label="Fonctionnement">
-        {proposal.fonctionnement}
-      </Field>
-      <Field icon={Zap} label="Ce qui serait automatisé">
-        {proposal.automatise}
-      </Field>
-      <Field icon={User} label="Ce qui resterait à faire par l'utilisateur">
-        {proposal.restant_a_faire}
-      </Field>
-      <Field icon={Clock} label="Temps potentiel économisé">
-        {proposal.temps_economise}
-      </Field>
-      <Field icon={LayoutGrid} label="Interfaces nécessaires">
-        {proposal.interfaces}
-      </Field>
-      <Field icon={Database} label="Données nécessaires">
-        {proposal.donnees_necessaires}
-      </Field>
-      <Field icon={Gauge} label="Difficulté de construction">
-        {proposal.difficulte}
-      </Field>
-      <Field icon={AlertTriangle} label="Limites">
-        {proposal.limites}
-      </Field>
-
-      {/* Faisabilité réelle */}
-      <div className="border-t border-stone-200/70 pt-5">
-        <div className="flex items-center gap-2 mb-3">
-          <ShieldCheck className="w-4 h-4 text-amber-700" strokeWidth={1.75} />
-          <h3 className="text-[11px] font-semibold tracking-[0.12em] uppercase text-stone-500">
-            Faisabilité réelle
-          </h3>
-        </div>
-        <div className="grid sm:grid-cols-2 gap-3">
-          <FeasItem label="Faisable directement" tone="green">
-            {proposal.faisable_directement}
-          </FeasItem>
-          <FeasItem label="Faisable sous conditions" tone="amber">
-            {proposal.faisable_sous_conditions}
-          </FeasItem>
-          <FeasItem label="À vérifier" tone="slate">
-            {proposal.a_verifier}
-          </FeasItem>
-          <FeasItem label="Non réalisable de manière fiable" tone="red">
-            {proposal.non_realisable}
-          </FeasItem>
-        </div>
+    <div className="space-y-5">
+      <div className="bg-white border border-stone-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <p className="font-display text-xl sm:text-2xl leading-relaxed text-stone-900">
+          {proposal.introduction}
+        </p>
       </div>
 
-      {/* Solution existante ou nouvel outil */}
-      <div className="border-t border-stone-200/70 pt-5">
-        <div className="flex items-center gap-2 mb-2">
-          <Search className="w-4 h-4 text-amber-700" strokeWidth={1.75} />
-          <h3 className="text-[11px] font-semibold tracking-[0.12em] uppercase text-stone-500">
-            Faut-il vraiment construire un nouvel outil ?
-          </h3>
+      {proposal.solutions_existantes?.length > 0 && (
+        <div className="space-y-3">
+          <p className="text-xs font-semibold tracking-[0.12em] uppercase text-stone-500 px-1">
+            Les solutions que j'ai trouvées
+          </p>
+          {proposal.solutions_existantes.map((solution, i) => (
+            <SolutionCard key={i} solution={solution} />
+          ))}
         </div>
-        <p className="text-[15px] font-medium text-stone-900 mb-1">
-          {proposal.conclusion_outil}
+      )}
+
+      {armand?.pertinente && (
+        <div className="rounded-2xl bg-stone-900 text-stone-100 p-6 sm:p-8 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span className="text-xs font-semibold tracking-[0.12em] uppercase text-amber-400">
+              La solution ARMAND
+            </span>
+          </div>
+
+          <h2 className="font-display text-2xl sm:text-3xl mb-2">{armand.nom}</h2>
+
+          {armand.prix && (
+            <p className="text-amber-400 font-medium mb-4">{armand.prix}</p>
+          )}
+
+          <p className="text-[15px] leading-relaxed text-stone-300 mb-5">
+            {armand.resume}
+          </p>
+
+          <div className="space-y-2">
+            {armand.avantages?.map((item, i) => (
+              <div key={i} className="flex gap-2 text-[15px]">
+                <Check className="w-4 h-4 mt-0.5 shrink-0 text-amber-400" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="bg-amber-50 border border-amber-200/70 rounded-2xl p-6">
+        <p className="text-xs font-semibold tracking-[0.12em] uppercase text-amber-800 mb-2">
+          Mon conseil
         </p>
-        <p className="text-[15px] leading-relaxed text-stone-700 whitespace-pre-wrap mb-3">
-          {proposal.solution_existante}
+        <p className="text-[16px] leading-relaxed font-medium text-stone-900 mb-4">
+          {proposal.recommandation}
         </p>
-        <p className="text-[13px] text-stone-500 italic flex items-start gap-1.5">
-          <ShieldQuestion className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-          Une recherche des solutions existantes serait nécessaire avant de
-          décider de construire cet outil.
+        <p className="flex items-start gap-2 text-[15px] text-stone-800">
+          <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-amber-700" />
+          <span>{proposal.question_finale}</span>
         </p>
       </div>
     </div>
