@@ -220,6 +220,7 @@ Réponds en français.`;
       classification: classification || null
     });
   } catch (error) {
+    console.error("ARMAND ERROR:", error?.message || String(error));
     return res.status(500).json({ error: error?.message || String(error) });
   }
 }

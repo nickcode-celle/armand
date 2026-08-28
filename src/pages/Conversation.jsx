@@ -29,6 +29,7 @@ export default function Conversation() {
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [analysisError, setAnalysisError] = useState(false);
   const [analysis, setAnalysis] = useState(null);
   const [classification, setClassification] = useState(null);
   const [accepted, setAccepted] = useState(false);
@@ -49,7 +50,7 @@ export default function Conversation() {
 
   // Armand propose directement dès qu'il a assez d'informations
   useEffect(() => {
-    if (ready && !analysis && !analyzing && !loading) {
+    if (ready && !analysis && !analyzing && !loading && !analysisError) {
       handleAnalyze();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,7 +101,8 @@ export default function Conversation() {
       setPricing(null);
       setIntention(null);
     } catch (err) {
-      setAnalyzing(false);
+      setAnalysisError(true);
+      console.error("Analyse ARMAND:", err);
     } finally {
       setAnalyzing(false);
     }
