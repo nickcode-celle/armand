@@ -1,13 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Send, Loader2, ArrowLeft, Check, Pencil, Sparkles } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 import ChatMessage from "@/components/armand/ChatMessage";
 import ToolProposal from "@/components/armand/ToolProposal";
 import PricingQuestion from "@/components/armand/PricingQuestion";
 import IntentionQuestion from "@/components/armand/IntentionQuestion";
+import { base44 } from "@/api/base44Client";
 
 const INITIAL_MESSAGE = "Quelle tâche vous fait perdre du temps ?";
+
+async function invokeArmand(action, messages) {
+  const response = await fetch("/api/armand", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action, messages })
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data?.error || "Erreur serveur");
+  return { data };
+}
 
 export default function Conversation() {
   const navigate = useNavigate();
@@ -55,10 +66,7 @@ export default function Conversation() {
     setLoading(true);
 
     try {
-      const res = await base44.functions.invoke("armand", {
-        action: "chat",
-        messages: newMessages
-      });
+      const res = await invokeArmand("chat", newMessages);
       const data = res.data;
       setMessages((prev) => [
         ...prev,
@@ -70,7 +78,7 @@ export default function Conversation() {
         ...prev,
         {
           role: "assistant",
-          content: "Pardon, j'ai eu un petit souci. Pouvez-vous reformuler ?"
+          content: `Erreur ARMAND : ${err?.message || String(err)}`
         }
       ]);
     } finally {
@@ -82,13 +90,9 @@ export default function Conversation() {
   async function handleAnalyze() {
     setAnalyzing(true);
     try {
-      const res = await base44.functions.invoke("armand", {
-        action: "analyze",
-        messages
-      });
+      const res = await invokeArmand("analyze", messages);
       setAnalysis(res.data.analysis);
       setClassification(res.data.classification || null);
-      setAccepted(false);
       setRequested(false);
       setPricing(null);
       setIntention(null);
