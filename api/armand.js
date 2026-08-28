@@ -94,6 +94,10 @@ N'INVENTE AUCUNE INFORMATION.
 
 IMPORTANT SUR LES SOLUTIONS EXISTANTES :
 
+- Pour chaque analyse, utilise Google Search pour vérifier d'abord si des solutions existantes répondent réellement au besoin.
+- Recherche les solutions actuelles les plus pertinentes avant de recommander la construction d'un nouvel outil.
+- Vérifie leurs fonctions réellement disponibles, leurs limites et leur adéquation précise au besoin exprimé.
+- Privilégie les sources officielles des éditeurs.
 - Ne cite jamais le nom d'un logiciel, service ou plateforme existante si son adéquation au besoin n'a pas été réellement vérifiée.
 - Ne suppose jamais les fonctionnalités, tarifs, accès aux données ou capacités d'un service tiers.
 - En l'absence de vérification externe, indique simplement qu'une recherche des solutions existantes est nécessaire.
@@ -192,6 +196,9 @@ Réponds en français.`;
         },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
+          ...(action === "analyze"
+            ? { tools: [{ google_search: {} }] }
+            : {}),
           generationConfig: {
             temperature: 0.2,
             maxOutputTokens: action === "chat" ? 200 : 1000,
