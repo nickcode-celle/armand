@@ -1,0 +1,154 @@
+{
+  "name": "ToolCatalog",
+  "type": "object",
+  "title": "Catalogue des outils",
+  "description": "Référentiel des logiciels, services et outils recommandés par ARMAND.",
+  "properties": {
+    "nom": {
+      "type": "string",
+      "description": "Nom officiel de l'outil."
+    },
+    "categorie": {
+      "type": "string",
+      "description": "Catégorie principale de l'outil."
+    },
+    "problemes_resolus": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Problèmes ou besoins auxquels l'outil répond."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description courte et compréhensible de l'outil."
+    },
+    "fonctionnalites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Principales fonctionnalités."
+    },
+    "public_cible": {
+      "type": "string",
+      "description": "Type d'utilisateur auquel l'outil s'adresse."
+    },
+    "prix": {
+      "type": "string",
+      "description": "Prix ou fourchette de prix connue."
+    },
+    "modele_prix": {
+      "type": "string",
+      "enum": [
+        "gratuit",
+        "freemium",
+        "abonnement",
+        "achat_unique",
+        "commission",
+        "gratuit_avec_options",
+        "autre",
+        "inconnu"
+      ],
+      "default": "inconnu"
+    },
+    "url_officielle": {
+      "type": "string",
+      "format": "uri",
+      "description": "Site officiel."
+    },
+    "url_inscription": {
+      "type": "string",
+      "format": "uri",
+      "description": "Lien direct vers l'inscription lorsque disponible."
+    },
+    "url_telechargement": {
+      "type": "string",
+      "format": "uri",
+      "description": "Lien direct vers le téléchargement lorsque disponible."
+    },
+    "avantages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Avantages principaux."
+    },
+    "limites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Limites ou points de vigilance."
+    },
+    "niveau_difficulte": {
+      "type": "string",
+      "enum": [
+        "très simple",
+        "simple",
+        "moyen",
+        "complexe"
+      ],
+      "default": "simple"
+    },
+    "source": {
+      "type": "string",
+      "description": "Source utilisée pour vérifier les informations."
+    },
+    "date_verification": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de dernière vérification des informations."
+    },
+    "statut_verification": {
+      "type": "string",
+      "enum": [
+        "vérifié",
+        "à vérifier",
+        "obsolète"
+      ],
+      "default": "à vérifier"
+    },
+    "affiliation_possible": {
+      "type": "boolean",
+      "default": false,
+      "description": "Indique si un programme d'affiliation semble exister."
+    },
+    "lien_affiliation": {
+      "type": "string",
+      "format": "uri",
+      "description": "Lien d'affiliation lorsque disponible et autorisé."
+    },
+    "commission_connue": {
+      "type": "string",
+      "description": "Commission connue du programme d'affiliation."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes internes ou informations complémentaires."
+    }
+  },
+  "required": [
+    "nom",
+    "categorie",
+    "description"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
