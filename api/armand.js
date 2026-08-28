@@ -208,7 +208,7 @@ Réponds en français.`;
 
     if (action === "chat") {
       const userCount = messages.filter(m => m.role === "user").length;
-      const ready = userCount >= 6;
+      const ready = userCount >= 7;
 
       return res.status(200).json({
         message: text,
