@@ -68,11 +68,14 @@ export default function Conversation() {
     try {
       const res = await invokeArmand("chat", newMessages);
       const data = res.data;
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.message }
-      ]);
-      if (data.ready) setReady(true);
+      if (data.ready) {
+        setReady(true);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.message }
+        ]);
+      }
     } catch (err) {
       setMessages((prev) => [
         ...prev,
