@@ -104,19 +104,37 @@ function transcript(messages) {
   return messages.map((m) => `${m.role === 'user' ? 'Utilisateur' : 'Entité'} : ${m.content}`).join('\n\n');
 }
 
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function gemini(apiKey, text, { json = false, maxOutputTokens = 1000, temperature = 0.25 } = {}) {
   const generationConfig = { temperature, maxOutputTokens };
   if (json) generationConfig.responseMimeType = 'application/json';
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
-    body: JSON.stringify({ contents: [{ parts: [{ text }] }], generationConfig })
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(`Gemini ${response.status}: ${JSON.stringify(data)}`);
-  const output = data?.candidates?.[0]?.content?.parts?.map((p) => p?.text || '').join('').trim();
-  if (!output) throw new Error("L'Entité n'a renvoyé aucun contenu");
-  return output;
+  let lastError;
+
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+        body: JSON.stringify({ contents: [{ parts: [{ text }] }], generationConfig })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        const output = data?.candidates?.[0]?.content?.parts?.map((p) => p?.text || '').join('').trim();
+        if (!output) throw new Error("L'Entité n'a renvoyé aucun contenu");
+        return output;
+      }
+      const error = new Error(`Gemini ${response.status}: ${JSON.stringify(data)}`);
+      if (response.status !== 429 && response.status !== 503) throw error;
+      lastError = error;
+      console.warn(`[entity] Gemini ${response.status}, nouvelle tentative ${attempt + 1}/4`);
+    } catch (error) {
+      lastError = error;
+      if (attempt === 3) break;
+    }
+    if (attempt < 3) await wait(700 * (2 ** attempt));
+  }
+  throw lastError || new Error('Gemini indisponible');
 }
 
 async function handleEntity(req, res) {
