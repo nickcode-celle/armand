@@ -131,18 +131,9 @@ function extractJson(text) {
 function firstMeetingReply(messages) {
   const userMessages = messages.filter((m) => m.role === 'user');
   const assistantMessages = messages.filter((m) => m.role === 'assistant');
-  if (userMessages.length !== 1 || assistantMessages.length !== 0) return null;
-
-  const last = String(userMessages[0]?.content || '').trim();
-  const greeting = /^(salut|hello|bonjour|bonsoir|hey|coucou)[!.?\s]*$/i.test(last);
-  if (greeting) {
-    const normalized = last.toLowerCase();
-    const hello = normalized.startsWith('hello') || normalized.startsWith('hey') ? 'Hello' : normalized.startsWith('salut') ? 'Salut' : normalized.startsWith('bonsoir') ? 'Bonsoir' : normalized.startsWith('coucou') ? 'Coucou' : 'Bonjour';
-    return `${hello}. Moi, c'est Entity. Et toi ?`;
+  if (userMessages.length === 1 && assistantMessages.length === 0) {
+    return `Bonjour. Moi, c'est Entity. Et toi ?`;
   }
-
-  const asksName = /(comment\s+(?:est-ce que\s+)?tu\s+t['’]?appelles|tu\s+t['’]?appelles\s*\??|c['’]?est quoi ton nom|quel est ton nom|ton nom\s*\??)/i.test(last);
-  if (asksName) return `Moi, c'est Entity. Et toi ?`;
   return null;
 }
 
@@ -199,7 +190,6 @@ async function handleEntity(req, res) {
   if (!apiKey) return sendJson(res, 500, { error:'GEMINI_API_KEY manquante dans .env.local' });
   if (!Array.isArray(messages) || messages.length === 0) return sendJson(res, 400, { error:'Conversation vide' });
 
-  // La toute première ouverture est volontairement déterministe : le modèle ne peut plus fermer la rencontre avec un simple miroir.
   const deterministic = firstMeetingReply(messages);
   if (deterministic) return sendJson(res, 200, { message:deterministic });
 
