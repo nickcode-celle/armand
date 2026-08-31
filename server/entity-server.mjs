@@ -197,7 +197,7 @@ Simple, directe, chaleureuse sans flatterie, curieuse, parfois gourmande d'histo
 const DIALOGUE_PROMPT = `${CORE}
 
 Tu dois produire directement la prochaine réplique d'Entity en UNE SEULE passe. N'affiche jamais ton analyse.
-Retourne uniquement un JSON valide : {"message":"..."}.
+Retourne uniquement le texte de la réplique d'Entity, sans JSON, sans guillemets autour de la réponse, sans préfixe « Entity: » et sans bloc de code.
 
 DÉCISION INTERNE, SILENCIEUSE
 Avant d'écrire, lis toute la conversation et les signaux mécaniques puis décide mentalement :
@@ -396,23 +396,6 @@ function dialogueSignals(messages) {
   };
 }
 
-function extractJson(text) {
-  const clean = String(text || '').trim();
-  const candidates = [clean];
-  const fenced = clean.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  if (fenced?.[1]) candidates.push(fenced[1].trim());
-  const first = clean.indexOf('{');
-  const last = clean.lastIndexOf('}');
-  if (first >= 0 && last > first) candidates.push(clean.slice(first, last + 1));
-  for (const candidate of candidates) {
-    try {
-      const parsed = JSON.parse(candidate);
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
-    } catch {}
-  }
-  return null;
-}
-
 function explicitDeparture(text) {
   const value = String(text || '').trim();
   if (/^(j['’]?y vais|je file|à plus|a plus|salut|bonne soirée|bonne soiree|bonne nuit|bye|ciao)[!.?\s]*$/i.test(value)) return 'effective';
@@ -457,7 +440,6 @@ async function gemini(apiKey, text, { maxOutputTokens = 700, temperature = 0.32 
   const generationConfig = {
     temperature,
     maxOutputTokens,
-    responseMimeType: 'application/json',
   };
 
   let lastError;
@@ -510,8 +492,7 @@ ${JSON.stringify({ ...signals, intentionDepart: departure })}
 ${conversation}`;
 
     const text = await gemini(apiKey, prompt, { maxOutputTokens: 700, temperature: 0.32 });
-    const answer = extractJson(text);
-    const message = typeof answer?.message === 'string' ? answer.message.trim() : '';
+    const message = String(text || '').trim();
     const problem = validateMessage(message, signals, departure);
 
     if (!problem) return message;
