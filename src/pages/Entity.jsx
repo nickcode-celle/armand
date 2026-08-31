@@ -6,14 +6,24 @@ const INITIAL_MESSAGE = "Bonjour, moi c’est Entity. Et toi ?";
 const initialConversation = () => [{ role: "assistant", content: INITIAL_MESSAGE, timestamp: Date.now() }];
 
 async function invokeEntity(messages) {
-  const response = await fetch("/api/entity", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages })
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data?.error || "Erreur serveur");
-  return data;
+  let lastError;
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const response = await fetch("/api/entity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages })
+    });
+
+    const data = await response.json();
+    if (response.ok) return data;
+
+    lastError = new Error(data?.error || "Erreur serveur");
+    const retryableValidation = /Réponse Entity invalide: phrase incomplète/i.test(lastError.message);
+    if (!retryableValidation || attempt === 2) throw lastError;
+  }
+
+  throw lastError || new Error("Erreur serveur");
 }
 
 export default function Entity() {
