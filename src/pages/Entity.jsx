@@ -3,6 +3,7 @@ import { ArrowUp, Paperclip, RotateCcw } from "lucide-react";
 import EntityMessage from "@/components/entity/EntityMessage";
 
 const INITIAL_MESSAGE = "Bonjour, moi c’est Entity. Et toi ?";
+const initialConversation = () => [{ role: "assistant", content: INITIAL_MESSAGE, timestamp: Date.now() }];
 
 async function invokeEntity(messages) {
   const response = await fetch("/api/entity", {
@@ -16,7 +17,7 @@ async function invokeEntity(messages) {
 }
 
 export default function Entity() {
-  const [messages, setMessages] = useState([{ role: "assistant", content: INITIAL_MESSAGE }]);
+  const [messages, setMessages] = useState(initialConversation);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
@@ -30,15 +31,15 @@ export default function Entity() {
     e?.preventDefault();
     const text = input.trim();
     if (!text || loading) return;
-    const nextMessages = [...messages, { role: "user", content: text }];
+    const nextMessages = [...messages, { role: "user", content: text, timestamp: Date.now() }];
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
     try {
       const data = await invokeEntity(nextMessages);
-      setMessages((prev) => [...prev, { role: "assistant", content: data.message }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: data.message, timestamp: Date.now() }]);
     } catch (error) {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Je n'ai pas pu répondre cette fois. Réessaie dans un instant." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "Je n'ai pas pu répondre cette fois. Réessaie dans un instant.", timestamp: Date.now() }]);
       console.error("Entité:", error);
     } finally {
       setLoading(false);
@@ -47,7 +48,7 @@ export default function Entity() {
   }
 
   function handleReset() {
-    setMessages([{ role: "assistant", content: INITIAL_MESSAGE }]);
+    setMessages(initialConversation());
     setInput("");
     setTimeout(() => inputRef.current?.focus(), 50);
   }
