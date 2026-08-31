@@ -78,9 +78,11 @@ Cherche d'abord ce qui est déjà connu. Si rien n'est connu, privilégie la cur
 
 const RESPONSE_PROMPT = `${CORE}
 
-Produis uniquement la parole d'Entity à partir de la conversation et de la lecture interne.
+Retourne uniquement un JSON valide exactement sous cette forme : {"message":"..."}.
+Le champ "message" contient uniquement les mots prononcés par Entity à l'utilisateur. Aucun raisonnement, aucune vérification interne, aucune note, aucun commentaire sur tes règles et aucun texte hors JSON ne doit apparaître.
+
 Privilégie l'intérêt concret pour la personne plutôt qu'un commentaire empathique générique. Utilise uniquement les faits réellement présents dans la conversation. Aucun scénario, lieu, relation, événement ou situation ne peut être déduit des exemples du prompt. Utilise le contexte connu s'il permet un meilleur rebond. Sinon reste simplement curieuse. Ne transforme pas une hypothèse en affirmation. Suis un changement de sujet. Respecte un sujet fermé. Ne cumule pas plusieurs questions comme un interrogatoire. Si un départ est seulement annoncé, un rebond évident peut encore être naturel. Si le départ est effectif, laisse partir.
-Avant de répondre, vérifie : ai-je inventé un contexte ? est-ce générique ? est-ce psychologisant ? ai-je raté une prise évidente ? est-ce que je connais déjà quelque chose permettant une meilleure question ? est-ce que je ferme inutilement la conversation ?`;
+Fais tes vérifications silencieusement. Elles ne doivent jamais apparaître dans le champ "message".`;
 
 function sendJson(res, status, payload) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -112,7 +114,11 @@ async function handleEntity(req,res) {
   const deterministic=firstMeetingReply(messages); if(deterministic)return sendJson(res,200,{message:deterministic});
   const conversation=transcript(messages); let state;
   try{const analysisText=await gemini(apiKey,`${ANALYSIS_PROMPT}\n\n--- Conversation ---\n${conversation}`,{json:true,maxOutputTokens:900,temperature:0.05});state=extractJson(analysisText)||fallbackState(messages);}catch(error){console.warn(`[entity] Analyse indisponible, mode de secours: ${error?.message||error}`);state=fallbackState(messages);}
-  const answer=await gemini(apiKey,`${RESPONSE_PROMPT}\n\n--- Conversation ---\n${conversation}\n\n--- Lecture interne ---\n${JSON.stringify(state)}`,{maxOutputTokens:700,temperature:0.45}); return sendJson(res,200,{message:answer});
+  const answerText=await gemini(apiKey,`${RESPONSE_PROMPT}\n\n--- Conversation ---\n${conversation}\n\n--- Lecture interne ---\n${JSON.stringify(state)}`,{json:true,maxOutputTokens:350,temperature:0.35});
+  const answer=extractJson(answerText);
+  const message=typeof answer?.message==='string' ? answer.message.trim() : '';
+  if(!message) throw new Error("Réponse Entity invalide");
+  return sendJson(res,200,{message});
 }
 const server=http.createServer(async(req,res)=>{try{if(req.method==='POST'&&req.url==='/api/entity')return await handleEntity(req,res);if(req.method==='GET'&&req.url==='/health')return sendJson(res,200,{ok:true,service:'entity'});return sendJson(res,404,{error:'Not found'});}catch(error){console.error('[entity]',error?.message||error);return sendJson(res,500,{error:error?.message||String(error)});}});
 server.listen(PORT,'127.0.0.1',()=>console.log(`[entity] Backend local: http://localhost:${PORT}`));
