@@ -118,14 +118,17 @@ async function gemini(apiKey,text,{json=false,maxOutputTokens=1000,temperature=0
   for(let attempt=0;attempt<4;attempt+=1){try{const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},body:JSON.stringify({contents:[{parts:[{text}]}],generationConfig})});const data=await response.json();if(response.ok){const output=data?.candidates?.[0]?.content?.parts?.map((p)=>p?.text||'').join('').trim();if(!output)throw new Error("L'Entité n'a renvoyé aucun contenu");return output;}const error=new Error(`Gemini ${response.status}: ${JSON.stringify(data)}`);if(response.status!==429&&response.status!==503)throw error;lastError=error;console.warn(`[entity] Gemini ${response.status}, nouvelle tentative ${attempt+1}/4`);}catch(error){lastError=error;if(attempt===3)break;}if(attempt<3)await wait(700*(2**attempt));} throw lastError||new Error('Gemini indisponible');
 }
 async function generateEntityMessage(apiKey, conversation, state) {
-  for(let attempt=0; attempt<2; attempt+=1) {
-    const retryInstruction = attempt === 0 ? '' : '\n\nIMPORTANT : la tentative précédente était incomplète. Réponds de nouveau avec UNE phrase entièrement terminée.';
-    const answerText=await gemini(apiKey,`${RESPONSE_PROMPT}${retryInstruction}\n\n--- Conversation ---\n${conversation}\n\n--- Lecture interne ---\n${JSON.stringify(state)}`,{json:true,maxOutputTokens:700,temperature:0.3});
+  let lastProblem='';
+  for(let attempt=0; attempt<4; attempt+=1) {
+    const retryInstruction = attempt === 0 ? '' : `\n\nIMPORTANT : la tentative précédente était invalide ou incomplète (${lastProblem}). Repars de zéro et renvoie UNE seule phrase naturelle, courte et entièrement terminée dans le JSON demandé.`;
+    const answerText=await gemini(apiKey,`${RESPONSE_PROMPT}${retryInstruction}\n\n--- Conversation ---\n${conversation}\n\n--- Lecture interne ---\n${JSON.stringify(state)}`,{json:true,maxOutputTokens:1400,temperature:0.25});
     const answer=extractJson(answerText);
     const message=typeof answer?.message==='string' ? answer.message.trim() : '';
-    if(message && !looksIncomplete(message)) return message;
+    if(!message) { lastProblem='JSON sans champ message valide'; continue; }
+    if(looksIncomplete(message)) { lastProblem=`phrase incomplète: ${message.slice(0,80)}`; continue; }
+    return message;
   }
-  throw new Error('Réponse Entity incomplète');
+  throw new Error('Réponse Entity incomplète après nouvelles tentatives');
 }
 async function handleEntity(req,res) {
   const {messages=[]}=await readJson(req); const apiKey=process.env.GEMINI_API_KEY||process.env.GOOGLE_API_KEY;
