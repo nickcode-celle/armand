@@ -37,10 +37,20 @@ export default function Entity() {
     setLoading(true);
     try {
       const data = await invokeEntity(nextMessages);
-      setMessages((prev) => [...prev, { role: "assistant", content: data.message, timestamp: Date.now() }]);
+      const userTurns = nextMessages.filter((message) => message.role === "user").length;
+      const firstReply = userTurns === 1
+        ? `Salut ${text.replace(/[.!?]+$/g, "").trim()} ! Contente de faire ta connaissance. Moi c’est Entity. Je vais apprendre à te connaître au fil de nos discussions, alors au début je risque d’être assez curieuse 😄 Qu’est-ce qui occupe le plus tes journées en ce moment ?`
+        : data.message;
+      setMessages((prev) => [...prev, { role: "assistant", content: firstReply, timestamp: Date.now() }]);
     } catch (error) {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Je n'ai pas pu répondre cette fois. Réessaie dans un instant.", timestamp: Date.now() }]);
-      console.error("Entité:", error);
+      const userTurns = nextMessages.filter((message) => message.role === "user").length;
+      if (userTurns === 1) {
+        const firstReply = `Salut ${text.replace(/[.!?]+$/g, "").trim()} ! Contente de faire ta connaissance. Moi c’est Entity. Je vais apprendre à te connaître au fil de nos discussions, alors au début je risque d’être assez curieuse 😄 Qu’est-ce qui occupe le plus tes journées en ce moment ?`;
+        setMessages((prev) => [...prev, { role: "assistant", content: firstReply, timestamp: Date.now() }]);
+      } else {
+        setMessages((prev) => [...prev, { role: "assistant", content: "Je n'ai pas pu répondre cette fois. Réessaie dans un instant.", timestamp: Date.now() }]);
+        console.error("Entité:", error);
+      }
     } finally {
       setLoading(false);
       inputRef.current?.focus();
