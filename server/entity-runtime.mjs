@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 const memoryHash=memory=>crypto.createHash('sha256').update(JSON.stringify(memory)).digest('hex');
 const memoryNamespace=ref=>`memory-blob-${ref}`;
+const essentials=memory=>memory?{entity_core:memory.entity_core??null,engagements:memory.engagements??null}:{};
 export function createRuntimeStore({storage,memoryService}){
   async function persistMemory(entityId,memory){
     if(memory==null)return null;
@@ -14,10 +15,15 @@ export function createRuntimeStore({storage,memoryService}){
     if(memory===null)throw Error(`Snapshot mémoire Entity manquant: ${record.memory_ref}`);
     return memory;
   }
+  async function ensureEssentials(entityId,record){
+    if(record?.essential_memory||!record?.memory_ref)return record;
+    const memory=await readMemory(entityId,record),updated={...record,essential_memory:essentials(memory)};
+    return storage.mutate(entityId,'runtime-snapshot',record,current=>current?.essential_memory?current:updated);
+  }
   async function hydrate(entityId,record,withMemory=true){
     if(!record?.state)return record;
-    if(Object.prototype.hasOwnProperty.call(record,'memory_ref'))return withMemory?{...record,memory:await readMemory(entityId,record)}:{...record};
-    const inline=record.memory??null,ref=await persistMemory(entityId,inline),migrated={...record,memory_ref:ref};delete migrated.memory;
+    if(Object.prototype.hasOwnProperty.call(record,'memory_ref')){const ready=await ensureEssentials(entityId,record);return withMemory?{...ready,memory:await readMemory(entityId,ready)}:{...ready}}
+    const inline=record.memory??null,ref=await persistMemory(entityId,inline),migrated={...record,memory_ref:ref,essential_memory:essentials(inline)};delete migrated.memory;
     const committed=await storage.mutate(entityId,'runtime-snapshot',record,current=>Object.prototype.hasOwnProperty.call(current||{},'memory_ref')?current:migrated);
     return hydrate(entityId,committed,withMemory);
   }
@@ -25,7 +31,7 @@ export function createRuntimeStore({storage,memoryService}){
     const snapshot=await storage.get(entityId,'runtime-snapshot',null);
     if(snapshot?.state)return hydrate(entityId,snapshot,withMemory);
     const [state,memory,pending]=await Promise.all([memoryService.state(entityId,defaultState),memoryService.memory(entityId),memoryService.pending(entityId)]);
-    const ref=await persistMemory(entityId,memory),initial={state,pending:Array.isArray(pending)?pending:[],recent_requests:[],memory_ref:ref,committed_revision:Number(state?.revision||0),updated_at:state?.updated_at||null};
+    const ref=await persistMemory(entityId,memory),initial={state,pending:Array.isArray(pending)?pending:[],recent_requests:[],memory_ref:ref,essential_memory:essentials(memory),committed_revision:Number(state?.revision||0),updated_at:state?.updated_at||null};
     const committed=await storage.mutate(entityId,'runtime-snapshot',null,current=>current?.state?current:initial);
     return hydrate(entityId,committed,withMemory);
   }
@@ -34,7 +40,7 @@ export function createRuntimeStore({storage,memoryService}){
     const committed=await storage.mutate(entityId,'runtime-snapshot',null,current=>{
       const actual=Number(current?.committed_revision??current?.state?.revision??0);
       if(current&&actual!==Number(expectedRevision))throw Error(`Revision Entity obsolète: ${expectedRevision} != ${actual}`);
-      previousRef=current?.memory_ref??null;finalRef=hasMemory?nextRef:(base.memory_ref??previousRef??null);return{...base,memory_ref:finalRef};
+      previousRef=current?.memory_ref??null;finalRef=hasMemory?nextRef:(base.memory_ref??previousRef??null);return{...base,memory_ref:finalRef,essential_memory:hasMemory?essentials(next.memory):(base.essential_memory??current?.essential_memory??{})};
     });
     if(previousRef&&previousRef!==finalRef)storage.del(entityId,memoryNamespace(previousRef)).catch(()=>{});
     return hasMemory?{...committed,memory:next.memory}:{...committed};
