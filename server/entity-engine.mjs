@@ -5,13 +5,14 @@ import {ENTITY_SCHEMA_VERSION,migrateEntityState} from './entity-schema.mjs';
 import {badRequest} from './entity-errors.mjs';
 const tx=ms=>(ms||[]).map(m=>`${m.role==='assistant'?'Entity':'Personne'}: ${m.content||''}`).join('\n');
 const iso=()=>new Date().toISOString();
+const validId=(x,min=8,max=128)=>typeof x==='string'&&x.length>=min&&x.length<=max&&/^[A-Za-z0-9_-]+$/.test(x);
 export function defaultState(){return{schema_version:ENTITY_SCHEMA_VERSION,revision:0,user_turns:0,working_memory:[],recent_messages:[],updated_at:null,metrics:{},recall_version:2}}
 const delta=(before,after,key)=>Number(after?.[key]||0)-Number(before?.[key]||0);
 export function createEntityEngine({storage,runtime,orchestrate,recall,aiFactory=createEntityAI}){
  return async function handleTurn(b){
-  const key=process.env.OPENAI_API_KEY;if(!key)throw badRequest('OPENAI_API_KEY manquante','CONFIG_MISSING');if(!b.entityId)throw badRequest('Identité Entity manquante','ENTITY_ID_MISSING');
+  const key=process.env.OPENAI_API_KEY;if(!key)throw badRequest('OPENAI_API_KEY manquante','CONFIG_MISSING');const id=String(b.entityId||'').trim();if(!validId(id))throw badRequest('Identité Entity invalide','ENTITY_ID_INVALID');
   const legacy=Array.isArray(b.messages)?b.messages:[],latest=String(b.message??legacy.filter(x=>x.role==='user').at(-1)?.content??'').trim();if(!latest)throw badRequest('Message vide','EMPTY_MESSAGE');
-  const id=b.entityId,requestId=String(b.requestId||'').trim(),start=Date.now(),beforeStorage={...storage.metrics},beforeRecall={...recall.metrics},snapshot=await runtime.load(id,defaultState()),baseRevision=Number(snapshot.committed_revision??snapshot.state?.revision??0);
+  const requestId=String(b.requestId||'').trim();if(requestId&&!validId(requestId))throw badRequest('requestId invalide','REQUEST_ID_INVALID');const start=Date.now(),beforeStorage={...storage.metrics},beforeRecall={...recall.metrics},snapshot=await runtime.load(id,defaultState()),baseRevision=Number(snapshot.committed_revision??snapshot.state?.revision??0);
   if(requestId){const cached=(snapshot.recent_requests||[]).find(x=>x.id===requestId);if(cached){if(cached.request_text!==latest)throw badRequest('requestId déjà utilisé pour un autre message','REQUEST_ID_REUSE');return{message:cached.message,meta:{memory_engine:'v8',schema_version:ENTITY_SCHEMA_VERSION,storage:storage.mode,recall:recall.mode,revision:cached.revision,idempotent_replay:true,request_ms:Date.now()-start,usage:{calls:0,response_calls:0,embedding_calls:0,input_tokens:0,output_tokens:0,total_tokens:0,retries:0,errors:0,timeouts:0}}}}}
   const ai=aiFactory(key),st={...defaultState(),...migrateEntityState(snapshot.state||defaultState())},memory=snapshot.memory??null;
   const recentBase=st.recent_messages?.length?st.recent_messages:legacy.slice(-10),recent=[...recentBase,{role:'user',content:latest}].slice(-11),conv=tx(recent),generated=await generateDialogue({conv,memory,departureState:departure(latest),ai,state:st,id,orchestrate}),message=generated.x;
