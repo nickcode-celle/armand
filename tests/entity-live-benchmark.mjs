@@ -16,13 +16,14 @@ const scenario=[
  'Quel est mon travail maintenant ?',
  'Qu’est-ce que tu sais de moi sans rien inventer ?'
 ];
-const rows=[];let totalTokens=0,totalCalls=0;
+const checks=new Map([[8,/léa/i],[10,/train|gare|lyon/i],[11,/déco|decoration|décoration/i]]);
+const rows=[];let totalTokens=0,totalCalls=0,qualityHits=0;
 for(let i=0;i<scenario.length;i++){
  const start=performance.now();const r=await fetch(`${base}/api/entity`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entityId:id,message:scenario[i]})});
- assert.ok(r.ok,`turn ${i+1}: HTTP ${r.status}`);const d=await r.json();assert.ok(d.message);const ms=performance.now()-start;totalTokens+=Number(d.meta?.usage?.total_tokens||0);totalCalls+=Number(d.meta?.usage?.calls||0);rows.push({turn:i+1,ms:Number(ms.toFixed(0)),tokens:Number(d.meta?.usage?.total_tokens||0),reply:d.message.replace(/\s+/g,' ').slice(0,90)});
+ assert.ok(r.ok,`turn ${i+1}: HTTP ${r.status}`);const d=await r.json();assert.ok(d.message);const ms=performance.now()-start;totalTokens+=Number(d.meta?.usage?.total_tokens||0);totalCalls+=Number(d.meta?.usage?.calls||0);const expected=checks.get(i+1),quality_ok=expected?expected.test(d.message):null;if(quality_ok)qualityHits++;rows.push({turn:i+1,ms:Number(ms.toFixed(0)),tokens:Number(d.meta?.usage?.total_tokens||0),quality_ok,reply:d.message.replace(/\s+/g,' ').slice(0,110)});
 }
-const sorted=rows.map(x=>x.ms).sort((a,b)=>a-b),p95=sorted[Math.ceil(sorted.length*.95)-1];
-console.log('Entity live conversation benchmark: COMPLETE');
-console.table(rows);
-console.log(JSON.stringify({turns:rows.length,total_calls:totalCalls,total_tokens:totalTokens,avg_tokens_per_turn:Math.round(totalTokens/rows.length),p95_ms:p95},null,2));
-console.log('Quality checkpoints: turns 8, 10, 11 and 12 test person recall, episodic recall, correction handling and non-invention.');
+for(const [turn,re] of checks)assert.match(rows[turn-1].reply,re,`quality regression turn ${turn}`);
+const final=rows[11].reply;assert.ok(!/marseille|médecin|deux enfants|mariée|divorcée/i.test(final),'non-invention regression');
+const sorted=rows.map(x=>x.ms).sort((a,b)=>a-b),p95=sorted[Math.ceil(sorted.length*.95)-1],score=qualityHits/checks.size;
+assert.equal(score,1,'critical memory quality score must be 100%');
+console.log('Entity live conversation benchmark: PASS');console.table(rows);console.log(JSON.stringify({turns:rows.length,total_calls:totalCalls,total_tokens:totalTokens,avg_tokens_per_turn:Math.round(totalTokens/rows.length),p95_ms:p95,critical_quality_score:score},null,2));
