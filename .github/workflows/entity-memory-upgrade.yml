@@ -1,0 +1,35 @@
+name: Entity memory architecture upgrade
+
+on:
+  push:
+    branches:
+      - entity-engine-upgrade
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade:
+    if: ${{ !contains(github.event.head_commit.message, '[entity-upgrade]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: entity-engine-upgrade
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: node scripts/apply-entity-memory-upgrade.mjs
+      - run: node --check server/entity-server.mjs
+      - run: node --check server/entity-memory-engine.mjs
+      - run: git diff --check
+      - run: npm run build
+      - name: Commit upgraded server
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add server/entity-server.mjs
+          git commit -m "Complete Entity memory architecture [entity-upgrade]" || exit 0
+          git push origin entity-engine-upgrade
