@@ -4,7 +4,6 @@ import EntityMessage from "@/components/entity/EntityMessage";
 
 const INITIAL_MESSAGE = "Bonjour, moi c’est Entity. Et toi ?";
 const initialConversation = () => [{ role: "assistant", content: INITIAL_MESSAGE, timestamp: Date.now() }];
-
 const ENTITY_ID_KEY = "entity-instance-id";
 
 function getEntityId() {
@@ -24,26 +23,23 @@ function resetEntityId() {
 
 async function invokeEntity(messages, entityId) {
   let lastError;
-
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const response = await fetch("/api/entity", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages, entityId })
     });
-
     const data = await response.json();
     if (response.ok) return data;
-
     lastError = new Error(data?.error || "Erreur serveur");
     const retryableValidation = /Réponse Entity invalide: phrase incomplète/i.test(lastError.message);
     if (!retryableValidation || attempt === 2) throw lastError;
   }
-
   throw lastError || new Error("Erreur serveur");
 }
 
 export default function Entity() {
+  const [entityId, setEntityId] = useState(() => getEntityId());
   const [messages, setMessages] = useState(initialConversation);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -75,6 +71,7 @@ export default function Entity() {
   }
 
   function handleReset() {
+    setEntityId(resetEntityId());
     setMessages(initialConversation());
     setInput("");
     setTimeout(() => inputRef.current?.focus(), 50);
@@ -88,10 +85,9 @@ export default function Entity() {
             <div className="flex h-7 w-7 items-center justify-center rounded-full border border-white/15"><span className="h-1.5 w-1.5 rounded-full bg-stone-200" /></div>
             <div><div className="text-[14px] font-medium tracking-wide text-stone-100">L'Entité</div><div className="text-[10px] tracking-[0.16em] text-stone-600 uppercase">conversation</div></div>
           </div>
-          <button type="button" onClick={handleReset} className="inline-flex h-9 items-center gap-2 rounded-full px-3 text-xs text-stone-500 transition-colors hover:bg-white/[0.05] hover:text-stone-300" title="Nouvelle conversation"><RotateCcw className="h-3.5 w-3.5" /><span className="hidden sm:inline">Nouveau</span></button>
+          <button type="button" onClick={handleReset} className="inline-flex h-9 items-center gap-2 rounded-full px-3 text-xs text-stone-500 transition-colors hover:bg-white/[0.05] hover:text-stone-300" title="Nouvelle Entity de test"><RotateCcw className="h-3.5 w-3.5" /><span className="hidden sm:inline">Nouveau</span></button>
         </div>
       </header>
-
       <main ref={scrollRef} className="flex-1 overflow-y-auto">
         <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-5 sm:px-8">
           <div className="space-y-7 pb-36 pt-10">
@@ -100,7 +96,6 @@ export default function Entity() {
           </div>
         </div>
       </main>
-
       <div className="sticky bottom-0 z-20 bg-gradient-to-t from-[#11110f] via-[#11110f] to-transparent px-4 pb-5 pt-8 sm:px-6 sm:pb-7">
         <form onSubmit={handleSend} className="mx-auto max-w-3xl">
           <div className="rounded-[26px] border border-white/[0.1] bg-[#1a1a17] p-2 shadow-2xl shadow-black/20 transition-colors focus-within:border-white/[0.18]">
