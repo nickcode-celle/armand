@@ -7,6 +7,8 @@
     "dev": "node scripts/dev-entity.mjs",
     "dev:armand": "vite",
     "build": "vite build",
+    "test:entity": "node tests/entity-memory-smoke.mjs",
+    "check:entity": "node --check server/entity-server-v2.mjs && node tests/entity-memory-smoke.mjs && vite build",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./jsconfig.json",
