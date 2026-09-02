@@ -1,0 +1,2 @@
+import assert from 'node:assert/strict';import {httpError} from '../server/entity-errors.mjs';
+assert.equal(httpError(Error('Message vide')).status,400);assert.equal(httpError(Error('Entity occupée, réessaie dans un instant')).status,409);assert.equal(httpError(Error('OpenAI 503')).status,502);assert.equal(httpError(Error('Entity recall 500')).status,502);assert.equal(httpError(Error('boom')).status,500);console.log('Entity typed HTTP error tests: OK');
