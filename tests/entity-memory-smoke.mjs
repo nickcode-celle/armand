@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const server=fs.readFileSync(new URL('../server/entity-server-v2.mjs',import.meta.url),'utf8');
+const storage=fs.readFileSync(new URL('../server/entity-storage.mjs',import.meta.url),'utf8');
 const ui=fs.readFileSync(new URL('../src/pages/Entity.jsx',import.meta.url),'utf8');
-for(const token of ["memory_engine:'v5'",'schema_version:5','working_memory','recent_messages','orchestrate(','expand(','CONSOLIDATION SÉLECTIVE','semanticValid(','_historique_contradictions','ageDays(','acquireFileLock(','engagements','entity_core','revision'])assert.ok(server.includes(token),`missing ${token}`);
+for(const token of ["memory_engine:'v6'",'schema_version:6','working_memory','recent_messages','orchestrate(','expand(','CONSOLIDATION SÉLECTIVE','semanticValid(','_historique_contradictions','ageDays(','acquireFileLock(','engagements','entity_core','revision','createEntityStorage','storage.put','await memory(id)'])assert.ok(server.includes(token),`missing ${token}`);
+for(const token of ['ENTITY_STORAGE_URL','local-sharded','remoteCall','async get(','async put(','async del(','async mutate(','shard(id)'])assert.ok(storage.includes(token),`storage missing ${token}`);
 assert.ok(server.includes('b.message'),'server must accept a single latest message');
 assert.ok(ui.includes('JSON.stringify({message,entityId})'),'frontend must send only the latest message');
 assert.ok(server.includes("const CORE=oldPrompt('CORE')"),'Entity CORE prompt must be loaded');
@@ -10,4 +12,4 @@ assert.ok(server.includes("oldPrompt('DIALOGUE_PROMPT').replace('${CORE}',CORE)"
 assert.ok(!server.includes("const DP=oldPrompt('DIALOGUE_PROMPT'),MP="),'raw dialogue prompt must not bypass CORE interpolation');
 assert.ok(!server.includes('@google/genai'),'Gemini dependency leaked into Entity server');
 assert.ok(!server.includes('VITE_BASE44_APP_BASE_URL'),'Base44 runtime leaked into Entity server');
-console.log('Entity memory smoke tests: OK');
+console.log('Entity memory/storage smoke tests: OK');
