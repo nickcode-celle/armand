@@ -5,6 +5,9 @@ const ui=fs.readFileSync(new URL('../src/pages/Entity.jsx',import.meta.url),'utf
 for(const token of ["memory_engine:'v5'",'schema_version:5','working_memory','recent_messages','orchestrate(','expand(','CONSOLIDATION SÉLECTIVE','semanticValid(','_historique_contradictions','ageDays(','acquireFileLock(','engagements','entity_core','revision'])assert.ok(server.includes(token),`missing ${token}`);
 assert.ok(server.includes('b.message'),'server must accept a single latest message');
 assert.ok(ui.includes('JSON.stringify({message,entityId})'),'frontend must send only the latest message');
+assert.ok(server.includes("const CORE=oldPrompt('CORE')"),'Entity CORE prompt must be loaded');
+assert.ok(server.includes("oldPrompt('DIALOGUE_PROMPT').replace('${CORE}',CORE)"),'Entity CORE must be interpolated into dialogue prompt');
+assert.ok(!server.includes("const DP=oldPrompt('DIALOGUE_PROMPT'),MP="),'raw dialogue prompt must not bypass CORE interpolation');
 assert.ok(!server.includes('@google/genai'),'Gemini dependency leaked into Entity server');
 assert.ok(!server.includes('VITE_BASE44_APP_BASE_URL'),'Base44 runtime leaked into Entity server');
 console.log('Entity memory smoke tests: OK');
