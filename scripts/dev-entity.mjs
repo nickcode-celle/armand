@@ -1,18 +1,13 @@
 import { spawn } from 'node:child_process';
 
-const env = {
-  ...process.env,
-  VITE_BASE44_APP_BASE_URL: process.env.VITE_BASE44_APP_BASE_URL || 'http://localhost:4401'
-};
-
 const backend = spawn(process.execPath, ['server/entity-server-v2.mjs'], {
   stdio: 'inherit',
-  env
+  env: process.env
 });
 
 const frontend = spawn('vite', [], {
   stdio: 'inherit',
-  env,
+  env: process.env,
   shell: process.platform === 'win32'
 });
 
