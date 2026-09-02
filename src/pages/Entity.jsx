@@ -5,14 +5,31 @@ import EntityMessage from "@/components/entity/EntityMessage";
 const INITIAL_MESSAGE = "Bonjour, moi c’est Entity. Et toi ?";
 const initialConversation = () => [{ role: "assistant", content: INITIAL_MESSAGE, timestamp: Date.now() }];
 
-async function invokeEntity(messages) {
+const ENTITY_ID_KEY = "entity-instance-id";
+
+function getEntityId() {
+  let id = localStorage.getItem(ENTITY_ID_KEY);
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem(ENTITY_ID_KEY, id);
+  }
+  return id;
+}
+
+function resetEntityId() {
+  const id = crypto.randomUUID();
+  localStorage.setItem(ENTITY_ID_KEY, id);
+  return id;
+}
+
+async function invokeEntity(messages, entityId) {
   let lastError;
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const response = await fetch("/api/entity", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages })
+      body: JSON.stringify({ messages, entityId })
     });
 
     const data = await response.json();
@@ -46,7 +63,7 @@ export default function Entity() {
     setInput("");
     setLoading(true);
     try {
-      const data = await invokeEntity(nextMessages);
+      const data = await invokeEntity(nextMessages, entityId);
       setMessages((prev) => [...prev, { role: "assistant", content: data.message, timestamp: Date.now() }]);
     } catch (error) {
       setMessages((prev) => [...prev, { role: "assistant", content: "Je n'ai pas pu répondre cette fois. Réessaie dans un instant.", timestamp: Date.now() }]);

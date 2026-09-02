@@ -1,7 +1,6 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-import crypto from 'node:crypto';
 
 function loadEnvFile(filename) {
   const filePath = path.resolve(process.cwd(), filename);
@@ -25,65 +24,6 @@ loadEnvFile('.env.local');
 const PORT = Number(process.env.ENTITY_API_PORT || 4401);
 
 const ENTITY_MEMORY_DIR = path.resolve(process.cwd(), '.entity-memories');
-
-const entityLocks = new Map();
-
-async function withEntityLock(entityId, fn) {
-  const key = String(entityId || '');
-
-  const previous = entityLocks.get(key) || Promise.resolve();
-
-  let release;
-  const current = new Promise((resolve) => {
-    release = resolve;
-  });
-
-  entityLocks.set(key, current);
-
-  await previous;
-
-  try {
-    return await fn();
-  } finally {
-    release();
-
-    if (entityLocks.get(key) === current) {
-      entityLocks.delete(key);
-    }
-  }
-}
-
-function atomicWriteJson(file, data) {
-  const tempFile = `${file}.${process.pid}.${Date.now()}.tmp`;
-  fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), 'utf8');
-  fs.renameSync(tempFile, file);
-}
-const ENTITY_EMBEDDING_DIR = path.resolve(process.cwd(), '.entity-embeddings');
-
-function entityEmbeddingFile(entityId) {
-  const safeId = String(entityId || '').replace(/[^a-zA-Z0-9_-]/g, '');
-  if (!safeId) return null;
-  return path.join(ENTITY_EMBEDDING_DIR, `${safeId}.json`);
-}
-
-function loadEntityEmbeddings(entityId) {
-  try {
-    const file = entityEmbeddingFile(entityId);
-    if (!file || !fs.existsSync(file)) return {};
-    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-    return data && typeof data === 'object' ? data : {};
-  } catch {
-    console.warn('[entity] cache embeddings illisible');
-    return {};
-  }
-}
-
-function saveEntityEmbeddings(entityId, embeddings) {
-  const file = entityEmbeddingFile(entityId);
-  if (!file) return;
-  fs.mkdirSync(ENTITY_EMBEDDING_DIR, { recursive: true });
-  atomicWriteJson(file, embeddings);
-}
 
 const ENTITY_MEMORY_TYPES = [
   'travail',
@@ -1403,260 +1343,18 @@ function memoryGraphBoost(candidate, selected) {
   return Math.min(links, 3) * 0.04;
 }
 
-function memoryContentHash(text) {
-  return crypto
-    .createHash('sha256')
-    .update(String(text || ''), 'utf8')
-    .digest('hex');
-}
+async function selectRelevantMemory(apiKey, memory, conversation) {
+  if (!memory || typeof memory !== 'object') return null;
 
-async function getCachedMemoryEmbedding(apiKey, entityId, candidate, cache) {
-  const hash = memoryContentHash(candidate.text);
-  const key = candidate.path;
-
-  const cached = cache[key];
-
-  if (cached?.hash === hash && Array.isArray(cached.embedding)) {
-    return cached.embedding;
-  }
-
-  const embedding = await getEmbedding(apiKey, candidate.text);
-
-  cache[key] = {
-    hash,
-    embedding,
-  };
-
-  return embedding;
-}
-
-function embeddingBucket(embedding, bits = 12) {
-  if (!Array.isArray(embedding) || !embedding.length) return null;
-
-  let key = "";
-  for (let i = 0; i < bits; i += 1) {
-    const index = Math.floor((i * embedding.length) / bits);
-    key += Number(embedding[index] || 0) >= 0 ? "1" : "0";
-  }
-  return key;
-}
-
-function neighboringBuckets(bucket, radius = 2) {
-  if (!bucket) return [];
-
-  const results = new Set([bucket]);
-
-  function addFlips(source, count, start = 0) {
-    if (count === 0) {
-      results.add(source);
-      return;
-    }
-
-    for (let i = start; i <= source.length - count; i += 1) {
-      const chars = source.split("");
-      chars[i] = chars[i] === "1" ? "0" : "1";
-
-      if (count === 1) {
-        results.add(chars.join(""));
-      } else {
-        addFlips(chars.join(""), count - 1, i + 1);
-      }
-    }
-  }
-
-  addFlips(bucket, 1);
-
-  if (radius >= 2) addFlips(bucket, 2);
-
-  return [...results];
-}
-
-function loadMemoryRecallIndex(entityId) {
-  try {
-    const file = path.join(
-      ENTITY_EMBEDDING_DIR,
-      `${safeEntityId(entityId)}.index.json`
-    );
-
-    if (!fs.existsSync(file)) return null;
-
-    const data = JSON.parse(fs.readFileSync(file, "utf8"));
-
-    if (
-      !data ||
-      typeof data !== "object" ||
-      !data.buckets ||
-      !data.entries
-    ) {
-      return null;
-    }
-
-    return data;
-  } catch {
-    console.warn("[entity] index mémoire illisible");
-    return null;
-  }
-}
-
-function saveMemoryRecallIndex(entityId, index) {
-  const safeId = safeEntityId(entityId);
-  if (!safeId) return;
-
-  fs.mkdirSync(ENTITY_EMBEDDING_DIR, { recursive: true });
-
-  const file = path.join(
-    ENTITY_EMBEDDING_DIR,
-    `${safeId}.index.json`
-  );
-
-  fs.writeFileSync(file, JSON.stringify(index), "utf8");
-}
-
-async function buildMemoryRecallIndex(
-  apiKey,
-  entityId,
-  memory,
-  candidates,
-  embeddingCache
-) {
-  const entries = {};
-  const buckets = {};
-
-  for (const candidate of candidates) {
-    const embedding = await getCachedMemoryEmbedding(
-      apiKey,
-      entityId,
-      candidate,
-      embeddingCache
-    );
-
-    const bucket = embeddingBucket(embedding);
-
-    if (!bucket) continue;
-
-    entries[candidate.path] = {
-      bucket,
-      type: candidate.type,
-    };
-
-    if (!buckets[bucket]) buckets[bucket] = [];
-
-    buckets[bucket].push(candidate.path);
-  }
-
-  saveEntityEmbeddings(entityId, embeddingCache);
-
-  const index = {
-    version: 1,
-    bits: 12,
-    buckets,
-    entries,
-  };
-
-  saveMemoryRecallIndex(entityId, index);
-
-  return index;
-}
-
-function getMemoryItemByPath(memory, memoryPath) {
-  const parts = String(memoryPath || "").split(".");
-  let value = memory;
-
-  for (const part of parts) {
-    if (value == null) return null;
-
-    if (/^\d+$/.test(part)) {
-      value = Array.isArray(value)
-        ? value[Number(part)]
-        : null;
-    } else {
-      value = value[part];
-    }
-  }
-
-  return value && typeof value === "object" ? value : null;
-}
-
-function candidateFromIndexedPath(memory, indexEntry, memoryPath) {
-  const item = getMemoryItemByPath(memory, memoryPath);
-  if (!item) return null;
-
-  return {
-    type: indexEntry?.type || "inconnu",
-    path: memoryPath,
-    item,
-    text: JSON.stringify(item),
-  };
-}
-
-async function selectRelevantMemory(apiKey, entityId, memory, conversation) {
-  if (!memory || typeof memory !== "object") return null;
+  const candidates = collectMemoryCandidates(memory);
+  if (!candidates.length) return null;
 
   const queryEmbedding = await getEmbedding(apiKey, conversation);
 
-  const embeddingCache = loadEntityEmbeddings(entityId);
-  let index = loadMemoryRecallIndex(entityId);
-
-  /*
-   * L'index est construit uniquement lorsqu'il n'existe pas encore.
-   * Les tours suivants ne parcourent plus toute la mémoire.
-   */
-  if (!index) {
-    const candidates = collectMemoryCandidates(memory);
-
-    if (!candidates.length) return null;
-
-    index = await buildMemoryRecallIndex(
-      apiKey,
-      entityId,
-      memory,
-      candidates,
-      embeddingCache
-    );
-  }
-
-  const queryBucket = embeddingBucket(queryEmbedding, index.bits || 12);
-  const bucketKeys = neighboringBuckets(queryBucket, 2);
-
-  const candidatePaths = new Set();
-
-  for (const bucket of bucketKeys) {
-    for (const memoryPath of index.buckets[bucket] || []) {
-      candidatePaths.add(memoryPath);
-    }
-  }
-
-  /*
-   * Sécurité : si la zone locale ne contient rien,
-   * on élargit progressivement le rappel.
-   */
-  if (!candidatePaths.size) {
-    for (const bucket of Object.keys(index.buckets)) {
-      for (const memoryPath of index.buckets[bucket]) {
-        candidatePaths.add(memoryPath);
-
-        if (candidatePaths.size >= 80) break;
-      }
-
-      if (candidatePaths.size >= 80) break;
-    }
-  }
-
   const scored = [];
 
-  for (const memoryPath of candidatePaths) {
-    const entry = index.entries[memoryPath];
-    const candidate = candidateFromIndexedPath(
-      memory,
-      entry,
-      memoryPath
-    );
-
-    if (!candidate) continue;
-
-    const embedding = embeddingCache[memoryPath]?.embedding;
-
-    if (!Array.isArray(embedding)) continue;
+  for (const candidate of candidates) {
+    const embedding = await getEmbedding(apiKey, candidate.text);
 
     const semantic = cosineSimilarity(queryEmbedding, embedding);
     const salience = memorySalience(candidate.item);
@@ -1676,21 +1374,51 @@ async function selectRelevantMemory(apiKey, entityId, memory, conversation) {
   for (const candidate of scored) {
     if (selected.length >= 12) break;
 
-    const alreadySelected = selected.some(
-      (item) => item.path === candidate.path
+    const graphBoost = memoryGraphBoost(candidate, selected);
+    candidate.score += graphBoost;
+
+    if (candidate.score < 0.30 && selected.length >= 4) continue;
+
+    const duplicate = selected.some((item) =>
+      item.type === candidate.type &&
+      item.text === candidate.text
     );
 
-    if (alreadySelected) continue;
+    if (duplicate) continue;
 
     selected.push(candidate);
   }
 
-  if (!selected.length) return null;
+  const result = {};
 
-  return selected;
+  for (const candidate of selected) {
+    const parts = candidate.path.split('.');
+    let target = result;
+
+    for (let i = 0; i < parts.length - 1; i += 1) {
+      const key = parts[i];
+      if (!target[key]) target[key] = {};
+      target = target[key];
+    }
+
+    const last = parts.at(-1);
+
+    if (/^\d+$/.test(last)) {
+      if (!Array.isArray(target)) continue;
+      target[Number(last)] = candidate.item;
+    } else {
+      target[last] = candidate.item;
+    }
+  }
+
+  return selected.map((candidate) => ({
+    type: candidate.type,
+    score: Number(candidate.score.toFixed(4)),
+    item: candidate.item,
+  }));
 }
 
-async function generateEntityMessage(apiKey, entityId, conversation, memory, departure) {
+async function generateEntityMessage(apiKey, conversation, memory, departure) {
   let lastProblem = '';
 
   for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -1698,7 +1426,7 @@ async function generateEntityMessage(apiKey, entityId, conversation, memory, dep
       ? ''
       : `\nIMPORTANT : la tentative précédente était invalide (${lastProblem}). Réponds à nouveau, directement, sans répéter cette erreur.`;
 
-    const relevantMemory = await selectRelevantMemory(apiKey, entityId, memory, conversation);
+    const relevantMemory = await selectRelevantMemory(apiKey, memory, conversation);
 
     const prompt = `${DIALOGUE_PROMPT}${retry}
 
@@ -1721,8 +1449,8 @@ ${conversation}`;
   throw new Error(`Réponse Entity invalide: ${lastProblem || 'format inconnu'}`);
 }
 
-async function handleEntityUnlocked(req, res, body) {
-  const { messages = [], entityId } = body;
+async function handleEntity(req, res) {
+  const { messages = [], entityId } = await readJson(req);
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) return sendJson(res, 500, { error: 'OPENAI_API_KEY manquante dans .env.local' });
@@ -1742,7 +1470,6 @@ async function handleEntityUnlocked(req, res, body) {
 
   const message = await generateEntityMessage(
     apiKey,
-    entityId,
     conversation,
     previousMemory,
     departure
@@ -1781,16 +1508,6 @@ async function handleEntityUnlocked(req, res, body) {
   }
 
   return sendJson(res, 200, { message, memory });
-}
-
-async function handleEntity(req, res) {
-  const body = await readJson(req);
-  const { entityId } = body;
-
-  return withEntityLock(
-    entityId,
-    () => handleEntityUnlocked(req, res, body)
-  );
 }
 
 const server = http.createServer(async (req, res) => {

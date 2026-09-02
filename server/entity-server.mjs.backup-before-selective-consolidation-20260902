@@ -25,39 +25,6 @@ loadEnvFile('.env.local');
 const PORT = Number(process.env.ENTITY_API_PORT || 4401);
 
 const ENTITY_MEMORY_DIR = path.resolve(process.cwd(), '.entity-memories');
-
-const entityLocks = new Map();
-
-async function withEntityLock(entityId, fn) {
-  const key = String(entityId || '');
-
-  const previous = entityLocks.get(key) || Promise.resolve();
-
-  let release;
-  const current = new Promise((resolve) => {
-    release = resolve;
-  });
-
-  entityLocks.set(key, current);
-
-  await previous;
-
-  try {
-    return await fn();
-  } finally {
-    release();
-
-    if (entityLocks.get(key) === current) {
-      entityLocks.delete(key);
-    }
-  }
-}
-
-function atomicWriteJson(file, data) {
-  const tempFile = `${file}.${process.pid}.${Date.now()}.tmp`;
-  fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), 'utf8');
-  fs.renameSync(tempFile, file);
-}
 const ENTITY_EMBEDDING_DIR = path.resolve(process.cwd(), '.entity-embeddings');
 
 function entityEmbeddingFile(entityId) {
@@ -82,7 +49,7 @@ function saveEntityEmbeddings(entityId, embeddings) {
   const file = entityEmbeddingFile(entityId);
   if (!file) return;
   fs.mkdirSync(ENTITY_EMBEDDING_DIR, { recursive: true });
-  atomicWriteJson(file, embeddings);
+  fs.writeFileSync(file, JSON.stringify(embeddings), 'utf8');
 }
 
 const ENTITY_MEMORY_TYPES = [
@@ -1721,8 +1688,8 @@ ${conversation}`;
   throw new Error(`Réponse Entity invalide: ${lastProblem || 'format inconnu'}`);
 }
 
-async function handleEntityUnlocked(req, res, body) {
-  const { messages = [], entityId } = body;
+async function handleEntity(req, res) {
+  const { messages = [], entityId } = await readJson(req);
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) return sendJson(res, 500, { error: 'OPENAI_API_KEY manquante dans .env.local' });
@@ -1781,16 +1748,6 @@ async function handleEntityUnlocked(req, res, body) {
   }
 
   return sendJson(res, 200, { message, memory });
-}
-
-async function handleEntity(req, res) {
-  const body = await readJson(req);
-  const { entityId } = body;
-
-  return withEntityLock(
-    entityId,
-    () => handleEntityUnlocked(req, res, body)
-  );
 }
 
 const server = http.createServer(async (req, res) => {
