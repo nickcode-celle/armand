@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 
-const backend = spawn(process.execPath, ['server/entity-server-v2.mjs'], {
+const backend = spawn(process.execPath, ['--watch', 'server/entity-server-v2.mjs'], {
   stdio: 'inherit',
   env: process.env
 });
