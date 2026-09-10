@@ -48,18 +48,26 @@ const first=out.rewardState.pending_rewards[0];
 const ack=acknowledgeReward(out.rewardState,first.id,{at:'2026-09-10T10:21:00Z'});
 assert.equal(ack.reward_history.at(-1).status,'shown');
 
-// Après le palier rouge terminé, un NOUVEL Amour au moins modéré produit le logo or.
-let ultimateState={...out.rewardState,current_tier:null,completed_tiers:['1','2','3','4'],pending_rewards:[],final_red_complete:true,ultimate_pending:true,ultimate_complete:false};
-let ultimate=processRewardProgression({rewardState:ultimateState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Amour',operation:'MAINTENIR',intensite_apres:'fort',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T11:00:00Z'});
+// Rouge : le nouvel Amour ultime ne peut commencer qu'après affichage confirmé du logo rouge.
+const redLogo={id:'4:logo:EMÆÄ:test',tier:'4',color:'#E5231F',sentiment:'Amour',target:{type:'logo',value:'EMÆÄ',color:'#E5231F'},created_at:'2026-09-10T10:50:00Z',status:'pending',completes_tier:true};
+let ultimateState={...out.rewardState,current_tier:null,completed_tiers:['1','2','3','4'],pending_rewards:[redLogo],final_red_complete:true,ultimate_pending:false,ultimate_complete:false};
+let ultimate=processRewardProgression({rewardState:ultimateState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Amour',operation:'RENFORCER',intensite_apres:'fort',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T11:00:00Z'});
 assert.equal(ultimate.rewards.length,0);
-ultimate=processRewardProgression({rewardState:ultimate.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Amour',operation:'RENFORCER',intensite_apres:'modéré',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T11:01:00Z'});
+assert.equal(ultimate.rewardState.ultimate_pending,false);
+ultimateState=acknowledgeReward(ultimate.rewardState,redLogo.id,{at:'2026-09-10T11:00:30Z'});
+assert.equal(ultimateState.ultimate_pending,true);
+
+// Un maintien ne suffit jamais : il faut un nouvel événement Amour qualifiant.
+ultimate=processRewardProgression({rewardState:ultimateState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Amour',operation:'MAINTENIR',intensite_apres:'fort',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T11:01:00Z'});
+assert.equal(ultimate.rewards.length,0);
+ultimate=processRewardProgression({rewardState:ultimate.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Amour',operation:'RENFORCER',intensite_apres:'modéré',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T11:02:00Z'});
 assert.equal(ultimate.rewards.length,1);
 assert.equal(ultimate.rewards[0].target.type,'logo');
 assert.equal(ultimate.rewards[0].target.color,ULTIMATE_GOLD);
 assert.equal(ultimate.rewards[0].target.gold,true);
 assert.equal(ultimate.rewardState.ultimate_pending,false);
 assert.equal(ultimate.rewardState.ultimate_complete,false);
-const goldAck=acknowledgeReward(ultimate.rewardState,ultimate.rewards[0].id,{at:'2026-09-10T11:02:00Z'});
+const goldAck=acknowledgeReward(ultimate.rewardState,ultimate.rewards[0].id,{at:'2026-09-10T11:03:00Z'});
 assert.equal(goldAck.ultimate_complete,true);
 
 console.log('Entity reward progression runtime tests: OK');
