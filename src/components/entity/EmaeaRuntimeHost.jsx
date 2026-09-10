@@ -18,7 +18,10 @@ function dispatch(entityId,type,queue){
  * sa place et sa taille. L'état est toujours chargé avant les files d'animations.
  */
 export default function EmaeaRuntimeHost({entityId,className='',onReady,onError}){
-  const hostRef=useRef(null),controllerRef=useRef(null);
+  const hostRef=useRef(null),controllerRef=useRef(null),onReadyRef=useRef(onReady),onErrorRef=useRef(onError);
+  onReadyRef.current=onReady;
+  onErrorRef.current=onError;
+
   useEffect(()=>{
     if(!entityId||!hostRef.current)return;
     let cancelled=false;
@@ -34,7 +37,7 @@ export default function EmaeaRuntimeHost({entityId,className='',onReady,onError}
         requestDailyBirth:id=>post('/api/entity/daily-births',{entityId:id})
       });
       controllerRef.current=controller;
-      onReady?.(controller);
+      onReadyRef.current?.(controller);
 
       const [births,rewards]=await Promise.all([
         post('/api/entity/births',{entityId}),
@@ -45,7 +48,7 @@ export default function EmaeaRuntimeHost({entityId,className='',onReady,onError}
       dispatch(entityId,'emaea:reward-queue',rewards?.render_queue);
     })().catch(error=>{
       if(cancelled)return;
-      onError?.(error);
+      onErrorRef.current?.(error);
       window.dispatchEvent(new CustomEvent('emaea:graphic-error',{detail:{entityId,error}}));
     });
     return()=>{
@@ -53,7 +56,7 @@ export default function EmaeaRuntimeHost({entityId,className='',onReady,onError}
       controllerRef.current?.dispose?.();
       controllerRef.current=null;
     };
-  },[entityId,onReady,onError]);
+  },[entityId]);
 
   return <div ref={hostRef} className={className}/>;
 }
