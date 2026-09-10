@@ -3,6 +3,8 @@ export const BIRTH_POSITION=Object.freeze([-142,0,0]);
 export const BIRTH_ENVELOPES=Object.freeze({core:'#FFF4B0',corona:'#FFC13B',halo:'#FF7A18'});
 export const BIRTH_TIMING=Object.freeze({prelude_ms:10000,rise_ms:1800,burst_end_ms:3850,dissipation_ms:2400,gold_hold_ms:3000,integration_ms:2600});
 
+const recordId=x=>String(x?.birth_id??x?.marble_id??x?.id??'');
+
 /** Commande pure pour E. Une naissance = une vraie bille et une séquence complète. */
 export function buildBirthRenderCommand(birth){
   if(!birth||typeof birth!=='object')throw new Error('Naissance graphique manquante');
@@ -36,14 +38,13 @@ export function acknowledgeBirth(evolution={},birthId,{at=new Date().toISOString
   const state=structuredClone(evolution||{}),id=String(birthId||'').trim();
   if(!id)return state;
   const pending=Array.isArray(state.pending_births)?state.pending_births:[];
-  const found=pending.find(x=>String(x?.birth_id??x?.marble_id??x?.id||'')===id);
+  const found=pending.find(x=>recordId(x)===id);
   if(!found)return state;
-  state.pending_births=pending.filter(x=>String(x?.birth_id??x?.marble_id??x?.id||'')!==id);
+  state.pending_births=pending.filter(x=>recordId(x)!==id);
   const history=Array.isArray(state.birth_history)?state.birth_history:[];
   let matched=false;
   state.birth_history=history.map(item=>{
-    const same=String(item?.birth_id??item?.marble_id??item?.id||'')===id;
-    if(!same)return item;
+    if(recordId(item)!==id)return item;
     matched=true;
     return{...item,status:'shown',shown_at:at};
   });
