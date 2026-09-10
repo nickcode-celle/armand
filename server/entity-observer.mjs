@@ -24,13 +24,15 @@ HISTOIRE VÉCUE
 - Si présent : evenement, niveau, nature, justification.
 
 SENTIMENTS — CONTRAT A → D
+- Les 9 seuls sentiments autorisés sont : Joie, Tristesse, Colère, Peur, Surprise, Fierté, Tendresse, Confiance, Amour.
 - Aucun changement émotionnel est parfaitement valide : retourne [] dans ce cas.
 - Maximum 3 changements/sentiments actifs.
 - Pour chaque changement : sentiment, operation, intensite_avant, intensite_apres, cause, justification, ancrage_relationnel.
 - operation est l’une de : NAITRE, RENFORCER, MAINTENIR, AFFAIBLIR, DISPARAITRE.
 - intensite_avant / intensite_apres utilisent uniquement : faible, modéré, fort. Pour DISPARAITRE, intensite_apres=null.
 - L’intensité mesure l’effet sur CETTE EMÆÄ, pas la gravité objective de l’événement.
-- Pour Amour, renseigne l’ancrage relationnel quand il existe réellement. Sinon null.
+- Amour est particulier : ne le proposes que si l’état d’EMÆÄ indique qu’il est accessible au niveau émotionnel en cours, c’est-à-dire après acquisition des 8 autres sentiments de ce niveau.
+- Pour Amour, renseigne obligatoirement un ancrage_relationnel réel. Sinon ne produis pas Amour.
 - Ne crée jamais un sentiment par simple classement de mots : tiens compte de l’identité, de la relation, de l’histoire et de l’état émotionnel précédent.
 - A ne choisit jamais les paramètres d’animation.
 
