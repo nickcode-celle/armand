@@ -25,3 +25,5 @@ jobs:
         run: npm ci
       - name: Check EMÆÄ engine
         run: npm run check:entity
+      - name: Build EMÆÄ production image
+        run: docker build -f Dockerfile.entity -t emaea-engine-ci .
