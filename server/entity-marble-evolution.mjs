@@ -4,7 +4,7 @@ const PER_MARBLE_DOMAINS=new Set([
   'Personnalité','Relation','Goûts','Opinions/Valeurs','Connaissances','Monde propre'
 ]);
 
-const clamp=x=>Math.max(0,Math.min(100,Number(x)||0));
+const clamp=x=>Math.max(0,Math.min(100,Number(x)));
 const hash01=s=>{
   const h=crypto.createHash('sha256').update(String(s)).digest();
   return h.readUInt32BE(0)/0xffffffff;
@@ -19,7 +19,13 @@ function getSlot(marble,domain){
 }
 
 function slotSubdomain(slot){return String(slot.subdomain??slot.sous_domaine??slot.sousDomaine??'').trim()}
-function slotValue(slot){return clamp(slot.value??slot.valeur??0)}
+function slotValue(slot){
+  const raw=slot.value??slot.valeur;
+  if(raw==null||raw==='')throw new Error('Valeur individuelle non initialisée');
+  const n=Number(raw);
+  if(!Number.isFinite(n))throw new Error('Valeur individuelle invalide');
+  return clamp(n);
+}
 function setSlotValue(slot,value){
   if(Object.prototype.hasOwnProperty.call(slot,'valeur')&&!Object.prototype.hasOwnProperty.call(slot,'value'))slot.valeur=value;
   else slot.value=value;
@@ -48,7 +54,6 @@ function distributeExact(values,targetTotal,direction,seed,ids){
   }
   if(Math.abs(remaining)>1e-7)throw new Error('Impossible d’atteindre la moyenne individuelle cible');
 
-  // Correction numérique finale sur une seule bille ayant encore de la marge.
   const drift=targetTotal-next.reduce((a,b)=>a+b,0);
   if(Math.abs(drift)>1e-12){
     const i=next.findIndex(v=>drift>0?v<100:v>0);
