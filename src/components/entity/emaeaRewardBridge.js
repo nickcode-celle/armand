@@ -1,14 +1,9 @@
 import {playEmaeaRewardQueue} from './emaeaRewardAnimator.js';
+import {enqueueEmaeaGraphicTask} from './emaeaGraphicScheduler.js';
 
-/**
- * Branche le moteur graphique normal d'EMÆÄ sur la file de récompenses.
- * Le runtime fourni doit exposer les vraies marbles, leurs centers et updateCells().
- */
+/** Branche les récompenses au moteur normal sans chevauchement avec les naissances. */
 export function attachEmaeaRewardBridge(runtime,{entityId,acknowledge}={}){
-  let chain=Promise.resolve();
-  const queued=new Set();
-  const completed=new Set();
-
+  const queued=new Set(),completed=new Set();
   const onQueue=event=>{
     const detail=event?.detail||{};
     if(entityId&&detail.entityId!==entityId)return;
@@ -18,15 +13,14 @@ export function attachEmaeaRewardBridge(runtime,{entityId,acknowledge}={}){
       queued.add(id);return true;
     });
     if(!fresh.length)return;
-    chain=chain.then(()=>playEmaeaRewardQueue(runtime,fresh,{acknowledge:async rewardId=>{
-      await acknowledge?.(rewardId);
-      queued.delete(rewardId);completed.add(rewardId);
+    enqueueEmaeaGraphicTask(runtime,()=>playEmaeaRewardQueue(runtime,fresh,{acknowledge:async rewardId=>{
+      if(typeof acknowledge!=='function')throw new Error('Accusé de rendu récompense EMÆÄ manquant');
+      await acknowledge(rewardId);queued.delete(rewardId);completed.add(rewardId);
     }})).catch(error=>{
       fresh.forEach(x=>queued.delete(String(x?.reward_id||'')));
       window.dispatchEvent(new CustomEvent('emaea:reward-error',{detail:{entityId,error}}));
     });
   };
-
   window.addEventListener('emaea:reward-queue',onQueue);
   return()=>window.removeEventListener('emaea:reward-queue',onQueue);
 }
