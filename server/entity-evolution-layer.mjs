@@ -64,12 +64,13 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
     catch(error){return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:`émotion: ${String(error?.message||error)}`,observer}}}
 
     const historyEvents=[...(baseEvolution.history_events||[])];
-    let historyLevel=baseEvolution.history_level??null,historyChange=null;
+    let historyLevel=baseEvolution.history_level??null,historyChange=null,historyDeferred=false;
     if(observer.histoire){
       const out=applyHistoryEvent(historyLevel,observer.histoire);
       historyLevel=out.level;
       historyChange=out.change;
-      historyEvents.push({...observer.histoire,before:out.change?.before??historyLevel,after:out.change?.after??historyLevel,at});
+      historyDeferred=out.deferred===true;
+      historyEvents.push({...observer.histoire,before:out.change?.before??historyLevel,after:out.change?.after??historyLevel,history_deferred:historyDeferred,at});
     }
 
     const newBirthRecords=grown.births.map(b=>birthRecord(b,at));
@@ -90,6 +91,6 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
     const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:at};delete nextSnapshot.memory;
     await runtime.commit(id,expected,{...nextSnapshot,memory});
 
-    return{...result,evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,births:grown.births,history_change:historyChange,state:evolution},emotion,rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status,render_queue:renderQueue},births:{new_births:newBirthRecords,render_queue:birthRenderQueue},meta:{...(result.meta||{}),evolution_ok:true,evolution_changes:applied.changes.length,emotion_changes:emotion.last_changes.length,reward_events:progression.rewards.length,reward_render_queue:renderQueue.length,new_marble_births:grown.births.length,birth_render_queue:birthRenderQueue.length,history_changed:!!historyChange,marble_evolution_skipped:marbleApplied.skipped,marble_evolution_reason:marbleApplied.reason||null}};
+    return{...result,evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,births:grown.births,history_change:historyChange,state:evolution},emotion,rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status,render_queue:renderQueue},births:{new_births:newBirthRecords,render_queue:birthRenderQueue},meta:{...(result.meta||{}),evolution_ok:true,evolution_changes:applied.changes.length,emotion_changes:emotion.last_changes.length,reward_events:progression.rewards.length,reward_render_queue:renderQueue.length,new_marble_births:grown.births.length,birth_render_queue:birthRenderQueue.length,history_changed:!!historyChange,history_deferred:historyDeferred,marble_evolution_skipped:marbleApplied.skipped,marble_evolution_reason:marbleApplied.reason||null}};
   };
 }
