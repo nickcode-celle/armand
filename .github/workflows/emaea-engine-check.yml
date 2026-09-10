@@ -27,3 +27,14 @@ jobs:
         run: npm run check:entity
       - name: Build EMÆÄ production image
         run: docker build -f Dockerfile.entity -t emaea-engine-ci .
+      - name: Smoke-test EMÆÄ production image
+        run: |
+          mkdir -p /tmp/emaea-data
+          docker run -d --rm --name emaea-engine-ci-run -p 4458:4401 -v /tmp/emaea-data:/data emaea-engine-ci
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4458/health > /tmp/emaea-health.json; then break; fi
+            sleep 1
+          done
+          cat /tmp/emaea-health.json
+          node -e "const h=require('/tmp/emaea-health.json'); if(!h.ok||h.storage!=='local-sharded'||h.storage_root!=='/data') process.exit(1)"
+          docker stop emaea-engine-ci-run
