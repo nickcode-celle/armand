@@ -39,3 +39,10 @@ armand-backup-market/
 base44-backup-toolcatalog/
 base44/functions/armand/entry-backup.ts
 base44/functions/armand/entry.ts.backup
+
+# Entity local memories
+.entity-memories/
+.entity-memory.json
+
+# Entity embedding cache
+.entity-embeddings/
