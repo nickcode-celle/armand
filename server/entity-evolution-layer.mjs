@@ -2,7 +2,7 @@ import {createEntityAI} from './entity-ai.mjs';
 import {observeEntityTurn} from './entity-observer.mjs';
 import {applyEvolutionEvents} from './entity-evolution-engine.mjs';
 import {applyChangesToMarbles} from './entity-marble-evolution.mjs';
-import {ensureInitialEvolutionState} from './entity-initial-state.mjs';
+import {ensureInitialEvolutionState,extractExplicitInterlocutorAge} from './entity-initial-state.mjs';
 import {applyHistoryEvent} from './entity-history-evolution.mjs';
 import {applyGrowthFromChanges} from './entity-growth-engine.mjs';
 import {applyEmotionChanges} from './entity-emotion-engine.mjs';
@@ -21,7 +21,8 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
     const snapshot=await runtime.load(id,{}, {withMemory:true});
     const state=snapshot.state||{};
     const memory=snapshot.memory??null;
-    const baseEvolution=ensureInitialEvolutionState(state,id,{age:body?.interlocutorAge??null});
+    const explicitAge=body?.interlocutorAge??extractExplicitInterlocutorAge(memory);
+    const baseEvolution=ensureInitialEvolutionState(state,id,{age:explicitAge??null});
     const key=process.env.OPENAI_API_KEY;
     if(!key){
       const expected=Number(snapshot.committed_revision??state.revision??0),at=now();
