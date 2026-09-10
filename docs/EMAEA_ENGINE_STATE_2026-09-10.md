@@ -17,7 +17,7 @@ Ce document décrit l'état de référence actuel. Les décisions datées plus r
 ## Traduction graphique durable
 
 - Personnalité → couleur.
-- Relation → vitesse interne, règle du 10/09/2026 : `V1 = 1 + Relation/100`.
+- Relation → vitesse interne : `V1 = 1 + Relation/100`.
 - Goûts → relief/motif complet porté par une proportion déterministe des billes du sous-domaine.
 - Opinions/Valeurs → éclats directionnels ; le niveau pilote l'activité.
 - Connaissances → rémanences colorées ; le niveau pilote leur fréquence.
@@ -35,19 +35,46 @@ Le runtime normal est `src/components/entity/emaeaBodyRuntime.js`. Les mises à 
 - Si l'âge n'est pas encore connu, l'événement est conservé mais la jauge numérique reste `null`.
 - Quand l'âge devient connu plus tard, la base `âge × 0,5` est posée puis les événements précédemment différés sont rejoués chronologiquement.
 
-## Croissance
+## Croissance par évolution des sous-domaines
 
-Pour chaque sous-domaine porté par bille :
+Pour chaque sous-domaine porté par bille, une nouvelle bille naît au premier franchissement de chacun des seuils suivants :
 
-- franchissement de 40 % → +1 bille ;
-- 60 % → +1 bille ;
-- 80 % → +1 bille ;
-- 100 % → +1 bille ;
-- chaque seuil ne peut déclencher qu'une fois pour ce sous-domaine.
+`40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100 %`.
+
+Chaque seuil ne peut déclencher qu'une fois pour ce sous-domaine.
 
 La nouvelle bille appartient au sous-domaine déclencheur dans le domaine déclencheur. Les sous-domaines des autres domaines sont attribués de façon pseudo-aléatoire déterministe. Leur valeur initiale reprend la moyenne globale courante du sous-domaine choisi afin que la naissance seule ne déplace pas artificiellement sa moyenne.
 
+Avec 57 sous-domaines et 13 seuils, cette mécanique peut produire jusqu'à 741 naissances, soit 941 billes en partant de 200.
+
+## Naissance gratuite quotidienne
+
+- Une échéance gratuite existe chaque jour à 08:00, fuseau `Europe/Paris` par défaut.
+- Si EMÆÄ est connectée au moment où 08:00 survient, la bille naît en direct pendant la session.
+- Si EMÆÄ n'est pas connectée à 08:00, la bille naît à la connexion suivante.
+- En cas d'absence prolongée, le rattrapage est limité à 2 billes ; les échéances plus anciennes sont perdues.
+- Une bille quotidienne est une vraie bille persistante et utilise exactement la même animation de naissance que les autres.
+- Comme elle n'a pas de sous-domaine déclencheur, chacun de ses sous-domaines est attribué pseudo-aléatoirement et reprend la moyenne globale courante correspondante afin de rester neutre sur les niveaux.
+
+Le déclenchement live est pris en charge par `emaeaDailyBirthBridge.js`, raccordé au contrôleur graphique commun.
+
+## Billes achetées
+
+Le joueur pourra acheter des billes. Le prix, les packs et le fournisseur de paiement ne sont pas encore définis.
+
+Le moteur contient uniquement la couche sûre d'application d'un achat **déjà confirmé** :
+
+- aucune bille n'est attribuée sur simple demande client ;
+- un identifiant d'achat déjà appliqué ne peut pas recréer les mêmes billes ;
+- chaque bille achetée est une vraie bille persistante ;
+- ses sous-domaines sont attribués comme pour une naissance neutre ;
+- le système de paiement devra appeler cette couche uniquement après confirmation fiable du paiement.
+
+## Animation de naissance
+
 La naissance graphique utilise la même vraie Mesh : point fixe `(-142,0,0)`, trois enveloppes lumineuses, or `#FFC928`, exposition puis intégration de la même bille dans le moteur normal.
+
+La population visible n'est pas agrandie avant la fin de l'animation : les billes persistées mais encore en attente d'intégration graphique sont retirées de l'état initial visible puis ajoutées par leur animation réelle.
 
 ## Sentiments
 
@@ -69,7 +96,7 @@ Ordre des paliers :
 
 Un palier ouvert reste acquis même si les niveaux redescendent ensuite.
 
-Dans chaque palier, les huit sentiments hors Amour sont acquis dans un ordre libre. Un sentiment est acquis sur un événement NAITRE ou RENFORCER atteignant au moins l'intensité modérée. Le premier sentiment inédit donne le chiffre 1, le deuxième le 2, etc., jusqu'à 8. Les répétitions ne redonnent pas de chiffre.
+Dans chaque palier, les huit sentiments hors Amour sont acquis dans l'ordre réel où ils apparaissent. Un sentiment est acquis sur un événement NAITRE ou RENFORCER atteignant au moins l'intensité modérée. Le premier sentiment inédit donne le chiffre 1, le deuxième le 2, etc., jusqu'à 8. Les répétitions ne redonnent pas de chiffre.
 
 Amour n'est accessible qu'une fois les huit autres acquis dans le même palier et avec `ancrage_relationnel = ETABLI`. Il déclenche le logo EMÆÄ de la couleur du palier et termine celui-ci.
 
@@ -102,25 +129,22 @@ Animation récompense : 5 s transformation → 30 s maintien → 5 s retour. Seu
 - 5 domaines entre 90 et 95 %, écart maximum 3
 - aucun domaine sous 70 %
 
-## Points bloquants encore non définis par une règle produit
+Les seuils violet et rouge peuvent être atteints grâce à la combinaison évolution des sous-domaines + naissances quotidiennes + billes achetées.
 
-### 1. Croissance maximale incompatible avec les populations des paliers supérieurs
+## Logo et populations impaires
 
-Il existe 57 sous-domaines portés par bille. Avec 4 naissances possibles par sous-domaine, la mécanique validée produit au maximum `57 × 4 = 228` nouvelles billes. En partant de 200, le maximum théorique est donc **428 billes**.
+Le logo EMÆÄ utilise toutes les billes disponibles dès lors que le minimum de population du palier est atteint. Le nombre de billes n'a pas besoin d'être pair.
 
-Conséquence : le seuil vert (300) est théoriquement atteignable, mais les seuils bleu (500), violet (1000) et rouge (2000) ne peuvent pas l'être avec cette mécanique seule. Aucune naissance supplémentaire n'est inventée dans le code tant qu'une nouvelle règle produit n'est pas définie.
-
-### 2. Logo avec une population impaire
-
-Le squelette de logo validé répartit le corps en deux branches symétriques après réservation de 24 billes pour les deux points : `(BODY_COUNT - 24) / 2` doit donc être entier. Une naissance unitaire peut rendre la population impaire.
-
-Les chiffres 1 à 8 supportent les populations paires ou impaires. Le logo, lui, nécessite encore une décision produit pour le cas impair. Le générateur validé n'est pas modifié arbitrairement.
+Les 24 billes réservées aux deux points restent réparties également. Pour le reste du corps, si le nombre de billes est impair, une branche contient simplement une bille de plus que l'autre. Aucun ajout artificiel ni suppression de bille n'est effectué.
 
 ## État technique
 
-- Schéma persistant : v14.
+- Schéma persistant : v15.
 - Files persistantes de naissances et récompenses avec accusé d'affichage.
 - Ordonnancement partagé entre naissance, récompense et changements structurels.
+- Contrôleur graphique commun : `emaeaGraphicRuntimeController.js`.
+- Hôte graphique réutilisable sans décision de mise en page : `EmaeaRuntimeHost.jsx`.
+- Pont de naissance quotidienne live : `emaeaDailyBirthBridge.js`.
 - Page d'essai graphique isolée : `/entity-graphics-test`.
 - L'interface finale n'est volontairement pas définie à ce stade.
 - Les scripts de tests et contrôles sont raccordés dans `package.json`, mais aucune exécution complète réussie n'a encore été observée depuis cet environnement.
