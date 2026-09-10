@@ -6,7 +6,7 @@ export const GAUGE_DOMAINS=Object.freeze([
 
 export function clampLevel(value){
   const n=Number(value);
-  if(!Number.isFinite(n))return 0;
+  if(!Number.isFinite(n))throw new Error(`Niveau de jauge non initialisé ou invalide: ${value}`);
   return Math.max(0,Math.min(100,n));
 }
 
@@ -15,8 +15,8 @@ export function applyQualifiedDelta(current,qualified){
   const q=Number(qualified);
   if(![1,2,3,-1].includes(q))throw new Error(`Evolution qualifiée invalide: ${qualified}`);
   const magnitude=RAW_MAGNITUDES[String(q)];
-  if(q>0)return clampLevel(level+magnitude*(1-level/100));
-  return clampLevel(level-magnitude*(level/100));
+  if(q>0)return Math.max(0,Math.min(100,level+magnitude*(1-level/100)));
+  return Math.max(0,Math.min(100,level-magnitude*(level/100)));
 }
 
 function normalizeEvent(event){
@@ -25,14 +25,12 @@ function normalizeEvent(event){
   const sousDomaine=String(event.sous_domaine??event.sousDomaine??'').trim();
   const evolution=Number(event.evolution);
   if(!GAUGE_DOMAINS.includes(domaine))throw new Error(`Domaine non géré par une jauge: ${domaine}`);
-  if(!sousDomaine)throw new Error('Sous-domaine manquant');
+  if(domaine!=='Capacités'&&!sousDomaine)throw new Error('Sous-domaine manquant');
   if(![1,2,3,-1].includes(evolution))throw new Error(`Evolution qualifiée invalide: ${event.evolution}`);
-  return{...event,domaine,sous_domaine:sousDomaine,evolution};
+  return{...event,domaine,sous_domaine:domaine==='Capacités'?null:sousDomaine,evolution};
 }
 
-function cloneLevels(levels){
-  return structuredClone(levels||{});
-}
+function cloneLevels(levels){return structuredClone(levels||{})}
 
 export function applyEvolutionEvents(levels,events=[]){
   const incoming=Array.isArray(events)?events:[];
@@ -44,10 +42,19 @@ export function applyEvolutionEvents(levels,events=[]){
   const next=cloneLevels(levels);
   const changes=[];
   for(const event of normalized){
-    next[event.domaine]??={};
-    const before=clampLevel(next[event.domaine][event.sous_domaine]);
+    if(event.domaine==='Capacités'){
+      if(next.Capacités==null)throw new Error('Capacités non initialisées');
+      const before=clampLevel(next.Capacités);
+      const after=applyQualifiedDelta(before,event.evolution);
+      next.Capacités=after;
+      changes.push({domaine:event.domaine,sous_domaine:null,evolution:event.evolution,before,after,preuve:event.preuve??null,justification:event.justification??null});
+      continue;
+    }
+    const bucket=next[event.domaine];
+    if(!bucket||typeof bucket!=='object'||bucket[event.sous_domaine]==null)throw new Error(`Niveau non initialisé: ${event.domaine} / ${event.sous_domaine}`);
+    const before=clampLevel(bucket[event.sous_domaine]);
     const after=applyQualifiedDelta(before,event.evolution);
-    next[event.domaine][event.sous_domaine]=after;
+    bucket[event.sous_domaine]=after;
     changes.push({
       domaine:event.domaine,
       sous_domaine:event.sous_domaine,
