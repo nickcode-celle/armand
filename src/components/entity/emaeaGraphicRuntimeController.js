@@ -4,6 +4,15 @@ import {attachEmaeaBirthBridge} from './emaeaBirthBridge.js';
 import {attachEmaeaDailyBirthBridge} from './emaeaDailyBirthBridge.js';
 import {enqueueEmaeaGraphicTask} from './emaeaGraphicScheduler.js';
 
+function initialVisibleEvolution(evolution={}){
+  const pending=new Set((Array.isArray(evolution?.pending_births)?evolution.pending_births:[]).map(x=>String(x?.marble_id??x?.birth_id??'')));
+  if(!pending.size)return evolution;
+  return{
+    ...evolution,
+    marbles:(Array.isArray(evolution?.marbles)?evolution.marbles:[]).filter(m=>!pending.has(String(m?.id)))
+  };
+}
+
 /**
  * Contrôleur impératif du moteur E. Il ne décide d'aucune mise en page : le conteneur
  * est fourni par l'interface finale. Il garantit qu'un seul runtime normal pilote les
@@ -14,7 +23,7 @@ export function createEmaeaGraphicRuntimeController({container,entityId,initialE
   if(!container)throw new Error('Conteneur EMÆÄ manquant');
   if(!entityId)throw new Error('entityId EMÆÄ manquant');
 
-  const runtime=createEmaeaBodyRuntime(container,initialEvolution||{});
+  const runtime=createEmaeaBodyRuntime(container,initialVisibleEvolution(initialEvolution||{}));
 
   const finalizeBirth=runtime.finalizeBornMarble?.bind(runtime);
   if(finalizeBirth){
