@@ -1,12 +1,12 @@
 import {appendBornMarble} from './entity-marble-birth-state.mjs';
 
-export const MARBLE_GROWTH_THRESHOLDS=Object.freeze([40,60,80,100]);
+export const MARBLE_GROWTH_THRESHOLDS=Object.freeze(Array.from({length:13},(_,i)=>40+i*5));
 
 function key(domain,subdomain,threshold){return `${domain}|${subdomain}|${threshold}`}
 
 /**
- * Une nouvelle bille est créée lors du premier franchissement de chaque seuil
- * 40, 60, 80, 100 d'un sous-domaine porté individuellement par les billes.
+ * Une nouvelle bille est créée lors du premier franchissement de chaque palier de 5 points
+ * à partir de 40 % : 40, 45, 50, ... 100 pour chaque sous-domaine porté individuellement.
  * Chaque seuil ne peut produire qu'une naissance pour ce sous-domaine.
  */
 export function applyGrowthFromChanges(evolution={},changes=[],{seed='emaea'}={}){
