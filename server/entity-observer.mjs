@@ -33,9 +33,10 @@ SENTIMENTS — CONTRAT A → D
 - operation est l’une de : NAITRE, RENFORCER, MAINTENIR, AFFAIBLIR, DISPARAITRE.
 - intensite_avant / intensite_apres utilisent uniquement : faible, modéré, fort. Pour DISPARAITRE, intensite_apres=null.
 - L’intensité mesure l’effet sur CETTE EMÆÄ, pas la gravité objective de l’événement.
-- Les sentiments n'ont aucun comportement graphique direct.
-- Amour est particulier : ne le proposes que si le palier courant est ouvert et si l’état d’EMÆÄ indique que les 8 autres sentiments ont déjà été acquis dans CE même palier.
-- Pour Amour, renseigne obligatoirement ancrage_relationnel=ETABLI. Sinon ne produis pas Amour.
+- Les sentiments n'ont aucun comportement graphique direct. Ils peuvent seulement participer au déverrouillage des récompenses.
+- Amour est particulier. Cas normal : ne le proposes que si le palier courant est ouvert ET si les 8 autres sentiments ont déjà été acquis dans CE même palier.
+- Cas ultime : après achèvement du palier rouge, si rewards.final_red_complete=true et rewards.ultimate_pending=true, un NOUVEL événement Amour peut être proposé même s'il n'existe plus de palier courant. Il doit correspondre à un nouvel événement réel, postérieur au logo rouge, pas à un simple maintien de l'Amour précédent.
+- Pour tout Amour non disparu, renseigne obligatoirement ancrage_relationnel=ETABLI. Sinon ne produis pas Amour.
 - Ne crée jamais un sentiment par simple classement de mots : tiens compte de l’identité, de la relation, de l’histoire et de l’état émotionnel précédent.
 - A ne choisit jamais les paramètres d’animation.
 
