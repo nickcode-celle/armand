@@ -15,6 +15,8 @@ Tu ne décides JAMAIS des pourcentages finaux ni des paramètres graphiques. Tu 
 - Une régression exige une preuve contraire ou une occasion pertinente, jamais une simple absence.
 - Les niveaux autorisés sont +1, +2, +3 ou -1.
 - Domaines possibles : Personnalité, Relation, Goûts, Opinions/Valeurs, Connaissances, Capacités, Monde propre.
+- Personnalité, Relation, Goûts, Opinions/Valeurs, Connaissances et Monde propre exigent un sous_domaine.
+- Capacités est une jauge globale : sous_domaine doit être null.
 - Pour chaque évolution : domaine, sous_domaine, evolution, preuve, justification.
 
 HISTOIRE VÉCUE
@@ -31,8 +33,9 @@ SENTIMENTS — CONTRAT A → D
 - operation est l’une de : NAITRE, RENFORCER, MAINTENIR, AFFAIBLIR, DISPARAITRE.
 - intensite_avant / intensite_apres utilisent uniquement : faible, modéré, fort. Pour DISPARAITRE, intensite_apres=null.
 - L’intensité mesure l’effet sur CETTE EMÆÄ, pas la gravité objective de l’événement.
-- Amour est particulier : ne le proposes que si l’état d’EMÆÄ indique qu’il est accessible au niveau émotionnel en cours, c’est-à-dire après acquisition des 8 autres sentiments de ce niveau.
-- Pour Amour, renseigne obligatoirement un ancrage_relationnel réel. Sinon ne produis pas Amour.
+- Les sentiments n'ont aucun comportement graphique direct.
+- Amour est particulier : ne le proposes que si le palier courant est ouvert et si l’état d’EMÆÄ indique que les 8 autres sentiments ont déjà été acquis dans CE même palier.
+- Pour Amour, renseigne obligatoirement ancrage_relationnel=ETABLI. Sinon ne produis pas Amour.
 - Ne crée jamais un sentiment par simple classement de mots : tiens compte de l’identité, de la relation, de l’histoire et de l’état émotionnel précédent.
 - A ne choisit jamais les paramètres d’animation.
 
@@ -40,7 +43,7 @@ JSON STRICT UNIQUEMENT :
 {"evolutions_durables":[],"histoire":null,"sentiments":[]}`;
 
 export async function observeEntityTurn({ai,conversation,memory,state}){
-  const prompt=`${OBSERVER_PROMPT}\n\nÉTAT DURABLE ACTUEL:\n${JSON.stringify(state?.evolution??{},null,2)}\n\nÉTAT ÉMOTIONNEL ACTUEL:\n${JSON.stringify(state?.emotion??{},null,2)}\n\nMÉMOIRE PERTINENTE:\n${JSON.stringify(memory??null,null,2)}\n\nCONVERSATION RÉCENTE:\n${String(conversation||'')}`;
+  const prompt=`${OBSERVER_PROMPT}\n\nÉTAT DURABLE ACTUEL:\n${JSON.stringify(state?.evolution??{},null,2)}\n\nÉTAT ÉMOTIONNEL ACTUEL:\n${JSON.stringify(state?.emotion??{},null,2)}\n\nPROGRESSION DES RÉCOMPENSES / PALIER COURANT:\n${JSON.stringify(state?.rewards??{},null,2)}\n\nMÉMOIRE PERTINENTE:\n${JSON.stringify(memory??null,null,2)}\n\nCONVERSATION RÉCENTE:\n${String(conversation||'')}`;
   let lastError=null;
   for(let attempt=0;attempt<2;attempt++){
     try{
