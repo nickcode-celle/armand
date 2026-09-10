@@ -1,5 +1,7 @@
 const INTENSITIES=Object.freeze(['faible','modéré','fort']);
 const RANK=Object.freeze({faible:1,'modéré':2,fort:3});
+export const EMOTION_SENTIMENTS=Object.freeze(['Joie','Tristesse','Colère','Peur','Surprise','Fierté','Tendresse','Confiance','Amour']);
+const SENTIMENT_LOOKUP=new Map(EMOTION_SENTIMENTS.map(s=>[s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,''),s]));
 const OP_ALIASES=Object.freeze({
   'naitre':'NAITRE','naître':'NAITRE','NAITRE':'NAITRE','NAÎTRE':'NAITRE',
   'renforcer':'RENFORCER','RENFORCER':'RENFORCER',
@@ -9,6 +11,14 @@ const OP_ALIASES=Object.freeze({
 });
 
 const cleanText=v=>typeof v==='string'?v.trim():'';
+
+export function normalizeSentiment(value){
+  const raw=cleanText(value);
+  const key=raw.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
+  const sentiment=SENTIMENT_LOOKUP.get(key);
+  if(!sentiment)throw new Error(`Sentiment EMÆÄ invalide: ${value}`);
+  return sentiment;
+}
 
 export function normalizeIntensity(value,{allowNull=false}={}){
   if(value==null&&allowNull)return null;
@@ -27,8 +37,7 @@ export function normalizeEmotionOperation(value){
 
 export function normalizeEmotionChange(item){
   if(!item||typeof item!=='object')throw new Error('Changement émotionnel invalide');
-  const sentiment=cleanText(item.sentiment);
-  if(!sentiment)throw new Error('Sentiment manquant');
+  const sentiment=normalizeSentiment(item.sentiment);
   const operation=normalizeEmotionOperation(item.operation);
   const before=normalizeIntensity(item.intensite_avant??item.intensiteAvant??item.intensity_before??null,{allowNull:true});
   const after=operation==='DISPARAITRE'
@@ -37,6 +46,7 @@ export function normalizeEmotionChange(item){
   const cause=cleanText(item.cause)||null;
   const justification=cleanText(item.justification)||null;
   const ancrage_relationnel=cleanText(item.ancrage_relationnel??item.ancrageRelationnel??item.relational_anchor)||null;
+  if(sentiment==='Amour'&&!ancrage_relationnel&&operation!=='DISPARAITRE')throw new Error('Amour exige un ancrage relationnel');
   return{sentiment,operation,intensite_avant:before,intensite_apres:after,cause,justification,ancrage_relationnel};
 }
 
@@ -51,8 +61,8 @@ function currentMap(previous){
   const arr=Array.isArray(previous?.active)?previous.active:[];
   const map=new Map();
   for(const item of arr){
-    const sentiment=cleanText(item?.sentiment);
-    if(!sentiment)continue;
+    let sentiment;
+    try{sentiment=normalizeSentiment(item?.sentiment)}catch{continue}
     let intensity;
     try{intensity=normalizeIntensity(item.intensite??item.intensity)}catch{continue}
     map.set(sentiment,{...item,sentiment,intensite:intensity});
@@ -73,8 +83,8 @@ function validateDirection(operation,current,before,after){
 
 /**
  * D — moteur émotionnel, partie état/cycle.
- * Cette fonction applique uniquement le contrat sémantique A→D.
- * Elle ne choisit aucun paramètre graphique numérique.
+ * Applique le contrat sémantique A→D avec le vocabulaire validé de 9 sentiments.
+ * L'acquisition de niveau est volontairement séparée de l'état émotionnel actif.
  */
 export function applyEmotionChanges(previous={},input,{at=new Date().toISOString()}={}){
   const changes=normalizeEmotionChanges(input);
@@ -108,6 +118,7 @@ export function applyEmotionChanges(previous={},input,{at=new Date().toISOString
   if(active.length>3)throw new Error('D: maximum trois sentiments actifs simultanément');
 
   return{
+    ...previous,
     active,
     last_changes:applied,
     updated_at:at
