@@ -139,7 +139,7 @@ Les 24 billes réservées aux deux points restent réparties également. Pour le
 
 ## État technique
 
-- Schéma persistant : v15.
+- Schéma persistant : v16.
 - Files persistantes de naissances et récompenses avec accusé d'affichage.
 - Ordonnancement partagé entre naissance, récompense et changements structurels.
 - Contrôleur graphique commun : `emaeaGraphicRuntimeController.js`.
