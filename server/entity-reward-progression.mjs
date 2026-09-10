@@ -28,6 +28,7 @@ export function rewardDomainLevels(evolution={}){
 
 function processUltimate(rewards,observerChanges,at){
   if(!rewards.final_red_complete||!rewards.ultimate_pending||rewards.ultimate_complete)return null;
+  if((rewards.pending_rewards||[]).some(x=>x?.ultimate===true))return null;
   for(const change of Array.isArray(observerChanges)?observerChanges:[]){
     if(String(change?.sentiment||'').trim().toLowerCase()!=='amour')continue;
     if(!QUALIFYING_OPERATIONS.has(String(change?.operation||'').trim().toUpperCase()))continue;
@@ -36,7 +37,6 @@ function processUltimate(rewards,observerChanges,at){
     const item={id:`ultimate:logo:EMÆÄ:${at}`,tier:'ultimate',color:ULTIMATE_GOLD,sentiment:'Amour',target:{type:'logo',value:'EMÆÄ',color:ULTIMATE_GOLD,gold:true},created_at:at,status:'pending',completes_tier:false,ultimate:true};
     rewards.pending_rewards=[...(rewards.pending_rewards||[]),item];
     rewards.ultimate_pending=false;
-    rewards.ultimate_complete=true;
     rewards.updated_at=at;
     return item;
   }
@@ -109,6 +109,7 @@ export function acknowledgeReward(rewardState={},rewardId,{at=new Date().toISOSt
   if(!found)return state;
   state.pending_rewards=(state.pending_rewards||[]).filter(x=>x.id!==id);
   state.reward_history=[...(state.reward_history||[]),{...found,status:'shown',shown_at:at}].slice(-200);
+  if(found.ultimate===true)state.ultimate_complete=true;
   state.updated_at=at;
   return state;
 }
