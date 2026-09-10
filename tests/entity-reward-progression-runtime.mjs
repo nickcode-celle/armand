@@ -1,40 +1,47 @@
 import assert from 'node:assert/strict';
-import {processRewardProgression} from '../server/entity-reward-progression.mjs';
+import {processRewardProgression,acknowledgeReward,rewardDomainLevels} from '../server/entity-reward-progression.mjs';
+
+const evolution={
+  marbles:Array.from({length:300},(_,i)=>({id:`m${i}`})),
+  durable_levels:{
+    'Personnalité':{a:40,b:42},'Relation':{a:41,b:42},'Goûts':{a:42},'Opinions/Valeurs':{a:43},'Connaissances':{a:42},'Monde propre':{a:41},'Capacités':10
+  },
+  history_level:20
+};
+assert.equal(rewardDomainLevels(evolution)['Personnalité'],41);
 
 let emotion={active:[],last_changes:[],acquired_by_level:{},updated_at:null};
+let rewardState={};
 
-let out=processRewardProgression({emotionState:emotion,tier:1,thresholdValid:false,observerChanges:[{sentiment:'Peur',operation:'NAITRE',intensite_apres:'modéré'}]});
-assert.equal(out.rewards.length,0);
-assert.equal(out.status.acquired.length,0);
-
-out=processRewardProgression({emotionState:emotion,tier:1,thresholdValid:true,observerChanges:[{sentiment:'Peur',operation:'NAITRE',intensite_apres:'faible'}]});
+let out=processRewardProgression({rewardState,emotionState:emotion,evolution,observerChanges:[{sentiment:'Peur',operation:'NAITRE',intensite_apres:'faible'}],at:'2026-09-10T10:00:00Z'});
+assert.equal(out.threshold.threshold_valid,true);
 assert.equal(out.rewards.length,0);
 
-out=processRewardProgression({emotionState:emotion,tier:1,thresholdValid:true,observerChanges:[{sentiment:'Peur',operation:'NAITRE',intensite_apres:'modéré'}]});
+out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Peur',operation:'NAITRE',intensite_apres:'modéré'}],at:'2026-09-10T10:01:00Z'});
 assert.equal(out.rewards.length,1);
-assert.equal(out.rewards[0].value,1);
-assert.equal(out.rewards[0].sentiment,'Peur');
-emotion=out.emotionState;
+assert.equal(out.rewards[0].target.value,1);
+assert.equal(out.rewardState.pending_rewards.length,1);
+emotion=out.emotionState;rewardState=out.rewardState;
 
-out=processRewardProgression({emotionState:emotion,tier:1,thresholdValid:true,observerChanges:[{sentiment:'Peur',operation:'RENFORCER',intensite_apres:'fort'}]});
+out=processRewardProgression({rewardState,emotionState:emotion,evolution,observerChanges:[{sentiment:'Peur',operation:'RENFORCER',intensite_apres:'fort'}],at:'2026-09-10T10:02:00Z'});
 assert.equal(out.rewards.length,0);
 
-const others=['Joie','Tristesse','Colère','Surprise','Fierté','Tendresse','Confiance'];
-for(const sentiment of others){
-  out=processRewardProgression({emotionState:emotion,tier:1,thresholdValid:true,observerChanges:[{sentiment,operation:'NAITRE',intensite_apres:'modéré'}]});
-  emotion=out.emotionState;
+for(const sentiment of ['Joie','Tristesse','Colère','Surprise','Fierté','Tendresse','Confiance']){
+  out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment,operation:'NAITRE',intensite_apres:'modéré'}],at:`2026-09-10T10:0${Math.min(9,out.rewardState.pending_rewards.length+2)}:00Z`});
 }
 assert.equal(out.status.acquired.length,8);
 assert.equal(out.status.amour_accessible,true);
-assert.equal(out.rewards.at(-1).value,8);
+assert.equal(out.rewards.at(-1).target.value,8);
 
-out=processRewardProgression({emotionState:emotion,tier:1,thresholdValid:true,observerChanges:[{sentiment:'Amour',operation:'MAINTENIR',intensite_apres:'fort',ancrage_relationnel:'ETABLI'}]});
-assert.equal(out.rewards.length,0);
-
-out=processRewardProgression({emotionState:emotion,tier:1,thresholdValid:true,observerChanges:[{sentiment:'Amour',operation:'NAITRE',intensite_apres:'modéré',ancrage_relationnel:'ETABLI'}]});
+out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Amour',operation:'NAITRE',intensite_apres:'modéré',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T10:20:00Z'});
 assert.equal(out.rewards.length,1);
-assert.equal(out.rewards[0].type,'logo');
-assert.equal(out.rewards[0].completes_tier,true);
-assert.equal(out.status.complete,true);
+assert.equal(out.rewards[0].target.type,'logo');
+assert.deepEqual(out.rewardState.completed_tiers,['1']);
+assert.equal(out.rewardState.current_tier,'2');
+
+const first=out.rewardState.pending_rewards[0];
+const ack=acknowledgeReward(out.rewardState,first.id,{at:'2026-09-10T10:21:00Z'});
+assert.equal(ack.pending_rewards.length,out.rewardState.pending_rewards.length-1);
+assert.equal(ack.reward_history.at(-1).status,'shown');
 
 console.log('Entity reward progression runtime tests: OK');
