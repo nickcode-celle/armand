@@ -1,6 +1,7 @@
 const DEFAULT_TIME_ZONE='Europe/Paris';
 const DAILY_HOUR=8;
 const MAX_RESCHEDULE_MS=6*60*60*1000;
+const RETRY_MS=60*1000;
 
 function partsAt(date,timeZone){
   const parts=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(date);
@@ -32,19 +33,23 @@ export function attachEmaeaDailyBirthBridge({entityId,timeZone=DEFAULT_TIME_ZONE
       timer=setTimeout(schedule,MAX_RESCHEDULE_MS);
       return;
     }
-    timer=setTimeout(async()=>{
-      try{
-        const data=await requestDailyBirth(entityId);
-        if(disposed)return;
-        if(data?.evolution)window.dispatchEvent(new CustomEvent('emaea:graphic-state',{detail:{entityId,evolution:data.evolution}}));
-        if(Array.isArray(data?.render_queue)&&data.render_queue.length){
-          window.dispatchEvent(new CustomEvent('emaea:birth-queue',{detail:{entityId,queue:data.render_queue}}));
-        }
-      }catch(error){
-        if(!disposed)window.dispatchEvent(new CustomEvent('emaea:daily-birth-error',{detail:{entityId,error}}));
+    timer=setTimeout(run,delay);
+  };
+  const run=async()=>{
+    if(disposed)return;
+    try{
+      const data=await requestDailyBirth(entityId);
+      if(disposed)return;
+      if(data?.evolution)window.dispatchEvent(new CustomEvent('emaea:graphic-state',{detail:{entityId,evolution:data.evolution}}));
+      if(Array.isArray(data?.render_queue)&&data.render_queue.length){
+        window.dispatchEvent(new CustomEvent('emaea:birth-queue',{detail:{entityId,queue:data.render_queue}}));
       }
       schedule();
-    },delay);
+    }catch(error){
+      if(disposed)return;
+      window.dispatchEvent(new CustomEvent('emaea:daily-birth-error',{detail:{entityId,error}}));
+      timer=setTimeout(run,RETRY_MS);
+    }
   };
   schedule();
   return()=>{disposed=true;if(timer)clearTimeout(timer)};
