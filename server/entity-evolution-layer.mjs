@@ -94,7 +94,7 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
       return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:`récompenses: ${String(error?.message||error)}`,observer}};
     }
 
-    const renderQueue=buildRewardRenderQueue(progression.rewardState,evolution.marbles.length);
+    const renderQueue=buildRewardRenderQueue({pending_rewards:progression.rewards},evolution.marbles.length);
     const nextState={...state,evolution,emotion,rewards:progression.rewardState};
     const expected=Number(snapshot.committed_revision??state.revision??0);
     const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:at};
