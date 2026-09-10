@@ -1,6 +1,7 @@
 import {createEntityAI} from './entity-ai.mjs';
 import {observeEntityTurn} from './entity-observer.mjs';
 import {applyEvolutionEvents} from './entity-evolution-engine.mjs';
+import {applyChangesToMarbles} from './entity-marble-evolution.mjs';
 
 const transcript=messages=>(messages||[]).map(m=>`${m.role==='assistant'?'EMÆÄ':'Personne'}: ${String(m.content||'')}`).join('\n');
 const now=()=>new Date().toISOString();
@@ -35,14 +36,24 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
       return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:String(error?.message||error),observer}};
     }
 
+    let marbleApplied;
+    try{
+      const currentMarbles=state.evolution?.marbles??state.marbles??[];
+      marbleApplied=applyChangesToMarbles(currentMarbles,applied.changes,{seed:String(body?.requestId||`${id}|${state.revision||0}`)});
+    }catch(error){
+      return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:`billes: ${String(error?.message||error)}`,observer}};
+    }
+
     const history=[...(state.evolution?.history_events||[])];
     if(observer.histoire)history.push({...observer.histoire,at:now()});
     const evolution={
       ...(state.evolution||{}),
       durable_levels:applied.levels,
+      marbles:marbleApplied.marbles,
       history_events:history.slice(-200),
       observer_last:observer,
       last_changes:applied.changes,
+      last_marble_changes:marbleApplied.changes,
       updated_at:now()
     };
     const nextState={...state,evolution};
@@ -53,8 +64,14 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
 
     return{
       ...result,
-      evolution:{observer,changes:applied.changes,state:evolution},
-      meta:{...(result.meta||{}),evolution_ok:true,evolution_changes:applied.changes.length}
+      evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,state:evolution},
+      meta:{
+        ...(result.meta||{}),
+        evolution_ok:true,
+        evolution_changes:applied.changes.length,
+        marble_evolution_skipped:marbleApplied.skipped,
+        marble_evolution_reason:marbleApplied.reason||null
+      }
     };
   };
 }
