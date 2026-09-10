@@ -7,14 +7,14 @@ function text(value){return typeof value==='string'?value.trim():''}
 function normalizeDurable(item){
   if(!item||typeof item!=='object')throw new Error('Évolution durable Observer invalide');
   const domaine=text(item.domaine);
-  const sous_domaine=text(item.sous_domaine??item.sousDomaine);
+  const rawSub=text(item.sous_domaine??item.sousDomaine);
   const evolution=Number(item.evolution);
   if(!domaine)throw new Error('Domaine Observer manquant');
-  if(!sous_domaine)throw new Error('Sous-domaine Observer manquant');
+  if(domaine!=='Capacités'&&!rawSub)throw new Error('Sous-domaine Observer manquant');
   if(!EVOLUTIONS.has(evolution))throw new Error(`Evolution Observer invalide: ${item.evolution}`);
   return{
     domaine,
-    sous_domaine,
+    sous_domaine:domaine==='Capacités'?null:rawSub,
     evolution,
     preuve:text(item.preuve)||null,
     justification:text(item.justification)||null
