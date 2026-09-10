@@ -96,10 +96,13 @@ export async function playEmaeaBirth(runtime,command){
     const normalColor=normal?.color?new THREE.Color(normal.color):null;
     const targetWorld=new THREE.Vector3();
     await tween(command.timing.integration_ms,(t,s)=>{
-      setEcart(THREE.MathUtils.lerp(baseEcart,finalEcart,s));
+      const currentEcart=THREE.MathUtils.lerp(baseEcart,finalEcart,s);
+      setEcart(currentEcart);
       const target=targetForBirth(command.marble_id,command.body_count_after,command);
       if(!target?.isVector3)throw new Error('Centre cible de naissance invalide');
-      targetWorld.copy(target);entityGroup.updateMatrixWorld(true);entityGroup.localToWorld(targetWorld);
+      // targetForBirth renvoie un centre de squelette normalisé : appliquer l'ECART courant,
+      // comme dans le prototype validé, avant conversion en coordonnées monde.
+      targetWorld.copy(target).multiplyScalar(currentEcart);entityGroup.updateMatrixWorld(true);entityGroup.localToWorld(targetWorld);
       marble.position.copy(startWorld).lerp(targetWorld,s);
       if(normalColor&&marble.material?.color)marble.material.color.copy(goldColor).lerp(normalColor,s);
       if(normal){
@@ -112,7 +115,7 @@ export async function playEmaeaBirth(runtime,command){
 
     entityGroup.attach(marble);
     const localTarget=targetForBirth(command.marble_id,command.body_count_after,command);
-    marble.position.copy(localTarget);marble.scale.setScalar(runtime.marbleScale??.90);
+    marble.position.copy(localTarget).multiplyScalar(Number(getEcart()));marble.scale.setScalar(runtime.marbleScale??.90);
     await finalizeBornMarble(marble,command.marble,command);
     updateCells();
     return command.birth_id;
