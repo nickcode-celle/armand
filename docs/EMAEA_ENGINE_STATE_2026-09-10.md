@@ -147,9 +147,20 @@ Les 24 billes réservées aux deux points restent réparties également. Pour le
 - Pont de naissance quotidienne live : `emaeaDailyBirthBridge.js`.
 - Page d'essai graphique isolée : `/entity-graphics-test`.
 - L'interface finale n'est volontairement pas définie à ce stade.
-- Validation CI complète réussie le 10/09/2026 sur la branche `emaea-evolution-engine-b-v1` : contrôles syntaxiques, suite `test:entity`, benchmark d'endurance et build Vite de production réussis.
+- Le shell applicatif EMÆÄ n'utilise plus l'ancien mécanisme d'authentification Base44.
+- Validation CI complète réussie le 10/09/2026 : contrôles syntaxiques, suite `test:entity`, benchmark d'endurance, test de persistance après redémarrage, build Vite, build du conteneur Node et démarrage du conteneur avec volume persistant.
 - Le build signale uniquement un avertissement de taille de chunk frontend ; il ne bloque pas la compilation.
 
-## Déploiement Base44
+## Déploiement Node autonome
 
-Le moteur actuel `server/` est une architecture Node de développement/local avec stockage local ou stockage distant configurable. Base44 exécute ses backend functions dans un runtime Deno isolé. Le portage hébergé du moteur devra donc être traité séparément ; il ne faut pas supposer que les modules Node de `server/` sont directement déployables comme functions Base44.
+EMÆÄ est un serveur Node autonome. Aucun portage Base44 n'est requis ni souhaité.
+
+- Entrée serveur : `server/entity-server-v2.mjs`.
+- Le serveur écoute `PORT` / `ENTITY_API_PORT` et `HOST` / `ENTITY_API_HOST`; la valeur hébergée par défaut est `0.0.0.0`.
+- Le stockage mono-instance utilise des fichiers JSON atomiques shardés. En production, `ENTITY_STORAGE_DIR` doit pointer vers un volume persistant monté.
+- Un stockage distant versionné avec leases reste disponible via `ENTITY_STORAGE_URL` si une architecture multi-instance devient nécessaire plus tard.
+- Image de déploiement : `Dockerfile.entity`, Node 22, port 4401, volume `/data`.
+- La route `/health` expose notamment le mode et le chemin de stockage actifs.
+- Le test `entity-production-persistence-runtime.mjs` démarre le vrai serveur, crée un état, redémarre le processus sur le même volume et vérifie que la population et l'état quotidien survivent sans duplication.
+
+Le backend est donc prêt à être déployé sur n'importe quel hébergeur acceptant un conteneur Node et un volume persistant. Le déploiement sur un compte d'hébergement réel nécessite uniquement l'accès à cet hébergeur et ses identifiants ; aucune dépendance technique supplémentaire n'est requise avant la phase interface.
