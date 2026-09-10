@@ -14,6 +14,11 @@ assert.equal(command.engine,'EMAEA_NORMAL');
 assert.equal(buildBirthRenderQueue({pending_births:[birth]}).length,1);
 assert.throws(()=>buildBirthRenderCommand({...birth,body_count_after:200}),/Population après naissance invalide/);
 
+const b202={...birth,birth_id:'bille-202',marble_id:'bille-202',marble:{id:'bille-202',domains:{}},body_count_after:202};
+const b203={...birth,birth_id:'bille-203',marble_id:'bille-203',marble:{id:'bille-203',domains:{}},body_count_after:203};
+const ordered=buildBirthRenderQueue({pending_births:[b203,birth,b202]});
+assert.deepEqual(ordered.map(x=>x.body_count_after),[201,202,203]);
+
 const evolution={pending_births:[birth],birth_history:[birth],marbles:Array.from({length:201},(_,i)=>({id:`bille-${i+1}`}))};
 const ack=acknowledgeBirth(evolution,'bille-201',{at:'2026-09-10T12:00:00Z'});
 assert.equal(ack.pending_births.length,0);
