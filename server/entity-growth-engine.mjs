@@ -26,7 +26,7 @@ export function applyGrowthFromChanges(evolution={},changes=[],{seed='emaea'}={}
       const token=key(domain,subdomain,threshold);
       if(crossed[token])continue;
       if(before<threshold&&after>=threshold){
-        const out=appendBornMarble(marbles,{triggerDomain:domain,triggerSubdomain:subdomain,triggerLevel:after,durableLevels,seed:`${seed}|${token}`});
+        const out=appendBornMarble(marbles,{triggerDomain:domain,triggerSubdomain:subdomain,triggerLevel:after,domainLevels:durableLevels,seed:`${seed}|${token}`});
         marbles=out.marbles;
         crossed[token]=true;
         births.push({...out.born,threshold,trigger_level:after,body_count_after:marbles.length});
