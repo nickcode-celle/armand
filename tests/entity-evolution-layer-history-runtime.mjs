@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {createEvolutionLayer} from '../server/entity-evolution-layer.mjs';
+
+process.env.OPENAI_API_KEY='test-key';
+const marbles=[{id:'m1',domains:{Relation:{subdomain:'Confiance',value:10}}}];
+let snapshot={state:{revision:1,recent_messages:[{role:'user',content:'Un souvenir.'}],evolution:{durable_levels:{Relation:{Confiance:10}},history_level:null,history_events:[],marbles}},memory:{},committed_revision:1};
+const runtime={async load(){return structuredClone(snapshot)},async commit(id,expected,next){snapshot=structuredClone(next);return next}};
+const base=async()=>({message:'ok',meta:{revision:1}});
+const aiFactory=()=>({response:async()=>JSON.stringify({evolutions_durables:[],histoire:{evenement:'Un souvenir important',niveau:2,nature:'personnel',justification:'mérite conservation'},sentiments:[]})});
+const handle=createEvolutionLayer({handleTurn:base,runtime,aiFactory});
+const out=await handle({entityId:'history-deferred-test',requestId:'h1',message:'x'});
+assert.equal(out.meta.evolution_ok,true);
+assert.equal(out.meta.history_deferred,true);
+assert.equal(out.meta.history_changed,false);
+assert.equal(snapshot.state.evolution.history_level,null);
+assert.equal(snapshot.state.evolution.history_events.length,1);
+assert.equal(snapshot.state.evolution.history_events[0].history_deferred,true);
+assert.equal(snapshot.state.evolution.history_events[0].before,null);
+assert.equal(snapshot.state.evolution.history_events[0].after,null);
+console.log('Entity evolution layer deferred history runtime tests: OK');
