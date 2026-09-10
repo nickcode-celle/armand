@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {createInitialMarbleAssignments} from '../server/entity-marble-allocation.mjs';
+import {initializeMarbleValues} from '../server/entity-initializer.mjs';
+import {applyConfirmedPurchaseToEntityState} from '../server/entity-purchase-service.mjs';
+
+const base=initializeMarbleValues(createInitialMarbleAssignments({seed:'purchase-service'}),{seed:'purchase-service'});
+const state={evolution:{marbles:base.marbles,durable_levels:base.durable_levels,pending_births:[],birth_history:[],applied_marble_purchases:[]}};
+const out=applyConfirmedPurchaseToEntityState(state,{purchaseId:'order-42',quantity:2,confirmed:true,at:'2026-09-10T13:00:00.000Z',seed:'purchase-service'});
+assert.equal(out.idempotent,false);
+assert.equal(out.state.evolution.marbles.length,202);
+assert.equal(out.births.length,2);
+assert.equal(out.render_queue.length,2);
+assert.deepEqual(out.births.map(x=>x.body_count_after),[201,202]);
+assert.equal(out.state.evolution.pending_births.length,2);
+assert.equal(out.state.evolution.birth_history.length,2);
+assert.ok(out.births.every(x=>x.source==='purchase'&&x.purchase_id==='order-42'));
+const replay=applyConfirmedPurchaseToEntityState(out.state,{purchaseId:'order-42',quantity:2,confirmed:true,at:'2026-09-10T13:01:00.000Z',seed:'purchase-service'});
+assert.equal(replay.idempotent,true);
+assert.equal(replay.births.length,0);
+assert.equal(replay.render_queue.length,0);
+assert.equal(replay.state.evolution.marbles.length,202);
+console.log('Entity purchase service runtime tests: OK');
