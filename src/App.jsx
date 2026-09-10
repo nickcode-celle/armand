@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Conversation from './pages/Conversation';
 import Entity from './pages/Entity';
+import EmaeaGraphicTest from './pages/EmaeaGraphicTest';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -41,6 +42,7 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<Home />} />
       <Route path="/conversation" element={<Conversation />} />
       <Route path="/entity" element={<Entity />} />
+      <Route path="/entity-graphics-test" element={<EmaeaGraphicTest />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
