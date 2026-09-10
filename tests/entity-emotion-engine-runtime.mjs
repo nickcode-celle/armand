@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import {applyEmotionChanges,normalizeEmotionChanges} from '../server/entity-emotion-engine.mjs';
+import {applyEmotionChanges,normalizeEmotionChanges,EMOTION_SENTIMENTS} from '../server/entity-emotion-engine.mjs';
+
+assert.deepEqual(EMOTION_SENTIMENTS,['Joie','Tristesse','Colère','Peur','Surprise','Fierté','Tendresse','Confiance','Amour']);
 
 const birth=applyEmotionChanges({},[{sentiment:'Joie',operation:'NAITRE',intensite_avant:null,intensite_apres:'faible',cause:'bonne nouvelle',justification:'impact réel'}],{at:'2026-09-10T09:00:00.000Z'});
 assert.equal(birth.active.length,1);
@@ -23,7 +25,10 @@ assert.equal(amour[0].operation,'NAITRE');
 assert.equal(amour[0].intensite_apres,'modéré');
 assert.equal(amour[0].ancrage_relationnel,'relation construite');
 
-let tooMany=false;try{normalizeEmotionChanges([{sentiment:'A',operation:'NAITRE',intensite_apres:'faible'},{sentiment:'B',operation:'NAITRE',intensite_apres:'faible'},{sentiment:'C',operation:'NAITRE',intensite_apres:'faible'},{sentiment:'D',operation:'NAITRE',intensite_apres:'faible'}])}catch{tooMany=true}assert.equal(tooMany,true);
+assert.throws(()=>normalizeEmotionChanges([{sentiment:'Aversion',operation:'NAITRE',intensite_apres:'faible'}]));
+assert.throws(()=>normalizeEmotionChanges([{sentiment:'Amour',operation:'NAITRE',intensite_apres:'faible'}]));
+
+let tooMany=false;try{normalizeEmotionChanges([{sentiment:'Joie',operation:'NAITRE',intensite_apres:'faible'},{sentiment:'Tristesse',operation:'NAITRE',intensite_apres:'faible'},{sentiment:'Colère',operation:'NAITRE',intensite_apres:'faible'},{sentiment:'Peur',operation:'NAITRE',intensite_apres:'faible'}])}catch{tooMany=true}assert.equal(tooMany,true);
 let badMaintain=false;try{applyEmotionChanges(birth,[{sentiment:'Joie',operation:'MAINTENIR',intensite_apres:'fort'}])}catch{badMaintain=true}assert.equal(badMaintain,true);
 
 console.log('Entity emotion engine runtime tests: OK');
