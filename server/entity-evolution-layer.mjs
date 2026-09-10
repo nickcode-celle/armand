@@ -6,6 +6,7 @@ import {createInitialMarbleAssignments} from './entity-marble-allocation.mjs';
 import {initializeMarbleValues} from './entity-initializer.mjs';
 import {applyEmotionChanges} from './entity-emotion-engine.mjs';
 import {processRewardProgression} from './entity-reward-progression.mjs';
+import {buildRewardRenderQueue} from './entity-reward-render-contract.mjs';
 
 const transcript=messages=>(messages||[]).map(m=>`${m.role==='assistant'?'EMÆÄ':'Personne'}: ${String(m.content||'')}`).join('\n');
 const now=()=>new Date().toISOString();
@@ -93,6 +94,7 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
       return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:`récompenses: ${String(error?.message||error)}`,observer}};
     }
 
+    const renderQueue=buildRewardRenderQueue(progression.rewardState,evolution.marbles.length);
     const nextState={...state,evolution,emotion,rewards:progression.rewardState};
     const expected=Number(snapshot.committed_revision??state.revision??0);
     const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:at};
@@ -103,13 +105,14 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
       ...result,
       evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,state:evolution},
       emotion,
-      rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status},
+      rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status,render_queue:renderQueue},
       meta:{
         ...(result.meta||{}),
         evolution_ok:true,
         evolution_changes:applied.changes.length,
         emotion_changes:emotion.last_changes.length,
         reward_events:progression.rewards.length,
+        reward_render_queue:renderQueue.length,
         marble_evolution_skipped:marbleApplied.skipped,
         marble_evolution_reason:marbleApplied.reason||null
       }
