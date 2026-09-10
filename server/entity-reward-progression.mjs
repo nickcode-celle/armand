@@ -11,15 +11,16 @@ function canonicalIntensity(value){
   if(raw==='faible')return'faible';if(raw==='modere')return'modéré';if(raw==='fort')return'fort';return null;
 }
 function average(value){
-  if(value==null)return null;
+  if(value==null||value==='')return null;
   if(typeof value==='number')return Number.isFinite(value)?value:null;
   if(typeof value!=='object')return null;
-  const xs=Object.values(value).map(Number).filter(Number.isFinite);
+  const xs=Object.values(value).filter(v=>v!=null&&v!=='').map(Number).filter(Number.isFinite);
   return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null;
 }
 export function rewardDomainLevels(evolution={}){
   const d=evolution?.durable_levels||{};
-  const h=Number(evolution?.history_level);
+  const rawHistory=evolution?.history_level;
+  const h=rawHistory==null||rawHistory===''?null:Number(rawHistory);
   return{'Personnalité':average(d['Personnalité']),'Relation':average(d['Relation']),'Goûts':average(d['Goûts']),'Opinions/Valeurs':average(d['Opinions/Valeurs']),'Connaissances':average(d['Connaissances']),'Monde propre':average(d['Monde propre']),'Histoire vécue':Number.isFinite(h)?h:null,'Capacités':average(d['Capacités'])};
 }
 
@@ -36,7 +37,6 @@ export function processRewardProgression({rewardState={},emotionState={},evoluti
   const produced=[];
   if(!rewards.threshold_open){rewards.updated_at=at;return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold:{...threshold,threshold_open:false},status:acquisitionStatus(emotion,tier)}}
 
-  // Le tour qui ouvre le seuil ne compte encore aucun sentiment : le cycle commence après l'ouverture.
   if(!wasOpen&&threshold.threshold_valid){
     rewards.updated_at=at;
     return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold:{...threshold,threshold_open:true,opened_now:true},status:acquisitionStatus(emotion,tier)};
