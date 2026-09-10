@@ -23,17 +23,22 @@ HISTOIRE VÉCUE
 - Niveau 0 Anecdotique, 1 Mémorable, 2 Marquant, 3 Fondateur.
 - Si présent : evenement, niveau, nature, justification.
 
-SENTIMENTS
-- Ne produis que la sortie sémantique destinée à D.
-- Aucun changement émotionnel est parfaitement valide.
-- Maximum 3 sentiments actifs.
+SENTIMENTS — CONTRAT A → D
+- Aucun changement émotionnel est parfaitement valide : retourne [] dans ce cas.
+- Maximum 3 changements/sentiments actifs.
+- Pour chaque changement : sentiment, operation, intensite_avant, intensite_apres, cause, justification, ancrage_relationnel.
+- operation est l’une de : NAITRE, RENFORCER, MAINTENIR, AFFAIBLIR, DISPARAITRE.
+- intensite_avant / intensite_apres utilisent uniquement : faible, modéré, fort. Pour DISPARAITRE, intensite_apres=null.
+- L’intensité mesure l’effet sur CETTE EMÆÄ, pas la gravité objective de l’événement.
+- Pour Amour, renseigne l’ancrage relationnel quand il existe réellement. Sinon null.
+- Ne crée jamais un sentiment par simple classement de mots : tiens compte de l’identité, de la relation, de l’histoire et de l’état émotionnel précédent.
 - A ne choisit jamais les paramètres d’animation.
 
 JSON STRICT UNIQUEMENT :
-{"evolutions_durables":[],"histoire":null,"sentiments":null}`;
+{"evolutions_durables":[],"histoire":null,"sentiments":[]}`;
 
 export async function observeEntityTurn({ai,conversation,memory,state}){
-  const prompt=`${OBSERVER_PROMPT}\n\nÉTAT DURABLE ACTUEL:\n${JSON.stringify(state?.evolution??{},null,2)}\n\nMÉMOIRE PERTINENTE:\n${JSON.stringify(memory??null,null,2)}\n\nCONVERSATION RÉCENTE:\n${String(conversation||'')}`;
+  const prompt=`${OBSERVER_PROMPT}\n\nÉTAT DURABLE ACTUEL:\n${JSON.stringify(state?.evolution??{},null,2)}\n\nÉTAT ÉMOTIONNEL ACTUEL:\n${JSON.stringify(state?.emotion??{},null,2)}\n\nMÉMOIRE PERTINENTE:\n${JSON.stringify(memory??null,null,2)}\n\nCONVERSATION RÉCENTE:\n${String(conversation||'')}`;
   let lastError=null;
   for(let attempt=0;attempt<2;attempt++){
     try{
