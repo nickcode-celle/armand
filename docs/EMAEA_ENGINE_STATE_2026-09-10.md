@@ -148,19 +148,36 @@ Les 24 billes réservées aux deux points restent réparties également. Pour le
 - Page d'essai graphique isolée : `/entity-graphics-test`.
 - L'interface finale n'est volontairement pas définie à ce stade.
 - Le shell applicatif EMÆÄ n'utilise plus l'ancien mécanisme d'authentification Base44.
-- Validation CI complète réussie le 10/09/2026 : contrôles syntaxiques, suite `test:entity`, benchmark d'endurance, test de persistance après redémarrage, build Vite, build du conteneur Node et démarrage du conteneur avec volume persistant.
+- Validation CI complète réussie le 10/09/2026 : contrôles syntaxiques, suite `test:entity`, benchmark d'endurance, test de persistance après redémarrage, build Vite, build du conteneur Node et démarrage du conteneur avec stockage local de secours explicitement configuré pour le test.
 - Le build signale uniquement un avertissement de taille de chunk frontend ; il ne bloque pas la compilation.
 
-## Déploiement Node autonome
+## Déploiement production validé
 
-EMÆÄ est un serveur Node autonome. Aucun portage Base44 n'est requis ni souhaité.
+EMÆÄ est déployée comme serveur Node autonome. Aucun portage Base44 n'est requis ni souhaité.
 
 - Entrée serveur : `server/entity-server-v2.mjs`.
-- Le serveur écoute `PORT` / `ENTITY_API_PORT` et `HOST` / `ENTITY_API_HOST`; la valeur hébergée par défaut est `0.0.0.0`.
-- Le stockage mono-instance utilise des fichiers JSON atomiques shardés. En production, `ENTITY_STORAGE_DIR` doit pointer vers un volume persistant monté.
-- Un stockage distant versionné avec leases reste disponible via `ENTITY_STORAGE_URL` si une architecture multi-instance devient nécessaire plus tard.
-- Image de déploiement : `Dockerfile.entity`, Node 22, port 4401, volume `/data`.
-- La route `/health` expose notamment le mode et le chemin de stockage actifs.
-- Le test `entity-production-persistence-runtime.mjs` démarre le vrai serveur, crée un état, redémarre le processus sur le même volume et vérifie que la population et l'état quotidien survivent sans duplication.
+- Hébergement : Render Web Service, runtime Docker, région Frankfurt.
+- URL publique actuelle : `https://emaea.onrender.com`.
+- Health check Render : `/health`.
+- Le serveur écoute `PORT` / `ENTITY_API_PORT` et `HOST` / `ENTITY_API_HOST`; sur Render il se lie à `0.0.0.0` et utilise le port fourni par la plateforme.
+- Stockage persistant de production : Cloudflare R2, bucket privé `emaea-production`.
+- Le moteur sélectionne R2 lorsque `R2_BUCKET`, `R2_ENDPOINT`, `R2_ACCESS_KEY_ID` et `R2_SECRET_ACCESS_KEY` sont présents ; `R2_REGION=auto`.
+- Les snapshots sont stockés sous `entities/<entity-id>/records/runtime-snapshot.json`.
+- Le stockage local shardé reste uniquement un mode de développement/test ou de secours explicitement configuré par `ENTITY_STORAGE_DIR`.
+- Un stockage distant HTTP versionné avec leases reste disponible via `ENTITY_STORAGE_URL` si une autre architecture devient nécessaire plus tard.
+- Image de déploiement : `Dockerfile.entity`, Node 22. L'image ne déclare plus `/data` comme persistance de production.
+- La route `/health` expose notamment `storage: "r2"` lorsque la configuration R2 est active.
 
-Le backend est donc prêt à être déployé sur n'importe quel hébergeur acceptant un conteneur Node et un volume persistant. Le déploiement sur un compte d'hébergement réel nécessite uniquement l'accès à cet hébergeur et ses identifiants ; aucune dépendance technique supplémentaire n'est requise avant la phase interface.
+### Validation réelle effectuée le 10/09/2026
+
+Le déploiement Render a été validé en conditions réelles :
+
+1. `/health` a répondu `ok: true`, `schema_version: 16`, `evolution_engine: "b-v1"` et `storage: "r2"`.
+2. Une Entity de test `emaea-r2-test-20260910` a été créée via `POST /api/entity/state`.
+3. Cloudflare R2 a créé `entities/emaea-r2-test-20260910/records/runtime-snapshot.json` dans le bucket `emaea-production`.
+4. Le service Render a ensuite été redémarré.
+5. La même Entity a été relue avec succès après redémarrage, confirmant que son état provient du stockage persistant R2 et ne dépend pas du filesystem éphémère du conteneur Render.
+
+La chaîne de production validée est donc : **client → API Node EMÆÄ sur Render → Cloudflare R2 → redémarrage du conteneur → récupération du même état persistant**.
+
+La persistance de production n'est plus un verrou technique. La prochaine phase peut porter sur l'interface réelle d'EMÆÄ et son branchement au moteur déjà déployé.
