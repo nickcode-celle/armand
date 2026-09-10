@@ -30,3 +30,24 @@ export function buildBirthRenderCommand(birth){
 export function buildBirthRenderQueue(evolution={}){
   return (Array.isArray(evolution?.pending_births)?evolution.pending_births:[]).map(buildBirthRenderCommand);
 }
+
+/** Une naissance n'est considérée montrée qu'après intégration graphique confirmée par E. */
+export function acknowledgeBirth(evolution={},birthId,{at=new Date().toISOString()}={}){
+  const state=structuredClone(evolution||{}),id=String(birthId||'').trim();
+  if(!id)return state;
+  const pending=Array.isArray(state.pending_births)?state.pending_births:[];
+  const found=pending.find(x=>String(x?.birth_id??x?.marble_id??x?.id||'')===id);
+  if(!found)return state;
+  state.pending_births=pending.filter(x=>String(x?.birth_id??x?.marble_id??x?.id||'')!==id);
+  const history=Array.isArray(state.birth_history)?state.birth_history:[];
+  let matched=false;
+  state.birth_history=history.map(item=>{
+    const same=String(item?.birth_id??item?.marble_id??item?.id||'')===id;
+    if(!same)return item;
+    matched=true;
+    return{...item,status:'shown',shown_at:at};
+  });
+  if(!matched)state.birth_history=[...state.birth_history,{...found,status:'shown',shown_at:at}].slice(-500);
+  state.updated_at=at;
+  return state;
+}
