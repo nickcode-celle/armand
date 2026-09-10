@@ -19,20 +19,24 @@ assert.equal(out.threshold.opened_now,true);
 assert.equal(out.rewards.length,0);
 assert.equal(out.status.acquired.length,0);
 
-out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Peur',operation:'NAITRE',intensite_apres:'modéré'}],at:'2026-09-10T10:01:00Z'});
+// Un palier ouvert reste acquis même si les domaines repassent ensuite sous son seuil.
+const dropped={...evolution,durable_levels:{...evolution.durable_levels,'Personnalité':{a:10},'Relation':{a:10},'Goûts':{a:10},'Opinions/Valeurs':{a:10},'Connaissances':{a:10},'Monde propre':{a:10}},history_level:10};
+out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution:dropped,observerChanges:[{sentiment:'Peur',operation:'NAITRE',intensite_apres:'modéré'}],at:'2026-09-10T10:01:00Z'});
+assert.equal(out.threshold.threshold_valid,false);
+assert.equal(out.threshold.threshold_open,true);
 assert.equal(out.rewards.length,1);
 assert.equal(out.rewards[0].target.value,1);
 emotion=out.emotionState;rewardState=out.rewardState;
 
-out=processRewardProgression({rewardState,emotionState:emotion,evolution,observerChanges:[{sentiment:'Peur',operation:'RENFORCER',intensite_apres:'fort'}],at:'2026-09-10T10:02:00Z'});
+out=processRewardProgression({rewardState,emotionState:emotion,evolution:dropped,observerChanges:[{sentiment:'Peur',operation:'RENFORCER',intensite_apres:'fort'}],at:'2026-09-10T10:02:00Z'});
 assert.equal(out.rewards.length,0);
 
 for(const sentiment of ['Joie','Tristesse','Colère','Surprise','Fierté','Tendresse']){
-  out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment,operation:'NAITRE',intensite_apres:'modéré'}],at:`2026-09-10T10:0${Math.min(9,out.rewardState.pending_rewards.length+2)}:00Z`});
+  out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution:dropped,observerChanges:[{sentiment,operation:'NAITRE',intensite_apres:'modéré'}],at:`2026-09-10T10:0${Math.min(9,out.rewardState.pending_rewards.length+2)}:00Z`});
 }
 assert.equal(out.status.acquired.length,7);
 
-out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution,observerChanges:[
+out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution:dropped,observerChanges:[
   {sentiment:'Confiance',operation:'NAITRE',intensite_apres:'modéré'},
   {sentiment:'Amour',operation:'NAITRE',intensite_apres:'modéré',ancrage_relationnel:'ETABLI'}
 ],at:'2026-09-10T10:15:00Z'});
@@ -40,7 +44,7 @@ assert.equal(out.status.acquired.length,8);
 assert.equal(out.rewards.length,1);
 assert.equal(out.rewards[0].target.value,8);
 
-out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution,observerChanges:[{sentiment:'Amour',operation:'NAITRE',intensite_apres:'modéré',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T10:20:00Z'});
+out=processRewardProgression({rewardState:out.rewardState,emotionState:out.emotionState,evolution:dropped,observerChanges:[{sentiment:'Amour',operation:'NAITRE',intensite_apres:'modéré',ancrage_relationnel:'ETABLI'}],at:'2026-09-10T10:20:00Z'});
 assert.equal(out.rewards[0].target.type,'logo');
 assert.equal(out.rewardState.current_tier,'2');
 
