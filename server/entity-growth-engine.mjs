@@ -29,7 +29,7 @@ export function applyGrowthFromChanges(evolution={},changes=[],{seed='emaea'}={}
         const out=appendBornMarble(marbles,{triggerDomain:domain,triggerSubdomain:subdomain,triggerLevel:after,domainLevels,seed:`${seed}|${token}`});
         marbles=out.marbles;
         crossed[token]=true;
-        births.push({...out.born,threshold,trigger_level:after});
+        births.push({...out.born,threshold,trigger_level:after,body_count_after:marbles.length});
       }
     }
   }
