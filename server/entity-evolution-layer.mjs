@@ -8,9 +8,14 @@ import {applyGrowthFromChanges} from './entity-growth-engine.mjs';
 import {applyEmotionChanges} from './entity-emotion-engine.mjs';
 import {processRewardProgression} from './entity-reward-progression.mjs';
 import {buildRewardRenderQueue} from './entity-reward-render-contract.mjs';
+import {buildBirthRenderQueue} from './entity-birth-render-contract.mjs';
 
 const transcript=messages=>(messages||[]).map(m=>`${m.role==='assistant'?'EMÆÄ':'Personne'}: ${String(m.content||'')}`).join('\n');
 const now=()=>new Date().toISOString();
+
+function birthRecord(birth,at){
+  return{birth_id:String(birth.id),marble_id:String(birth.id),marble:structuredClone(birth),threshold:birth.threshold,trigger_level:birth.trigger_level,body_count_after:birth.body_count_after,created_at:at,status:'pending'};
+}
 
 export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityAI}){
   return async function handleTurnWithEvolution(body){
@@ -67,19 +72,24 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
       historyEvents.push({...observer.histoire,before:out.change?.before??historyLevel,after:out.change?.after??historyLevel,at});
     }
 
-    const birthHistory=[...(baseEvolution.birth_history||[]),...grown.births.map(b=>({...b,at}))].slice(-500);
-    const evolution={...baseEvolution,durable_levels:applied.levels,marbles:grown.marbles,history_level:historyLevel,history_events:historyEvents.slice(-200),history_last_change:historyChange,birth_thresholds:grown.birth_thresholds,birth_history:birthHistory,observer_last:observer,last_changes:applied.changes,last_marble_changes:marbleApplied.changes,last_births:grown.births,updated_at:at};
+    const newBirthRecords=grown.births.map(b=>birthRecord(b,at));
+    const oldPending=Array.isArray(baseEvolution.pending_births)?baseEvolution.pending_births:[];
+    const pendingIds=new Set(oldPending.map(x=>String(x.birth_id)));
+    const pendingBirths=[...oldPending,...newBirthRecords.filter(x=>!pendingIds.has(x.birth_id))];
+    const birthHistory=[...(baseEvolution.birth_history||[]),...newBirthRecords].slice(-500);
+    const evolution={...baseEvolution,durable_levels:applied.levels,marbles:grown.marbles,history_level:historyLevel,history_events:historyEvents.slice(-200),history_last_change:historyChange,birth_thresholds:grown.birth_thresholds,birth_history:birthHistory,pending_births:pendingBirths,observer_last:observer,last_changes:applied.changes,last_marble_changes:marbleApplied.changes,last_births:grown.births,updated_at:at};
 
     let progression;
     try{progression=processRewardProgression({rewardState:state.rewards||{},emotionState:emotion,evolution,observerChanges:emotion.last_changes||[],at});emotion=progression.emotionState}
     catch(error){return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:`récompenses: ${String(error?.message||error)}`,observer}}}
 
     const renderQueue=buildRewardRenderQueue({pending_rewards:progression.rewards},evolution.marbles.length);
+    const birthRenderQueue=buildBirthRenderQueue({pending_births:newBirthRecords});
     const nextState={...state,evolution,emotion,rewards:progression.rewardState};
     const expected=Number(snapshot.committed_revision??state.revision??0);
     const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:at};delete nextSnapshot.memory;
     await runtime.commit(id,expected,{...nextSnapshot,memory});
 
-    return{...result,evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,births:grown.births,history_change:historyChange,state:evolution},emotion,rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status,render_queue:renderQueue},meta:{...(result.meta||{}),evolution_ok:true,evolution_changes:applied.changes.length,emotion_changes:emotion.last_changes.length,reward_events:progression.rewards.length,reward_render_queue:renderQueue.length,new_marble_births:grown.births.length,history_changed:!!historyChange,marble_evolution_skipped:marbleApplied.skipped,marble_evolution_reason:marbleApplied.reason||null}};
+    return{...result,evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,births:grown.births,history_change:historyChange,state:evolution},emotion,rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status,render_queue:renderQueue},births:{new_births:newBirthRecords,render_queue:birthRenderQueue},meta:{...(result.meta||{}),evolution_ok:true,evolution_changes:applied.changes.length,emotion_changes:emotion.last_changes.length,reward_events:progression.rewards.length,reward_render_queue:renderQueue.length,new_marble_births:grown.births.length,birth_render_queue:birthRenderQueue.length,history_changed:!!historyChange,marble_evolution_skipped:marbleApplied.skipped,marble_evolution_reason:marbleApplied.reason||null}};
   };
 }
