@@ -19,26 +19,37 @@ async function interpolateCenters(centers,from,to,duration,onFrame){
     await frame();
   }
 }
+function snapshotMaterial(m){return m?{color:m.color?.clone?.()??null,metalness:m.metalness,roughness:m.roughness,envMap:m.envMap,envMapIntensity:m.envMapIntensity}:null}
+function restoreMaterial(m,s){if(!m||!s)return;if(s.color&&m.color)m.color.copy(s.color);if(s.metalness!=null)m.metalness=s.metalness;if(s.roughness!=null)m.roughness=s.roughness;if('envMap'in s)m.envMap=s.envMap;if(s.envMapIntensity!=null)m.envMapIntensity=s.envMapIntensity;m.needsUpdate=true}
 
 /**
- * Joue une récompense sur le moteur normal d'EMÆÄ : mêmes billes, mêmes matériaux,
- * seule la position des centres de squelette est interpolée. La couleur de palier est
- * temporaire et les couleurs individuelles sont restaurées au retour.
+ * Joue une récompense sur le moteur normal d'EMÆÄ. Les sentiments n'ont aucun
+ * comportement graphique propre : seuls chiffre/logo et couleur de récompense sont rendus.
  */
 export async function playEmaeaReward(runtime,command){
   validateRuntime(runtime,command);
   const centers=runtime.centers,marbles=runtime.marbles;
   const origin=centers.map(p=>p.clone());
   const target=makeRewardCenters(command);
-  const originalColors=marbles.map(m=>m?.material?.color?.clone?.()??null);
-  const tierColor=new THREE.Color(command.color);
+  const originals=marbles.map(m=>snapshotMaterial(m?.material));
+  const rewardColor=new THREE.Color(command.color);
 
   await interpolateCenters(centers,origin,target,command.timing.morph_ms,runtime.updateCells);
-  for(const marble of marbles){if(marble?.material?.color){marble.material.color.copy(tierColor);marble.material.needsUpdate=true}}
+  for(const marble of marbles){
+    const material=marble?.material;if(!material)continue;
+    if(material.color)material.color.copy(rewardColor);
+    if(command.full_gold_logo&&command.gold_material){
+      material.metalness=command.gold_material.metalness;
+      material.roughness=command.gold_material.roughness;
+      material.envMapIntensity=command.gold_material.envMapIntensity;
+      if(runtime.goldEnv)material.envMap=runtime.goldEnv;
+    }
+    material.needsUpdate=true;
+  }
   runtime.updateCells?.();
   await wait(command.timing.hold_ms);
   await interpolateCenters(centers,target,origin,command.timing.return_ms,runtime.updateCells);
-  marbles.forEach((marble,i)=>{if(originalColors[i]&&marble?.material?.color){marble.material.color.copy(originalColors[i]);marble.material.needsUpdate=true}});
+  marbles.forEach((marble,i)=>restoreMaterial(marble?.material,originals[i]));
   runtime.updateCells?.();
   return command.reward_id;
 }
