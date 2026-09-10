@@ -3,6 +3,7 @@ import {observeEntityTurn} from './entity-observer.mjs';
 import {applyEvolutionEvents} from './entity-evolution-engine.mjs';
 import {applyChangesToMarbles} from './entity-marble-evolution.mjs';
 import {applyEmotionChanges} from './entity-emotion-engine.mjs';
+import {buildEmotionRenderIntents} from './entity-emotion-graphics-contract.mjs';
 
 const transcript=messages=>(messages||[]).map(m=>`${m.role==='assistant'?'EMÆÄ':'Personne'}: ${String(m.content||'')}`).join('\n');
 const now=()=>new Date().toISOString();
@@ -53,6 +54,13 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
       return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:`émotion: ${String(error?.message||error)}`,observer}};
     }
 
+    let emotionRenderIntents;
+    try{
+      emotionRenderIntents=buildEmotionRenderIntents(emotion);
+    }catch(error){
+      return{...result,meta:{...(result.meta||{}),evolution_ok:false,evolution_error:`D→E: ${String(error?.message||error)}`,observer}};
+    }
+
     const history=[...(state.evolution?.history_events||[])];
     if(observer.histoire)history.push({...observer.histoire,at});
     const evolution={
@@ -74,12 +82,13 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
     return{
       ...result,
       evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,state:evolution},
-      emotion,
+      emotion:{...emotion,render_intents:emotionRenderIntents},
       meta:{
         ...(result.meta||{}),
         evolution_ok:true,
         evolution_changes:applied.changes.length,
         emotion_changes:emotion.last_changes.length,
+        emotion_render_intents:emotionRenderIntents.length,
         marble_evolution_skipped:marbleApplied.skipped,
         marble_evolution_reason:marbleApplied.reason||null
       }
