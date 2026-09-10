@@ -31,9 +31,10 @@ export function processRewardProgression({rewardState={},emotionState={},evoluti
   if(!tier)return{rewardState:rewards,emotionState:emotion,rewards:[],threshold:null,status:null};
 
   const threshold=evaluateTierThreshold({tier,population:Array.isArray(evolution?.marbles)?evolution.marbles.length:0,levels:rewardDomainLevels(evolution),completedTiers:rewards.completed_tiers});
-  rewards.threshold_open=threshold.threshold_valid;
+  const wasOpen=rewards.threshold_open===true;
+  rewards.threshold_open=wasOpen||threshold.threshold_valid;
   const produced=[];
-  if(!threshold.threshold_valid){rewards.updated_at=at;return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold,status:acquisitionStatus(emotion,tier)}}
+  if(!rewards.threshold_open){rewards.updated_at=at;return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold:{...threshold,threshold_open:false},status:acquisitionStatus(emotion,tier)}}
 
   for(const change of Array.isArray(observerChanges)?observerChanges:[]){
     const operation=String(change?.operation??'').trim().toUpperCase();
@@ -60,7 +61,7 @@ export function processRewardProgression({rewardState={},emotionState={},evoluti
   }
 
   rewards.updated_at=at;
-  return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold,status:acquisitionStatus(emotion,tier)};
+  return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold:{...threshold,threshold_open:true},status:acquisitionStatus(emotion,tier)};
 }
 
 export function acknowledgeReward(rewardState={},rewardId,{at=new Date().toISOString()}={}){
