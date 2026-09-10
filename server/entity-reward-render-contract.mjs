@@ -1,4 +1,4 @@
-const COLORS=new Set(['#28C95B','#2468D8','#7137C8','#E5231F']);
+const COLORS=new Set(['#28C95B','#2468D8','#7137C8','#E5231F','#FFC928']);
 
 /**
  * Transforme une récompense persistée en commande graphique pour E.
@@ -17,6 +17,8 @@ export function buildRewardRenderCommand(reward,bodyCount){
   if(type==='digit'&&(!Number.isInteger(Number(value))||Number(value)<1||Number(value)>8))throw new Error(`Chiffre de récompense invalide: ${value}`);
   if(type==='logo'&&value!=='EMÆÄ')throw new Error('Logo de récompense invalide');
   if(!['digit','logo'].includes(type))throw new Error(`Type de récompense graphique invalide: ${type}`);
+  const ultimate=reward.ultimate===true||target.gold===true;
+  if(ultimate&&!(type==='logo'&&color==='#FFC928'))throw new Error('Récompense ultime invalide');
   return{
     reward_id:String(reward.id||''),
     kind:type,
@@ -26,6 +28,8 @@ export function buildRewardRenderCommand(reward,bodyCount){
     real_persistent_marbles:true,
     skeleton_only:true,
     preserve_individual_effects:true,
+    full_gold_logo:ultimate,
+    gold_material:ultimate?{color:'#FFC928',metalness:0.92,roughness:0.20,envMapIntensity:1.55}:null,
     timing:{morph_ms:5000,hold_ms:30000,return_ms:5000},
     engine:'EMAEA_NORMAL',
     obsolete_special_form_engine:false
