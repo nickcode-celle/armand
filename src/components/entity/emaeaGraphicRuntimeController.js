@@ -39,7 +39,7 @@ export function createEmaeaGraphicRuntimeController({container,entityId,initialE
   const detachReward=attachEmaeaRewardBridge(runtime,{entityId,acknowledge:acknowledgeReward});
   const detachBirth=attachEmaeaBirthBridge(runtime,{entityId,acknowledge:acknowledgeBirth});
   const detachDaily=typeof requestDailyBirth==='function'
-    ? attachEmaeaDailyBirthBridge({entityId,requestDailyBirth})
+    ? attachEmaeaDailyBirthBridge({entityId,requestDailyBirth,timeZone:initialEvolution?.daily_birth_time_zone})
     : null;
   let disposed=false,lastQueuedState=null;
 
