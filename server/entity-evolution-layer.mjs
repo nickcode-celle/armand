@@ -60,8 +60,10 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
     const historyEvents=[...(baseEvolution.history_events||[])];
     let historyLevel=baseEvolution.history_level??null,historyChange=null;
     if(observer.histoire){
-      historyEvents.push({...observer.histoire,at});
-      if(historyLevel!=null){const out=applyHistoryEvent(historyLevel,observer.histoire);historyLevel=out.level;historyChange=out.change}
+      const out=applyHistoryEvent(historyLevel,observer.histoire);
+      historyLevel=out.level;
+      historyChange=out.change;
+      historyEvents.push({...observer.histoire,before:out.change?.before??historyLevel,after:out.change?.after??historyLevel,at});
     }
 
     const birthHistory=[...(baseEvolution.birth_history||[]),...grown.births.map(b=>({...b,at}))].slice(-500);
@@ -77,6 +79,6 @@ export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityA
     const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:at};delete nextSnapshot.memory;
     await runtime.commit(id,expected,{...nextSnapshot,memory});
 
-    return{...result,evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,births:grown.births,history_change:historyChange,state:evolution},emotion,rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status,render_queue:renderQueue},meta:{...(result.meta||{}),evolution_ok:true,evolution_changes:applied.changes.length,emotion_changes:emotion.last_changes.length,reward_events:progression.rewards.length,reward_render_queue:renderQueue.length,new_marble_births:grown.births.length,marble_evolution_skipped:marbleApplied.skipped,marble_evolution_reason:marbleApplied.reason||null}};
+    return{...result,evolution:{observer,changes:applied.changes,marble_changes:marbleApplied.changes,births:grown.births,history_change:historyChange,state:evolution},emotion,rewards:{state:progression.rewardState,new_rewards:progression.rewards,threshold:progression.threshold,status:progression.status,render_queue:renderQueue},meta:{...(result.meta||{}),evolution_ok:true,evolution_changes:applied.changes.length,emotion_changes:emotion.last_changes.length,reward_events:progression.rewards.length,reward_render_queue:renderQueue.length,new_marble_births:grown.births.length,history_changed:!!historyChange,marble_evolution_skipped:marbleApplied.skipped,marble_evolution_reason:marbleApplied.reason||null}};
   };
 }
