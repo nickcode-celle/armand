@@ -15,9 +15,17 @@ function levelFor(domainLevels,domain,subdomain){
   if(raw==null||raw==='')throw new Error(`Niveau global absent pour la nouvelle bille: ${domain} / ${subdomain}`);
   const n=Number(raw);if(!Number.isFinite(n))throw new Error(`Niveau global invalide: ${domain} / ${subdomain}`);return clamp(n);
 }
+function randomDomainSlots(id,domainLevels,seed){
+  const domains={};
+  for(const domain of PER_MARBLE_DOMAINS){
+    const subdomain=pick(MARBLE_DOMAIN_CATALOG[domain],`${seed}|${id}|${domain}`);
+    domains[domain]={subdomain,value:levelFor(domainLevels,domain,subdomain)};
+  }
+  return domains;
+}
 
 /**
- * Construit les données persistantes d'une vraie nouvelle bille.
+ * Construit les données persistantes d'une vraie nouvelle bille déclenchée par un sous-domaine.
  * Le domaine déclencheur reçoit le niveau courant du sous-domaine déclencheur.
  * Pour les autres domaines par-bille, le sous-domaine est tiré aléatoirement et
  * la valeur initiale prend sa moyenne globale courante : ajouter la bille ne
@@ -28,7 +36,7 @@ export function createBornMarble(existingMarbles,{triggerDomain,triggerSubdomain
   if(!PER_MARBLE_DOMAINS.includes(domain))throw new Error(`Domaine déclencheur invalide: ${domain}`);
   if(!MARBLE_DOMAIN_CATALOG[domain].includes(subdomain))throw new Error(`Sous-domaine déclencheur invalide: ${subdomain}`);
 
-  const id=nextMarbleId(existingMarbles||[]),marble={id,domains:{},birth:{trigger_domain:domain,trigger_subdomain:subdomain}};
+  const id=nextMarbleId(existingMarbles||[]),marble={id,domains:{},birth:{source:'threshold',trigger_domain:domain,trigger_subdomain:subdomain}};
   for(const d of PER_MARBLE_DOMAINS){
     if(d===domain){marble.domains[d]={subdomain,value:clamp(triggerLevel)};continue}
     const assigned=pick(MARBLE_DOMAIN_CATALOG[d],`${seed}|${id}|${d}`);
@@ -37,7 +45,22 @@ export function createBornMarble(existingMarbles,{triggerDomain,triggerSubdomain
   return marble;
 }
 
+/**
+ * Bille sans sous-domaine déclencheur (naissance quotidienne ou achat confirmé).
+ * Tous ses sous-domaines sont tirés de façon stable et sa valeur initiale reprend
+ * la moyenne globale courante du sous-domaine choisi. La naissance reste donc neutre
+ * sur les niveaux d'EMÆÄ.
+ */
+export function createNeutralBornMarble(existingMarbles,{domainLevels={},seed='emaea',source='daily',metadata=null}={}){
+  const id=nextMarbleId(existingMarbles||[]);
+  return{id,domains:randomDomainSlots(id,domainLevels,seed),birth:{source:String(source||'neutral'),...(metadata&&typeof metadata==='object'?metadata:{})}};
+}
+
 export function appendBornMarble(existingMarbles,options){
   const current=Array.isArray(existingMarbles)?structuredClone(existingMarbles):[];
   const marble=createBornMarble(current,options);current.push(marble);return{marbles:current,born:marble};
+}
+export function appendNeutralBornMarble(existingMarbles,options){
+  const current=Array.isArray(existingMarbles)?structuredClone(existingMarbles):[];
+  const marble=createNeutralBornMarble(current,options);current.push(marble);return{marbles:current,born:marble};
 }
