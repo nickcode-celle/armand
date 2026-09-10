@@ -29,8 +29,14 @@ export function buildBirthRenderCommand(birth){
   };
 }
 
+/**
+ * Les naissances doivent toujours être rejouées dans l'ordre de population : 201, 202, 203…
+ * Cela rend la récupération après rechargement indépendante de l'ordre accidentel du stockage.
+ */
 export function buildBirthRenderQueue(evolution={}){
-  return (Array.isArray(evolution?.pending_births)?evolution.pending_births:[]).map(buildBirthRenderCommand);
+  return (Array.isArray(evolution?.pending_births)?evolution.pending_births:[])
+    .map(buildBirthRenderCommand)
+    .sort((a,b)=>a.body_count_after-b.body_count_after||a.birth_id.localeCompare(b.birth_id));
 }
 
 /** Une naissance n'est considérée montrée qu'après intégration graphique confirmée par E. */
