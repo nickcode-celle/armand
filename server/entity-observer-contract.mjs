@@ -1,3 +1,5 @@
+import {normalizeEmotionChanges} from './entity-emotion-engine.mjs';
+
 const EVOLUTIONS=new Set([1,2,3,-1]);
 
 function text(value){return typeof value==='string'?value.trim():''}
@@ -40,6 +42,6 @@ export function normalizeObserverOutput(raw={}){
   return{
     evolutions_durables:durableRaw.map(normalizeDurable),
     histoire:normalizeHistory(raw.histoire??null),
-    sentiments:raw.sentiments??null
+    sentiments:normalizeEmotionChanges(raw.sentiments??null)
   };
 }
