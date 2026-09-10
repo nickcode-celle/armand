@@ -8,6 +8,7 @@ const now=()=>new Date().toISOString();
 export function createEvolutionLayer({handleTurn,runtime,aiFactory=createEntityAI}){
   return async function handleTurnWithEvolution(body){
     const result=await handleTurn(body);
+    if(result?.meta?.idempotent_replay)return result;
     const key=process.env.OPENAI_API_KEY;
     if(!key)return result;
 
