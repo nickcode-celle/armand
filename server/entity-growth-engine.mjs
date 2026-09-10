@@ -13,6 +13,7 @@ export function applyGrowthFromChanges(evolution={},changes=[],{seed='emaea'}={}
   let marbles=Array.isArray(evolution.marbles)?structuredClone(evolution.marbles):[];
   const crossed={...(evolution.birth_thresholds||{})};
   const births=[];
+  const domainLevels=evolution.durable_levels||{};
 
   for(const change of Array.isArray(changes)?changes:[]){
     const domain=String(change?.domaine||'');
@@ -25,7 +26,7 @@ export function applyGrowthFromChanges(evolution={},changes=[],{seed='emaea'}={}
       const token=key(domain,subdomain,threshold);
       if(crossed[token])continue;
       if(before<threshold&&after>=threshold){
-        const out=appendBornMarble(marbles,{triggerDomain:domain,triggerSubdomain:subdomain,triggerLevel:after,seed:`${seed}|${token}`});
+        const out=appendBornMarble(marbles,{triggerDomain:domain,triggerSubdomain:subdomain,triggerLevel:after,domainLevels,seed:`${seed}|${token}`});
         marbles=out.marbles;
         crossed[token]=true;
         births.push({...out.born,threshold,trigger_level:after});
