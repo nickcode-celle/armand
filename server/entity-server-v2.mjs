@@ -1,14 +1,205 @@
-import http from 'node:http';import fs from 'node:fs';import path from 'node:path';
-import {createEntityStorage} from './entity-storage.mjs';import {createRecallEngine} from './entity-recall.mjs';import {createMemoryService} from './entity-memory.mjs';import {createEntityLock} from './entity-lock.mjs';import {createRecallOrchestrator} from './entity-recall-orchestrator.mjs';import {createRuntimeStore} from './entity-runtime.mjs';import {createEntityEngine} from './entity-engine.mjs';import {createEvolutionLayer} from './entity-evolution-layer.mjs';import {ensureInitialEvolutionState} from './entity-initial-state.mjs';import {applyDailyBirths} from './entity-daily-birth-engine.mjs';import {acknowledgeReward} from './entity-reward-progression.mjs';import {buildRewardRenderQueue} from './entity-reward-render-contract.mjs';import {buildBirthRenderQueue,acknowledgeBirth} from './entity-birth-render-contract.mjs';import {createLegacyEntityReader} from './entity-legacy.mjs';import {ENTITY_SCHEMA_VERSION} from './entity-schema.mjs';import {httpError,badRequest} from './entity-errors.mjs';
-const ROOT=process.cwd(),PORT=Number(process.env.PORT||process.env.ENTITY_API_PORT||4401),HOST=String(process.env.HOST||process.env.ENTITY_API_HOST||'0.0.0.0'),serverMetrics={requests:0,errors:0,errors_by_code:{}};for(const f of ['.env','.env.local']){const p=path.join(ROOT,f);if(fs.existsSync(p))for(const l of fs.readFileSync(p,'utf8').split(/\r?\n/)){const x=l.trim(),i=x.indexOf('=');if(x&&x[0]!=='#'&&i>0&&!process.env[x.slice(0,i).trim()])process.env[x.slice(0,i).trim()]=x.slice(i+1).trim().replace(/^['"]|['"]$/g,'')}}
-const storage=createEntityStorage({root:ROOT}),recall=createRecallEngine(),legacy=createLegacyEntityReader(ROOT),memoryService=createMemoryService({storage,legacy}),runtime=createRuntimeStore({storage,memoryService}),lock=createEntityLock({root:ROOT,storage}),orchestrate=createRecallOrchestrator({storage,recall,legacyCache:file=>file,legacyIndex:(id,kind)=>legacy.embedding(id,kind)}),baseHandleTurn=createEntityEngine({storage,runtime,memoryService,orchestrate,recall}),handleTurn=createEvolutionLayer({handleTurn:baseHandleTurn,runtime});
-async function body(req){return new Promise((ok,no)=>{let s='',failed=false;req.on('data',c=>{if(failed)return;s+=c;if(s.length>200000){failed=true;no(badRequest('Requête trop volumineuse','REQUEST_TOO_LARGE'))}});req.on('end',()=>{if(failed)return;try{ok(JSON.parse(s||'{}'))}catch{no(badRequest('JSON invalide','INVALID_JSON'))}});req.on('error',no)})}const json=(res,status,x)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(x))};
-function dailyBirthRecord(birth,at){return{birth_id:String(birth.id),marble_id:String(birth.id),marble:structuredClone(birth),source:'daily',threshold:null,trigger_level:null,daily_date:birth.daily_date??birth?.birth?.daily_date??null,body_count_after:birth.body_count_after,created_at:at,status:'pending'}}
-async function ensureSnapshot(id,{withMemory=false,dailyOnConnection=false}={}){const snapshot=await runtime.load(id,{}, {withMemory}),state=snapshot.state||{},memory=snapshot.memory??null,at=new Date().toISOString();const initialized=ensureInitialEvolutionState(state,id,{at});const daily=dailyOnConnection?applyDailyBirths(initialized,{now:new Date(at),seed:id}):{evolution:initialized,births:[]},records=daily.births.map(b=>dailyBirthRecord(b,at));if(!records.length&&initialized===state.evolution)return snapshot;const oldPending=Array.isArray(daily.evolution.pending_births)?daily.evolution.pending_births:[],pendingIds=new Set(oldPending.map(x=>String(x.birth_id))),pending=[...oldPending,...records.filter(x=>!pendingIds.has(x.birth_id))],history=[...(daily.evolution.birth_history||[]),...records].slice(-500),evolution={...daily.evolution,pending_births:pending,birth_history:history,last_births:records.length?daily.births:(daily.evolution.last_births||[]),updated_at:at},expected=Number(snapshot.committed_revision??state.revision??0),nextState={...state,evolution},nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:at};delete nextSnapshot.memory;await runtime.commit(id,expected,{...nextSnapshot,memory});return{...nextSnapshot,memory}}
-async function acknowledgeRewardRequest(bodyData){const id=String(bodyData?.entityId||'').trim(),rewardId=String(bodyData?.rewardId||'').trim();if(!id||!rewardId)throw badRequest('entityId ou rewardId manquant','REWARD_ACK_INVALID');const snapshot=await ensureSnapshot(id,{withMemory:true}),state=snapshot.state||{},expected=Number(snapshot.committed_revision??state.revision??0),nextRewards=acknowledgeReward(state.rewards||{},rewardId),nextState={...state,rewards:nextRewards},nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:new Date().toISOString()};delete nextSnapshot.memory;await runtime.commit(id,expected,{...nextSnapshot,memory:snapshot.memory??null});return{ok:true,rewards:nextRewards}}
-async function acknowledgeBirthRequest(bodyData){const id=String(bodyData?.entityId||'').trim(),birthId=String(bodyData?.birthId||'').trim();if(!id||!birthId)throw badRequest('entityId ou birthId manquant','BIRTH_ACK_INVALID');const snapshot=await ensureSnapshot(id,{withMemory:true}),state=snapshot.state||{},expected=Number(snapshot.committed_revision??state.revision??0),evolution=acknowledgeBirth(state.evolution||{},birthId),nextState={...state,evolution},nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:new Date().toISOString()};delete nextSnapshot.memory;await runtime.commit(id,expected,{...nextSnapshot,memory:snapshot.memory??null});return{ok:true,evolution}}
-async function pendingRewards(bodyData){const id=String(bodyData?.entityId||'').trim();if(!id)throw badRequest('entityId manquant','REWARD_QUEUE_INVALID');const snapshot=await ensureSnapshot(id),state=snapshot.state||{},count=Array.isArray(state.evolution?.marbles)?state.evolution.marbles.length:0;return{ok:true,render_queue:count?buildRewardRenderQueue(state.rewards||{},count):[],rewards:state.rewards||null}}
-async function pendingBirths(bodyData){const id=String(bodyData?.entityId||'').trim();if(!id)throw badRequest('entityId manquant','BIRTH_QUEUE_INVALID');const snapshot=await ensureSnapshot(id),state=snapshot.state||{};return{ok:true,render_queue:buildBirthRenderQueue(state.evolution||{}),pending_births:state.evolution?.pending_births||[]}}
-async function dailyBirths(bodyData){const id=String(bodyData?.entityId||'').trim();if(!id)throw badRequest('entityId manquant','DAILY_BIRTH_INVALID');const snapshot=await ensureSnapshot(id,{dailyOnConnection:true}),state=snapshot.state||{};return{ok:true,evolution:state.evolution||null,render_queue:buildBirthRenderQueue(state.evolution||{}),pending_births:state.evolution?.pending_births||[]}}
-async function graphicalState(bodyData){const id=String(bodyData?.entityId||'').trim();if(!id)throw badRequest('entityId manquant','GRAPHIC_STATE_INVALID');const snapshot=await ensureSnapshot(id,{dailyOnConnection:true}),state=snapshot.state||{};return{ok:true,schema_version:state.schema_version??ENTITY_SCHEMA_VERSION,revision:state.revision??0,evolution:state.evolution||null,rewards:state.rewards||null}}
-http.createServer(async(req,res)=>{try{if(req.method==='POST'&&req.url==='/api/entity'){serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>handleTurn(b)))}if(req.method==='POST'&&req.url==='/api/entity/reward-ack'){serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>acknowledgeRewardRequest(b)))}if(req.method==='POST'&&req.url==='/api/entity/rewards'){serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>pendingRewards(b)))}if(req.method==='POST'&&req.url==='/api/entity/birth-ack'){serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>acknowledgeBirthRequest(b)))}if(req.method==='POST'&&req.url==='/api/entity/births'){serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>pendingBirths(b)))}if(req.method==='POST'&&req.url==='/api/entity/daily-births'){serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>dailyBirths(b)))}if(req.method==='POST'&&req.url==='/api/entity/state'){serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>graphicalState(b)))}if(req.method==='GET'&&req.url==='/health')return json(res,200,{ok:true,memory_engine:'v8',evolution_engine:'b-v1',reward_engine:'tiers-v1',birth_engine:'sphere-v1+daily-8h-live-or-next-connection',schema_version:ENTITY_SCHEMA_VERSION,storage:storage.mode,storage_root:storage.storageRoot||null,recall:recall.mode,server_metrics:serverMetrics,lock_metrics:lock.metrics,storage_metrics:storage.metrics,recall_metrics:recall.metrics});res.writeHead(404);res.end()}catch(raw){const e=httpError(raw);serverMetrics.errors++;serverMetrics.errors_by_code[e.code]=(serverMetrics.errors_by_code[e.code]||0)+1;console.error('[entity]',e.code,e.message);if(!res.headersSent)json(res,e.status,{error:e.message,code:e.code})}}).listen(PORT,HOST,()=>console.log(`[entity] API sur http://${HOST}:${PORT} — stockage ${storage.mode} — recall ${recall.mode}`));
+import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import {createEntityStorage} from './entity-storage.mjs';
+import {createRecallEngine} from './entity-recall.mjs';
+import {createMemoryService} from './entity-memory.mjs';
+import {createEntityLock} from './entity-lock.mjs';
+import {createRecallOrchestrator} from './entity-recall-orchestrator.mjs';
+import {createRuntimeStore} from './entity-runtime.mjs';
+import {createEntityEngine} from './entity-engine.mjs';
+import {createEvolutionLayer} from './entity-evolution-layer.mjs';
+import {ensureInitialEvolutionState} from './entity-initial-state.mjs';
+import {applyDailyBirths} from './entity-daily-birth-engine.mjs';
+import {acknowledgeReward} from './entity-reward-progression.mjs';
+import {buildRewardRenderQueue} from './entity-reward-render-contract.mjs';
+import {buildBirthRenderQueue,acknowledgeBirth} from './entity-birth-render-contract.mjs';
+import {createLegacyEntityReader} from './entity-legacy.mjs';
+import {ENTITY_SCHEMA_VERSION} from './entity-schema.mjs';
+import {httpError,badRequest} from './entity-errors.mjs';
+
+const ROOT=process.cwd();
+const PORT=Number(process.env.PORT||process.env.ENTITY_API_PORT||4401);
+const HOST=String(process.env.HOST||process.env.ENTITY_API_HOST||'0.0.0.0');
+const DIST_ROOT=path.join(ROOT,'dist');
+const serverMetrics={requests:0,errors:0,errors_by_code:{}};
+
+for(const f of ['.env','.env.local']){
+  const p=path.join(ROOT,f);
+  if(!fs.existsSync(p))continue;
+  for(const l of fs.readFileSync(p,'utf8').split(/\r?\n/)){
+    const x=l.trim(),i=x.indexOf('=');
+    if(x&&x[0]!=='#'&&i>0&&!process.env[x.slice(0,i).trim()]){
+      process.env[x.slice(0,i).trim()]=x.slice(i+1).trim().replace(/^['"]|['"]$/g,'');
+    }
+  }
+}
+
+const storage=createEntityStorage({root:ROOT});
+const recall=createRecallEngine();
+const legacy=createLegacyEntityReader(ROOT);
+const memoryService=createMemoryService({storage,legacy});
+const runtime=createRuntimeStore({storage,memoryService});
+const lock=createEntityLock({root:ROOT,storage});
+const orchestrate=createRecallOrchestrator({storage,recall,legacyCache:file=>file,legacyIndex:(id,kind)=>legacy.embedding(id,kind)});
+const baseHandleTurn=createEntityEngine({storage,runtime,memoryService,orchestrate,recall});
+const handleTurn=createEvolutionLayer({handleTurn:baseHandleTurn,runtime});
+
+async function body(req){
+  return new Promise((ok,no)=>{
+    let s='',failed=false;
+    req.on('data',c=>{
+      if(failed)return;
+      s+=c;
+      if(s.length>200000){failed=true;no(badRequest('Requête trop volumineuse','REQUEST_TOO_LARGE'))}
+    });
+    req.on('end',()=>{
+      if(failed)return;
+      try{ok(JSON.parse(s||'{}'))}catch{no(badRequest('JSON invalide','INVALID_JSON'))}
+    });
+    req.on('error',no);
+  });
+}
+
+const json=(res,status,x)=>{
+  res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});
+  res.end(JSON.stringify(x));
+};
+
+function dailyBirthRecord(birth,at){
+  return{
+    birth_id:String(birth.id),marble_id:String(birth.id),marble:structuredClone(birth),source:'daily',threshold:null,trigger_level:null,
+    daily_date:birth.daily_date??birth?.birth?.daily_date??null,body_count_after:birth.body_count_after,created_at:at,status:'pending'
+  };
+}
+
+async function ensureSnapshot(id,{withMemory=false,dailyOnConnection=false}={}){
+  const snapshot=await runtime.load(id,{}, {withMemory});
+  const state=snapshot.state||{},memory=snapshot.memory??null,at=new Date().toISOString();
+  const initialized=ensureInitialEvolutionState(state,id,{at});
+  const daily=dailyOnConnection?applyDailyBirths(initialized,{now:new Date(at),seed:id}):{evolution:initialized,births:[]};
+  const records=daily.births.map(b=>dailyBirthRecord(b,at));
+  if(!records.length&&initialized===state.evolution)return snapshot;
+  const oldPending=Array.isArray(daily.evolution.pending_births)?daily.evolution.pending_births:[];
+  const pendingIds=new Set(oldPending.map(x=>String(x.birth_id)));
+  const pending=[...oldPending,...records.filter(x=>!pendingIds.has(x.birth_id))];
+  const history=[...(daily.evolution.birth_history||[]),...records].slice(-500);
+  const evolution={...daily.evolution,pending_births:pending,birth_history:history,last_births:records.length?daily.births:(daily.evolution.last_births||[]),updated_at:at};
+  const expected=Number(snapshot.committed_revision??state.revision??0);
+  const nextState={...state,evolution};
+  const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:at};
+  delete nextSnapshot.memory;
+  await runtime.commit(id,expected,{...nextSnapshot,memory});
+  return{...nextSnapshot,memory};
+}
+
+async function acknowledgeRewardRequest(bodyData){
+  const id=String(bodyData?.entityId||'').trim(),rewardId=String(bodyData?.rewardId||'').trim();
+  if(!id||!rewardId)throw badRequest('entityId ou rewardId manquant','REWARD_ACK_INVALID');
+  const snapshot=await ensureSnapshot(id,{withMemory:true}),state=snapshot.state||{},expected=Number(snapshot.committed_revision??state.revision??0);
+  const nextRewards=acknowledgeReward(state.rewards||{},rewardId),nextState={...state,rewards:nextRewards};
+  const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:new Date().toISOString()};
+  delete nextSnapshot.memory;
+  await runtime.commit(id,expected,{...nextSnapshot,memory:snapshot.memory??null});
+  return{ok:true,rewards:nextRewards};
+}
+
+async function acknowledgeBirthRequest(bodyData){
+  const id=String(bodyData?.entityId||'').trim(),birthId=String(bodyData?.birthId||'').trim();
+  if(!id||!birthId)throw badRequest('entityId ou birthId manquant','BIRTH_ACK_INVALID');
+  const snapshot=await ensureSnapshot(id,{withMemory:true}),state=snapshot.state||{},expected=Number(snapshot.committed_revision??state.revision??0);
+  const evolution=acknowledgeBirth(state.evolution||{},birthId),nextState={...state,evolution};
+  const nextSnapshot={...snapshot,state:nextState,committed_revision:expected,updated_at:new Date().toISOString()};
+  delete nextSnapshot.memory;
+  await runtime.commit(id,expected,{...nextSnapshot,memory:snapshot.memory??null});
+  return{ok:true,evolution};
+}
+
+async function pendingRewards(bodyData){
+  const id=String(bodyData?.entityId||'').trim();
+  if(!id)throw badRequest('entityId manquant','REWARD_QUEUE_INVALID');
+  const snapshot=await ensureSnapshot(id),state=snapshot.state||{},count=Array.isArray(state.evolution?.marbles)?state.evolution.marbles.length:0;
+  return{ok:true,render_queue:count?buildRewardRenderQueue(state.rewards||{},count):[],rewards:state.rewards||null};
+}
+
+async function pendingBirths(bodyData){
+  const id=String(bodyData?.entityId||'').trim();
+  if(!id)throw badRequest('entityId manquant','BIRTH_QUEUE_INVALID');
+  const snapshot=await ensureSnapshot(id),state=snapshot.state||{};
+  return{ok:true,render_queue:buildBirthRenderQueue(state.evolution||{}),pending_births:state.evolution?.pending_births||[]};
+}
+
+async function dailyBirths(bodyData){
+  const id=String(bodyData?.entityId||'').trim();
+  if(!id)throw badRequest('entityId manquant','DAILY_BIRTH_INVALID');
+  const snapshot=await ensureSnapshot(id,{dailyOnConnection:true}),state=snapshot.state||{};
+  return{ok:true,evolution:state.evolution||null,render_queue:buildBirthRenderQueue(state.evolution||{}),pending_births:state.evolution?.pending_births||[]};
+}
+
+async function graphicalState(bodyData){
+  const id=String(bodyData?.entityId||'').trim();
+  if(!id)throw badRequest('entityId manquant','GRAPHIC_STATE_INVALID');
+  const snapshot=await ensureSnapshot(id,{dailyOnConnection:true}),state=snapshot.state||{};
+  return{ok:true,schema_version:state.schema_version??ENTITY_SCHEMA_VERSION,revision:state.revision??0,evolution:state.evolution||null,rewards:state.rewards||null};
+}
+
+const MIME={
+  '.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8',
+  '.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.ico':'image/x-icon',
+  '.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.map':'application/json; charset=utf-8'
+};
+
+function serveFrontend(req,res,pathname){
+  if(!['GET','HEAD'].includes(req.method)||pathname.startsWith('/api/'))return false;
+  if(!fs.existsSync(DIST_ROOT))return false;
+  let decoded;
+  try{decoded=decodeURIComponent(pathname)}catch{return false}
+  const relative=decoded==='/'?'index.html':decoded.replace(/^\/+/, '');
+  let file=path.resolve(DIST_ROOT,relative);
+  if(!file.startsWith(`${path.resolve(DIST_ROOT)}${path.sep}`)&&file!==path.join(path.resolve(DIST_ROOT),'index.html'))return false;
+  if(!fs.existsSync(file)||!fs.statSync(file).isFile())file=path.join(DIST_ROOT,'index.html');
+  if(!fs.existsSync(file))return false;
+  const type=MIME[path.extname(file).toLowerCase()]||'application/octet-stream';
+  res.writeHead(200,{'Content-Type':type,'Cache-Control':path.basename(file)==='index.html'?'no-cache':'public, max-age=31536000, immutable'});
+  if(req.method==='HEAD'){res.end();return true}
+  fs.createReadStream(file).pipe(res);
+  return true;
+}
+
+http.createServer(async(req,res)=>{
+  try{
+    const pathname=new URL(req.url||'/', 'http://localhost').pathname;
+    if(req.method==='POST'&&pathname==='/api/entity'){
+      serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>handleTurn(b)));
+    }
+    if(req.method==='POST'&&pathname==='/api/entity/reward-ack'){
+      serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>acknowledgeRewardRequest(b)));
+    }
+    if(req.method==='POST'&&pathname==='/api/entity/rewards'){
+      serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>pendingRewards(b)));
+    }
+    if(req.method==='POST'&&pathname==='/api/entity/birth-ack'){
+      serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>acknowledgeBirthRequest(b)));
+    }
+    if(req.method==='POST'&&pathname==='/api/entity/births'){
+      serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>pendingBirths(b)));
+    }
+    if(req.method==='POST'&&pathname==='/api/entity/daily-births'){
+      serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>dailyBirths(b)));
+    }
+    if(req.method==='POST'&&pathname==='/api/entity/state'){
+      serverMetrics.requests++;const b=await body(req);return json(res,200,await lock(b.entityId,()=>graphicalState(b)));
+    }
+    if(req.method==='GET'&&pathname==='/health'){
+      return json(res,200,{ok:true,memory_engine:'v8',evolution_engine:'b-v1',reward_engine:'tiers-v1',birth_engine:'sphere-v1+daily-8h-live-or-next-connection',schema_version:ENTITY_SCHEMA_VERSION,storage:storage.mode,storage_root:storage.storageRoot||null,recall:recall.mode,server_metrics:serverMetrics,lock_metrics:lock.metrics,storage_metrics:storage.metrics,recall_metrics:recall.metrics});
+    }
+    if(serveFrontend(req,res,pathname))return;
+    res.writeHead(404);res.end();
+  }catch(raw){
+    const e=httpError(raw);
+    serverMetrics.errors++;
+    serverMetrics.errors_by_code[e.code]=(serverMetrics.errors_by_code[e.code]||0)+1;
+    console.error('[entity]',e.code,e.message);
+    if(!res.headersSent)json(res,e.status,{error:e.message,code:e.code});
+  }
+}).listen(PORT,HOST,()=>console.log(`[entity] API sur http://${HOST}:${PORT} — stockage ${storage.mode} — recall ${recall.mode}`));
