@@ -147,7 +147,8 @@ Les 24 billes réservées aux deux points restent réparties également. Pour le
 - Pont de naissance quotidienne live : `emaeaDailyBirthBridge.js`.
 - Page d'essai graphique isolée : `/entity-graphics-test`.
 - L'interface finale n'est volontairement pas définie à ce stade.
-- Les scripts de tests et contrôles sont raccordés dans `package.json`, mais aucune exécution complète réussie n'a encore été observée depuis cet environnement.
+- Validation CI complète réussie le 10/09/2026 sur la branche `emaea-evolution-engine-b-v1` : contrôles syntaxiques, suite `test:entity`, benchmark d'endurance et build Vite de production réussis.
+- Le build signale uniquement un avertissement de taille de chunk frontend ; il ne bloque pas la compilation.
 
 ## Déploiement Base44
 
