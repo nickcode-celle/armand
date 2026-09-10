@@ -20,4 +20,10 @@ for(const sentiment of EMOTION_SENTIMENTS.slice(0,7))locked=recordSentimentAcqui
 assert.throws(()=>recordSentimentAcquisition(locked,{sentiment:'Amour',level:'bleu'}));
 assert.equal(acquisitionStatus(locked,'bleu').amour_accessible,false);
 
+let order={};
+for(const sentiment of ['Peur','Joie','Confiance','Tristesse'])order=recordSentimentAcquisition(order,{sentiment,level:'1'});
+assert.deepEqual(acquisitionStatus(order,'1').acquired,['Peur','Joie','Confiance','Tristesse']);
+order=recordSentimentAcquisition(order,{sentiment:'Joie',level:'1'});
+assert.deepEqual(acquisitionStatus(order,'1').acquired,['Peur','Joie','Confiance','Tristesse'],'une répétition ne change pas le rang');
+
 console.log('Entity sentiment acquisition runtime tests: OK');
