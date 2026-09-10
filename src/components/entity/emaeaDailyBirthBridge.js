@@ -1,5 +1,6 @@
 const DEFAULT_TIME_ZONE='Europe/Paris';
 const DAILY_HOUR=8;
+const MAX_RESCHEDULE_MS=6*60*60*1000;
 
 function partsAt(date,timeZone){
   const parts=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(date);
@@ -26,6 +27,11 @@ export function attachEmaeaDailyBirthBridge({entityId,timeZone=DEFAULT_TIME_ZONE
   let disposed=false,timer=null;
   const schedule=()=>{
     if(disposed)return;
+    const delay=nextDailyDelay(timeZone);
+    if(delay>MAX_RESCHEDULE_MS){
+      timer=setTimeout(schedule,MAX_RESCHEDULE_MS);
+      return;
+    }
     timer=setTimeout(async()=>{
       try{
         const data=await requestDailyBirth(entityId);
@@ -38,7 +44,7 @@ export function attachEmaeaDailyBirthBridge({entityId,timeZone=DEFAULT_TIME_ZONE
         if(!disposed)window.dispatchEvent(new CustomEvent('emaea:daily-birth-error',{detail:{entityId,error}}));
       }
       schedule();
-    },nextDailyDelay(timeZone));
+    },delay);
   };
   schedule();
   return()=>{disposed=true;if(timer)clearTimeout(timer)};
