@@ -26,17 +26,15 @@ export function makeDigitEightCenters(bodyCount){const BODY_COUNT=assertCount(bo
 export function makeEmaeLogoCenters(bodyCount){
   const BODY_COUNT=assertCount(bodyCount),pts=[];
   function insidePolygon(x,y,poly){let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if(((a[1]>y)!==(b[1]>y))&&(x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]))c=!c}return c}
-  function fillPolygon(count,poly,offset){let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;for(const p of poly){minX=Math.min(minX,p[0]);maxX=Math.max(maxX,p[0]);minY=Math.min(minY,p[1]);maxY=Math.max(maxY,p[1])}let k=1+offset;while(pts.length<count+offset){const x=minX+(maxX-minX)*halton(k,2),y=minY+(maxY-minY)*halton(k,3);if(insidePolygon(x,y,poly))pts.push(new THREE.Vector3(x,y,0));k++}}
+  function fillPolygon(count,poly,offset){let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;for(const p of poly){minX=Math.min(minX,p[0]);maxX=Math.max(maxX,p[0]);minY=Math.min(minY,p[1]);maxY=Math.max(maxY,p[1])}let k=1+offset,target=pts.length+count;while(pts.length<target){const x=minX+(maxX-minX)*halton(k,2),y=minY+(maxY-minY)*halton(k,3);if(insidePolygon(x,y,poly))pts.push(new THREE.Vector3(x,y,0));k++}}
   function addDot(count,cx,cy,offset){for(let i=0;i<count;i++){const k=i+1+offset,a=halton(k,2)*Math.PI*2,r=.34*Math.sqrt(halton(k,3));pts.push(new THREE.Vector3(cx+Math.cos(a)*r,cy+Math.sin(a)*r,0))}}
   const left=[[-1.95,-1.78],[-2.08,-1.42],[-2.03,-.98],[-1.85,-.50],[-1.64,.02],[-1.38,.54],[-1.08,1.02],[-.82,1.47],[-.62,1.78],[-.48,1.88],[-.38,1.78],[-.39,1.54],[-.52,1.20],[-.72,.82],[-.91,.42],[-1.06,.03],[-1.12,-.36],[-1.08,-.76],[-1.02,-1.13],[-1.08,-1.48],[-1.27,-1.78],[-1.58,-1.94],[-1.82,-1.91]];
   const right=left.map(([x,y])=>[-x,y]);
-  const dotEach=12,branchEach=(BODY_COUNT-dotEach*2)/2;
-  if(!Number.isInteger(branchEach)||branchEach<0)throw new Error('EMAE branch count must be integer');
-  fillPolygon(branchEach,left,0);
-  const leftCount=pts.length;if(leftCount!==branchEach)throw new Error('EMAE left branch count mismatch: '+leftCount);
-  const rightStart=pts.length;let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
-  for(const q of right){minX=Math.min(minX,q[0]);maxX=Math.max(maxX,q[0]);minY=Math.min(minY,q[1]);maxY=Math.max(maxY,q[1])}
-  let k=10001;while(pts.length<rightStart+branchEach){const x=minX+(maxX-minX)*halton(k,2),y=minY+(maxY-minY)*halton(k,3);if(insidePolygon(x,y,right))pts.push(new THREE.Vector3(x,y,0));k++}
+  const dotEach=12,remaining=BODY_COUNT-dotEach*2;
+  if(remaining<0)throw new Error('EMAE logo requires at least 24 marbles');
+  const leftCount=Math.ceil(remaining/2),rightCount=Math.floor(remaining/2);
+  fillPolygon(leftCount,left,0);
+  fillPolygon(rightCount,right,10000);
   addDot(dotEach,-.58,2.64,20000);addDot(dotEach,.58,2.64,30000);
   if(pts.length!==BODY_COUNT)throw new Error('EMAE symbol skeleton count mismatch: '+pts.length+' / '+BODY_COUNT);
   return pts;
