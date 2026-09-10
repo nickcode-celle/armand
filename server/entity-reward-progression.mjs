@@ -90,7 +90,8 @@ export function processRewardProgression({rewardState={},emotionState={},evoluti
       rewards.threshold_open=false;
       if(tier==='4'){
         rewards.final_red_complete=true;
-        rewards.ultimate_pending=true;
+        // L'Amour ultime n'est accessible qu'après affichage confirmé du logo rouge.
+        rewards.ultimate_pending=false;
         rewards.ultimate_complete=false;
         rewards.current_tier=null;
       }else rewards.current_tier=String(Number(tier)+1);
@@ -109,6 +110,7 @@ export function acknowledgeReward(rewardState={},rewardId,{at=new Date().toISOSt
   if(!found)return state;
   state.pending_rewards=(state.pending_rewards||[]).filter(x=>x.id!==id);
   state.reward_history=[...(state.reward_history||[]),{...found,status:'shown',shown_at:at}].slice(-200);
+  if(found.tier==='4'&&found.completes_tier===true&&state.final_red_complete===true&&!state.ultimate_complete)state.ultimate_pending=true;
   if(found.ultimate===true)state.ultimate_complete=true;
   state.updated_at=at;
   return state;
