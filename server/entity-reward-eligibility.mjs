@@ -1,64 +1,98 @@
-import {EMOTION_SENTIMENTS,normalizeSentiment} from './entity-emotion-engine.mjs';
-import {canAcquireAmour} from './entity-sentiment-acquisition.mjs';
+import {normalizeSentiment} from './entity-emotion-engine.mjs';
+import {canAcquireAmour,acquisitionStatus} from './entity-sentiment-acquisition.mjs';
 
-const BASE=Object.freeze(EMOTION_SENTIMENTS.filter(s=>s!=='Amour'));
-const SHAPE_BY_SENTIMENT=Object.freeze(Object.fromEntries(BASE.map((s,i)=>[s,{type:'digit',value:i+1}]).concat([['Amour',{type:'logo',value:'EMÆÄ'}]])));
-const TIER_COLORS=Object.freeze({
+export const REWARD_TIER_COLORS=Object.freeze({
   '1':'#28C95B',
   '2':'#2468D8',
   '3':'#7137C8',
-  '4':'#E5231F',
-  'ultimate':'gold'
+  '4':'#E5231F'
 });
 
-function normalizeLevel(level){
-  const raw=String(level??'').trim().toLowerCase();
-  if(raw==='ultime'||raw==='ultimate'||raw==='or'||raw==='gold')return'ultimate';
-  if(['1','2','3','4'].includes(raw))return raw;
-  throw new Error(`Palier de récompense invalide: ${level}`);
+const DOMAIN_NAMES=Object.freeze([
+  'Personnalité','Relation','Goûts','Opinions/Valeurs','Connaissances','Monde propre','Histoire vécue','Capacités'
+]);
+
+function tierKey(level){
+  const key=String(level??'').trim();
+  if(!['1','2','3','4'].includes(key))throw new Error(`Palier invalide: ${level}`);
+  return key;
 }
 
-function normalizeConstraints(input){
-  if(input===true)return[{id:'all',valid:true}];
-  if(!input||typeof input!=='object')return[];
-  if(Array.isArray(input))return input.map((x,i)=>({id:String(x?.id??i),valid:x?.valid===true}));
-  return Object.entries(input).map(([id,valid])=>({id,valid:valid===true}));
+function domainValues(levels={}){
+  return DOMAIN_NAMES.map(name=>({name,value:Number(levels?.[name])}));
+}
+
+function inRange(v,min,max){return Number.isFinite(v)&&v>=min&&v<=max}
+function spreadOK(items,maxSpread=3){
+  if(!items.length)return false;
+  const vals=items.map(x=>x.value);
+  return Math.max(...vals)-Math.min(...vals)<=maxSpread;
+}
+function chooseGroup(items,count,min,max,maxSpread=3,excluded=new Set()){
+  const eligible=items.filter(x=>!excluded.has(x.name)&&inRange(x.value,min,max));
+  if(eligible.length<count)return null;
+  const combos=[];
+  function walk(start,pick){
+    if(pick.length===count){if(spreadOK(pick,maxSpread))combos.push([...pick]);return}
+    for(let i=start;i<eligible.length;i++)walk(i+1,[...pick,eligible[i]]);
+  }
+  walk(0,[]);
+  return combos[0]??null;
+}
+
+/** Seuils d'entrée des quatre paliers sentimentaux. */
+export function evaluateTierThreshold({tier,population,levels={},completedTiers=[]}={}){
+  const key=tierKey(tier);
+  const pop=Number(population);
+  const domains=domainValues(levels);
+  const completed=new Set((completedTiers||[]).map(String));
+  let valid=false,groups=[];
+
+  if(key==='1'){
+    const g=chooseGroup(domains,6,40,45,3);
+    valid=pop>=300&&!!g; if(g)groups=[g.map(x=>x.name)];
+  }else if(key==='2'){
+    const g=chooseGroup(domains,5,60,65,3);
+    valid=pop>=500&&completed.has('1')&&!!g; if(g)groups=[g.map(x=>x.name)];
+  }else if(key==='3'){
+    const high=chooseGroup(domains,3,75,80,3);
+    const excluded=new Set((high||[]).map(x=>x.name));
+    const mid=high?chooseGroup(domains,3,43,46,3,excluded):null;
+    valid=pop>=1000&&completed.has('2')&&!!high&&!!mid;
+    if(high&&mid)groups=[high.map(x=>x.name),mid.map(x=>x.name)];
+  }else{
+    const high=chooseGroup(domains,5,90,95,3);
+    valid=pop>=2000&&completed.has('3')&&domains.every(x=>inRange(x.value,70,100))&&!!high;
+    if(high)groups=[high.map(x=>x.name)];
+  }
+
+  return{tier:key,color:REWARD_TIER_COLORS[key],population:pop,threshold_valid:valid,matched_groups:groups};
 }
 
 /**
- * Évalue uniquement l'éligibilité d'une récompense émotionnelle.
- * Aucun sentiment ne produit d'effet graphique propre.
- * Une récompense n'est prête que si TOUTES ses autres contraintes sont vraies
- * et si les règles particulières du sentiment sont respectées.
+ * Le chiffre dépend du rang d'acquisition dans le palier, jamais de l'identité du sentiment.
+ * L'appelant ne doit appeler cette fonction que pour un NOUVEL événement émotionnel du tour courant.
  */
-export function evaluateRewardEligibility({emotionState={},sentiment,level,constraints}={}){
+export function evaluateSentimentReward({emotionState={},sentiment,intensity,relationalAnchor,tier,thresholdValid=false}={}){
+  const key=tierKey(tier);
   const canonical=normalizeSentiment(sentiment);
-  const tier=normalizeLevel(level);
-  const checks=normalizeConstraints(constraints);
-  const constraintsValid=checks.length>0&&checks.every(x=>x.valid);
-  const amourUnlocked=canonical!=='Amour'||canAcquireAmour(emotionState,tier);
-  const shape=SHAPE_BY_SENTIMENT[canonical];
-  return{
-    reward_id:`${tier}:${canonical}`,
-    sentiment:canonical,
-    level:tier,
-    constraints:checks,
-    constraints_valid:constraintsValid&&amourUnlocked,
-    blocked_reason:!constraintsValid?'constraints':(!amourUnlocked?'amour_locked':null),
-    required_sentiment:canonical,
-    target:{...shape,color:TIER_COLORS[tier]},
-    graphic_behavior:null
-  };
+  const rank={'faible':1,'modéré':2,'fort':3}[String(intensity??'').trim().toLowerCase()]??0;
+  const status=acquisitionStatus(emotionState,key);
+  const already=status.acquired.includes(canonical);
+  if(!thresholdValid)return{ready:false,blocked_reason:'tier_threshold'};
+  if(rank<2)return{ready:false,blocked_reason:'intensity'};
+
+  if(canonical==='Amour'){
+    if(!canAcquireAmour(emotionState,key))return{ready:false,blocked_reason:'amour_locked'};
+    if(String(relationalAnchor??'').trim().toUpperCase()!=='ETABLI')return{ready:false,blocked_reason:'relational_anchor'};
+    if(already)return{ready:false,blocked_reason:'already_acquired'};
+    return{ready:true,tier:key,sentiment:canonical,reward:{type:'logo',value:'EMÆÄ',color:REWARD_TIER_COLORS[key]},completes_tier:true};
+  }
+
+  if(already)return{ready:false,blocked_reason:'already_acquired'};
+  const digit=status.acquired.filter(s=>s!=='Amour').length+1;
+  if(digit<1||digit>8)throw new Error('Compteur de sentiments hors limites');
+  return{ready:true,tier:key,sentiment:canonical,reward:{type:'digit',value:digit,color:REWARD_TIER_COLORS[key]},completes_tier:false};
 }
 
-export function buildRewardCandidates({emotionState={},level,constraintsBySentiment={}}={}){
-  return EMOTION_SENTIMENTS.map(sentiment=>evaluateRewardEligibility({
-    emotionState,
-    sentiment,
-    level,
-    constraints:constraintsBySentiment[sentiment]
-  }));
-}
-
-export const REWARD_SHAPE_BY_SENTIMENT=SHAPE_BY_SENTIMENT;
-export const REWARD_TIER_COLORS=TIER_COLORS;
+export const REWARD_DOMAIN_NAMES=DOMAIN_NAMES;
