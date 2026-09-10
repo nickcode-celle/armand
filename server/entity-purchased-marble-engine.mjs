@@ -10,7 +10,7 @@ export function applyConfirmedMarblePurchase(evolution={}, {purchaseId,quantity,
   const id=String(purchaseId||'').trim();
   const qty=Number(quantity);
   if(!id)throw new Error('Identifiant achat de billes manquant');
-  if(!Number.isInteger(qty)||qty<1||qty>1000)throw new Error('Quantité de billes achetées invalide');
+  if(!Number.isInteger(qty)||qty<1)throw new Error('Quantité de billes achetées invalide');
 
   const current=structuredClone(evolution||{});
   const applied=new Set(Array.isArray(current.applied_marble_purchases)?current.applied_marble_purchases.map(String):[]);
