@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import {ENTITY_SCHEMA_VERSION,ENTITY_MIGRATIONS,migrateEntityState} from '../server/entity-schema.mjs';
 
-assert.equal(ENTITY_SCHEMA_VERSION,15);
-assert.deepEqual(ENTITY_MIGRATIONS,[6,7,8,9,10,11,12,13,14,15]);
+assert.equal(ENTITY_SCHEMA_VERSION,16);
+assert.deepEqual(ENTITY_MIGRATIONS,[6,7,8,9,10,11,12,13,14,15,16]);
 const migrated=migrateEntityState({schema_version:5,revision:12});
-assert.equal(migrated.schema_version,15);
+assert.equal(migrated.schema_version,16);
 assert.equal(migrated.runtime_version,1);
 assert.equal(migrated.recall_version,2);
 assert.equal(migrated.metrics.consolidation_failures,0);
@@ -18,6 +18,7 @@ assert.deepEqual(migrated.evolution.pending_births,[]);
 assert.equal(migrated.evolution.daily_birth_last_date,null);
 assert.equal(migrated.evolution.daily_birth_time_zone,'Europe/Paris');
 assert.equal(migrated.evolution.daily_birth_missed_discarded,0);
+assert.deepEqual(migrated.evolution.applied_marble_purchases,[]);
 assert.equal(migrated.evolution.observer_last,null);
 assert.deepEqual(migrated.emotion.active,[]);
 assert.deepEqual(migrated.emotion.last_changes,[]);
