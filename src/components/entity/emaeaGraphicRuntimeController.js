@@ -15,16 +15,16 @@ export function createEmaeaGraphicRuntimeController({container,entityId,initialE
 
   const runtime=createEmaeaBodyRuntime(container,initialEvolution||{});
 
-  // Une bille née doit terminer exactement à la taille des billes normales. Le prototype
-  // de naissance anime la Mesh elle-même ; le moteur normal enveloppe ensuite cette Mesh
-  // dans son root de mouvement. On normalise donc le root après l'intégration sans recréer
-  // la bille et sans toucher à son identité.
+  // Une bille née termine exactement à la taille visuelle normale de sa recette.
+  // Les reliefs Goûts travaillent sur une unité différente : textureUnitScale est donc
+  // conservé au lieu d'écraser systématiquement le root à 0,90.
   const finalizeBirth=runtime.finalizeBornMarble?.bind(runtime);
   if(finalizeBirth){
     runtime.finalizeBornMarble=async(...args)=>{
       const result=await finalizeBirth(...args);
       const root=runtime.marbles?.at?.(-1);
-      root?.scale?.setScalar?.(runtime.marbleScale??0.90);
+      const unit=Number(root?.userData?.textureUnitScale??1);
+      root?.scale?.setScalar?.((runtime.marbleScale??0.90)*(Number.isFinite(unit)&&unit>0?unit:1));
       return result;
     };
   }
