@@ -3,14 +3,16 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-/* Local development uses sharded atomic JSON.
-   Remote production storage must implement versioned records and renewable leases.
+/* Local development and single-node production use sharded atomic JSON.
+   Set ENTITY_STORAGE_DIR to a persistent mounted volume in production.
+   Optional remote storage must implement versioned records and renewable leases.
    Lease contract: POST /lease acquires or renews {owner,ttl_ms,fencing_token?,renew?};
    response may return {fencing_token}. All record writes carry X-Entity-Fencing-Token. */
 export function createEntityStorage({root=process.cwd()}={}){
   const remote=String(process.env.ENTITY_STORAGE_URL||'').replace(/\/$/,'');
   const token=process.env.ENTITY_STORAGE_TOKEN||'';
-  const localRoot=path.join(root,'.entity-store');
+  const configuredRoot=String(process.env.ENTITY_STORAGE_DIR||'').trim();
+  const localRoot=configuredRoot?(path.isAbsolute(configuredRoot)?configuredRoot:path.resolve(root,configuredRoot)):path.join(root,'.entity-store');
   const leaseContext=new AsyncLocalStorage();
   const metrics={reads:0,writes:0,deletes:0,conflicts:0,lease_acquires:0,lease_renews:0,lease_losses:0};
   const safe=x=>String(x||'').replace(/[^a-zA-Z0-9_-]/g,'');
@@ -49,7 +51,7 @@ export function createEntityStorage({root=process.cwd()}={}){
   }
 
   return {
-    mode:remote?'remote':'local-sharded',metrics,
+    mode:remote?'remote':'local-sharded',storageRoot:remote?null:localRoot,metrics,
     async get(id,namespace,fallback=null){return (await getRecord(id,namespace,fallback)).value??fallback},
     async put(id,namespace,value){const r=await putRecord(id,namespace,value);if(r?.conflict)throw Error('Conflit de stockage Entity');return r?.value??value},
     async del(id,namespace){metrics.deletes++;if(remote)return remoteRecord('DELETE',id,namespace);return localDelete(id,namespace)},
