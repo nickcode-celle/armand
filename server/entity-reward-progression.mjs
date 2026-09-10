@@ -36,11 +36,22 @@ export function processRewardProgression({rewardState={},emotionState={},evoluti
   const produced=[];
   if(!rewards.threshold_open){rewards.updated_at=at;return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold:{...threshold,threshold_open:false},status:acquisitionStatus(emotion,tier)}}
 
+  // Le tour qui ouvre le seuil ne compte encore aucun sentiment : le cycle commence après l'ouverture.
+  if(!wasOpen&&threshold.threshold_valid){
+    rewards.updated_at=at;
+    return{rewardState:rewards,emotionState:emotion,rewards:produced,threshold:{...threshold,threshold_open:true,opened_now:true},status:acquisitionStatus(emotion,tier)};
+  }
+
+  const startStatus=acquisitionStatus(emotion,tier);
+  const amourAccessibleAtStart=startStatus.amour_accessible;
+
   for(const change of Array.isArray(observerChanges)?observerChanges:[]){
     const operation=String(change?.operation??'').trim().toUpperCase();
     if(!QUALIFYING_OPERATIONS.has(operation))continue;
     const intensity=canonicalIntensity(change?.intensite_apres??change?.intensity_after??change?.intensite??change?.intensity);
     if(!intensity)continue;
+    if(String(change?.sentiment||'').trim().toLowerCase()==='amour'&&!amourAccessibleAtStart)continue;
+
     const eligibility=evaluateSentimentReward({emotionState:emotion,sentiment:change?.sentiment,intensity,relationalAnchor:change?.ancrage_relationnel??change?.relational_anchor,tier,thresholdValid:true});
     if(!eligibility.ready)continue;
 
