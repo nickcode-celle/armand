@@ -1,6 +1,6 @@
 export const ENTITY_SCHEMA_VERSION=9;
 const metricDefaults={calls:0,response_calls:0,embedding_calls:0,input_tokens:0,output_tokens:0,total_tokens:0,ai_retries:0,ai_errors:0,ai_timeouts:0,recall_searches:0,recall_hits:0,recall_misses:0,recall_remote_failures:0,storage_conflicts:0,consolidation_failures:0};
-const evolutionDefaults=()=>({durable_levels:{},history_events:[],observer_last:null,updated_at:null});
+const evolutionDefaults=()=>({durable_levels:{},marbles:[],history_events:[],observer_last:null,last_changes:[],last_marble_changes:[],updated_at:null});
 const migrations={
   6:s=>({...s,schema_version:6,metrics:s.metrics||{}}),
   7:s=>({...s,schema_version:7,metrics:s.metrics||{},recall_version:Number(s.recall_version||1)}),
