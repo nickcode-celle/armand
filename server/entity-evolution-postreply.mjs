@@ -2,6 +2,7 @@ import {applyEvolutionEvents} from './entity-evolution-engine.mjs';
 import {ensureInitialEvolutionState} from './entity-initial-state.mjs';
 import {applyHistoryEvent} from './entity-history-evolution.mjs';
 import {applyChangesToMarbles} from './entity-marble-evolution.mjs';
+import {applyEmotionChanges} from './entity-emotion-engine.mjs';
 
 export function createPostReplyEvolution({storage}){
   return async function evolveAfterObservation({entityId,observerRecord}){
@@ -9,7 +10,8 @@ export function createPostReplyEvolution({storage}){
     if(!id||!observerRecord?.output)return null;
     const observerRevision=Number(observerRecord.revision??0);
     const observerAt=observerRecord.at??new Date().toISOString();
-    return storage.mutate(id,'evolution-state',{evolution:null,last_observer_revision:null,last_observer_at:null},current=>{
+
+    const evolutionState=await storage.mutate(id,'evolution-state',{evolution:null,last_observer_revision:null,last_observer_at:null},current=>{
       const lastRevision=Number(current?.last_observer_revision??-1);
       if(lastRevision===observerRevision&&current?.last_observer_at===observerAt)return current;
       const initialized=ensureInitialEvolutionState({evolution:current?.evolution||{}},id,{at:observerAt});
@@ -29,5 +31,14 @@ export function createPostReplyEvolution({storage}){
       const evolution={...initialized,durable_levels:applied.levels,marbles:marbleApplied.marbles,history_level:historyLevel,history_events:historyEvents.slice(-200),history_last_change:historyChange,observer_last:observerRecord.output,last_changes:applied.changes,last_marble_changes:marbleApplied.changes,updated_at:observerAt};
       return{evolution,last_observer_revision:observerRevision,last_observer_at:observerAt};
     });
+
+    const emotionState=await storage.mutate(id,'emotion-state',{active:[],last_changes:[],updated_at:null,last_observer_revision:null,last_observer_at:null},current=>{
+      const lastRevision=Number(current?.last_observer_revision??-1);
+      if(lastRevision===observerRevision&&current?.last_observer_at===observerAt)return current;
+      const applied=applyEmotionChanges(current,observerRecord.output.sentiments||[],{at:observerAt});
+      return{...applied,last_observer_revision:observerRevision,last_observer_at:observerAt};
+    });
+
+    return{evolution:evolutionState?.evolution??null,emotion:emotionState};
   };
 }
