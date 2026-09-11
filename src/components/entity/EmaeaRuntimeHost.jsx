@@ -1,8 +1,9 @@
-import React,{useEffect,useRef} from 'react';
+import React,{useEffect,useRef,useState} from 'react';
 import * as THREE from 'three';
 import {createEmaeaBodyRuntime} from './emaeaBodyRuntime.js';
 
-const FOREST_PHOTO='https://images.unsplash.com/photo-1776720056861-110c78f902ec?auto=format&fit=crop&fm=jpg&q=88&w=2400';
+const FOREST_PHOTO='https://images.unsplash.com/photo-1783835515375-2bc2646fc043?auto=format&fit=crop&fm=jpg&q=88&w=2400';
+const FOREST_FALLBACK='https://images.unsplash.com/photo-1783867874060-67a036879bec?auto=format&fit=crop&fm=jpg&q=88&w=2400';
 
 async function readEvolution(entityId){
   const response=await fetch('/api/entity/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entityId})});
@@ -62,6 +63,7 @@ function dressStage(runtime){
 
 export default function EmaeaRuntimeHost({entityId,className=''}){
   const hostRef=useRef(null);
+  const[forestSrc,setForestSrc]=useState(FOREST_PHOTO);
   useEffect(()=>{
     if(!entityId||!hostRef.current)return;
     let cancelled=false,runtime=null,timer=null,busy=false,undress=null;
@@ -80,10 +82,15 @@ export default function EmaeaRuntimeHost({entityId,className=''}){
   },[entityId]);
 
   return <div className={`${className} overflow-hidden bg-black`}>
-    <img src={FOREST_PHOTO} alt="" className="absolute inset-0 h-full w-full object-cover object-[50%_63%] brightness-[.58] saturate-[.82] contrast-[1.04]"/>
-    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.62)_0%,rgba(0,0,0,.28)_36%,rgba(0,0,0,.08)_62%,rgba(0,0,0,.20)_100%)]"/>
-    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_78%,rgba(255,201,92,.48)_0%,rgba(255,179,47,.20)_17%,rgba(84,255,142,.10)_31%,rgba(0,0,0,0)_55%)] mix-blend-screen"/>
-    <div className="pointer-events-none absolute left-1/2 top-[70%] h-[22%] w-[46%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(255,220,135,.28)_0%,rgba(255,190,70,.11)_42%,transparent_72%)] blur-xl"/>
+    <img
+      src={forestSrc}
+      onError={()=>setForestSrc(src=>src===FOREST_FALLBACK?src:FOREST_FALLBACK)}
+      alt=""
+      className="absolute inset-0 h-full w-full object-cover object-[50%_63%] brightness-[.62] saturate-[.90] contrast-[1.03]"
+    />
+    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.58)_0%,rgba(0,0,0,.22)_34%,rgba(0,0,0,.04)_62%,rgba(0,0,0,.18)_100%)]"/>
+    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_78%,rgba(255,201,92,.46)_0%,rgba(255,179,47,.18)_17%,rgba(84,255,142,.08)_31%,rgba(0,0,0,0)_55%)] mix-blend-screen"/>
+    <div className="pointer-events-none absolute left-1/2 top-[70%] h-[22%] w-[46%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(255,220,135,.26)_0%,rgba(255,190,70,.10)_42%,transparent_72%)] blur-xl"/>
     <div ref={hostRef} className="absolute inset-0"/>
   </div>;
 }
