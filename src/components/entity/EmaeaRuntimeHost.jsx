@@ -2,7 +2,7 @@ import React,{useEffect,useRef} from 'react';
 import * as THREE from 'three';
 import {createEmaeaBodyRuntime} from './emaeaBodyRuntime.js';
 
-const FOREST_PHOTO='/api/entity/forest-photo';
+const FOREST_PHOTO='https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Mossy_Forest_Floor_%2860670374%29.jpeg/1280px-Mossy_Forest_Floor_%2860670374%29.jpeg';
 
 async function readEvolution(entityId){
   const response=await fetch('/api/entity/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entityId})});
@@ -11,52 +11,94 @@ async function readEvolution(entityId){
   return data?.evolution||{};
 }
 
+function loadBackgroundTexture(renderer){
+  return new Promise((resolve,reject)=>{
+    const loader=new THREE.TextureLoader();
+    loader.setCrossOrigin('anonymous');
+    loader.load(FOREST_PHOTO,texture=>{
+      texture.colorSpace=THREE.SRGBColorSpace;
+      texture.minFilter=THREE.LinearFilter;
+      texture.magFilter=THREE.LinearFilter;
+      texture.generateMipmaps=false;
+      texture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+      resolve(texture);
+    },undefined,reject);
+  });
+}
+
 function tuneEntityMaterial(root){
   root.traverse(o=>{
     const mats=Array.isArray(o.material)?o.material:[o.material];
     for(const m of mats){
       if(!m?.color)continue;
-      if('envMapIntensity'in m)m.envMapIntensity=Math.max(Number(m.envMapIntensity)||0,1.35);
-      if('roughness'in m)m.roughness=Math.max(.2,Math.min(.72,Number(m.roughness??.48)));
-      if('metalness'in m)m.metalness=Math.min(.18,Number(m.metalness??.02));
+      if('envMapIntensity'in m)m.envMapIntensity=Math.max(Number(m.envMapIntensity)||0,1.25);
+      if('roughness'in m)m.roughness=Math.max(.2,Math.min(.70,Number(m.roughness??.48)));
+      if('metalness'in m)m.metalness=Math.min(.16,Number(m.metalness??.02));
       m.needsUpdate=true;
     }
   });
 }
 
-function dressStage(runtime){
+async function dressStage(runtime){
   const{scene,camera,renderer,entityGroup}=runtime;
   renderer.domElement.style.width='100%';
   renderer.domElement.style.height='100%';
   renderer.domElement.style.display='block';
-  renderer.setClearColor(0x000000,0);
+  renderer.setClearColor(0x000000,1);
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.14;
-  scene.background=null;
+  renderer.toneMappingExposure=1.06;
   scene.fog=null;
 
-  camera.position.set(0,12,305);
-  camera.lookAt(0,-9,0);
+  let backgroundTexture=null;
+  try{
+    backgroundTexture=await loadBackgroundTexture(renderer);
+    scene.background=backgroundTexture;
+    scene.backgroundBlurriness=.10;
+    scene.backgroundIntensity=.48;
+  }catch(error){
+    scene.background=new THREE.Color(0x000000);
+    console.error('[EMÆÄ decor] La photo locale de référence Wikimedia ne charge pas.',error);
+  }
+
+  camera.position.set(0,10,300);
+  camera.lookAt(0,-10,0);
   camera.updateProjectionMatrix();
-  entityGroup.scale.setScalar(1.46);
-  entityGroup.position.set(0,10,0);
+  entityGroup.scale.setScalar(1.52);
+  entityGroup.position.set(0,8,0);
   tuneEntityMaterial(entityGroup);
 
-  const warm=new THREE.PointLight(0xffc85f,8.5,330,2);
-  warm.position.set(-30,-5,80);
+  const warm=new THREE.PointLight(0xffc85f,7.3,325,2);
+  warm.position.set(-26,-6,76);
   entityGroup.add(warm);
-  const green=new THREE.PointLight(0x5cff91,3.1,230,2);
-  green.position.set(36,-20,42);
+  const green=new THREE.PointLight(0x5cff91,2.35,215,2);
+  green.position.set(30,-20,38);
   entityGroup.add(green);
-  const rim=new THREE.DirectionalLight(0xffe2a8,1.15);
-  rim.position.set(-1.4,2.2,2.8);
+  const rim=new THREE.DirectionalLight(0xffe0aa,.92);
+  rim.position.set(-1.2,2.1,2.6);
   scene.add(rim);
-  const neutral=new THREE.HemisphereLight(0xffffff,0x111111,.42);
+  const neutral=new THREE.HemisphereLight(0xffffff,0x080808,.30);
   scene.add(neutral);
+
+  const glowCanvas=document.createElement('canvas');
+  glowCanvas.width=512;glowCanvas.height=256;
+  const ctx=glowCanvas.getContext('2d');
+  const grad=ctx.createRadialGradient(256,128,0,256,128,250);
+  grad.addColorStop(0,'rgba(255,205,105,.88)');
+  grad.addColorStop(.16,'rgba(255,177,58,.42)');
+  grad.addColorStop(.36,'rgba(95,255,145,.13)');
+  grad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=grad;ctx.fillRect(0,0,512,256);
+  const glowTexture=new THREE.CanvasTexture(glowCanvas);
+  const glow=new THREE.Mesh(new THREE.PlaneGeometry(300,128),new THREE.MeshBasicMaterial({map:glowTexture,transparent:true,opacity:.82,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false}));
+  glow.position.set(0,-70,-35);
+  scene.add(glow);
 
   return()=>{
     entityGroup.remove(warm,green);
-    scene.remove(rim,neutral);
+    scene.remove(rim,neutral,glow);
+    glow.geometry.dispose();glow.material.dispose();glowTexture.dispose();
+    backgroundTexture?.dispose?.();
+    scene.background=new THREE.Color(0x000000);
   };
 }
 
@@ -71,7 +113,7 @@ export default function EmaeaRuntimeHost({entityId,className=''}){
       try{
         const evolution=await readEvolution(entityId);
         if(cancelled)return;
-        if(!runtime){runtime=createEmaeaBodyRuntime(hostRef.current,evolution);undress=dressStage(runtime)}
+        if(!runtime){runtime=createEmaeaBodyRuntime(hostRef.current,evolution);undress=await dressStage(runtime)}
         else await runtime.applyState?.(evolution);
       }catch(error){if(!cancelled)console.error('[EMÆÄ graphic]',error)}finally{busy=false}
     };
@@ -79,11 +121,5 @@ export default function EmaeaRuntimeHost({entityId,className=''}){
     return()=>{cancelled=true;if(timer)clearInterval(timer);undress?.();runtime?.dispose?.();runtime=null};
   },[entityId]);
 
-  return <div className={`${className} overflow-hidden bg-black`}>
-    <img src={FOREST_PHOTO} alt="" className="absolute inset-0 h-full w-full object-cover object-[50%_63%] brightness-[.62] saturate-[.90] contrast-[1.03]"/>
-    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.58)_0%,rgba(0,0,0,.22)_34%,rgba(0,0,0,.04)_62%,rgba(0,0,0,.18)_100%)]"/>
-    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_78%,rgba(255,201,92,.46)_0%,rgba(255,179,47,.18)_17%,rgba(84,255,142,.08)_31%,rgba(0,0,0,0)_55%)] mix-blend-screen"/>
-    <div className="pointer-events-none absolute left-1/2 top-[70%] h-[22%] w-[46%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(255,220,135,.26)_0%,rgba(255,190,70,.10)_42%,transparent_72%)] blur-xl"/>
-    <div ref={hostRef} className="absolute inset-0"/>
-  </div>;
+  return <div ref={hostRef} className={`${className} overflow-hidden bg-black`}/>;
 }
