@@ -37,7 +37,7 @@ function tuneEntityMaterial(root){
   });
 }
 
-function makeCoverPlane(texture,camera,z){
+function makeContainPlane(texture,camera,z){
   const image=texture.image;
   const imageAspect=(image?.naturalWidth||image?.width||1)/(image?.naturalHeight||image?.height||1);
   const distance=Math.abs(camera.position.z-z);
@@ -47,7 +47,7 @@ function makeCoverPlane(texture,camera,z){
 
   let width=visibleWidth;
   let height=width/imageAspect;
-  if(height<visibleHeight){
+  if(height>visibleHeight){
     height=visibleHeight;
     width=height*imageAspect;
   }
@@ -56,7 +56,7 @@ function makeCoverPlane(texture,camera,z){
     new THREE.PlaneGeometry(width,height),
     new THREE.MeshBasicMaterial({map:texture,toneMapped:false,depthWrite:false,depthTest:false})
   );
-  plane.position.set(0,72,z);
+  plane.position.set(0,0,z);
   plane.renderOrder=-100;
   return plane;
 }
@@ -80,14 +80,14 @@ async function dressStage(runtime){
   let pedestalPlane=null;
   try{
     pedestalTexture=await loadTexture(renderer,PEDESTAL_ART);
-    pedestalPlane=makeCoverPlane(pedestalTexture,camera,-135);
+    pedestalPlane=makeContainPlane(pedestalTexture,camera,-135);
     scene.add(pedestalPlane);
   }catch(error){
     console.error('[EMÆÄ decor] Le visuel du socle est absent. Attendu:',PEDESTAL_ART,error);
   }
 
   entityGroup.scale.setScalar(.86);
-  entityGroup.position.set(0,34,4);
+  entityGroup.position.set(0,38,4);
   tuneEntityMaterial(entityGroup);
 
   const warm=new THREE.PointLight(0xffc46a,5.4,260,2);
