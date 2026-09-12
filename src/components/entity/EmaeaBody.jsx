@@ -28,33 +28,30 @@ export default function EmaeaBody({entityId}){
 
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before,
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{
+        content:"0";
         min-width:0;
         min-height:40px;
         border-radius:12px;
         border:1px solid rgba(52,211,153,.42);
         display:flex;
         align-items:center;
-        padding:5px 8px 5px 42px;
+        padding:5px 8px 5px 39px;
         white-space:nowrap;
         font-size:14px;
         line-height:1;
         color:rgba(245,245,244,.88);
-        box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+        box-shadow:inset 0 1px 0 rgba(167,243,208,.07),0 0 18px rgba(16,185,129,.04);
+        background-color:transparent;
         background-repeat:no-repeat!important;
-        background-size:28px 28px,100% 100%!important;
+        background-size:24px 24px,100% 100%!important;
         background-position:8px center,0 0!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before{
-        content:"0";
-        background-image:radial-gradient(circle at 32% 28%,#bfdbfe 0%,#60a5fa 28%,#2563eb 58%,#172554 100%),linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60));
+        background-image:radial-gradient(circle at 32% 28%,#dbeafe 0%,#60a5fa 28%,#2563eb 58%,#172554 100%),linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60));
         order:5;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{
-        content:"0";
-        border-color:rgba(250,204,21,.56);
-        background-image:radial-gradient(circle at 31% 25%,#fff7cc 0%,#f6c84b 28%,#c98a16 58%,#6f4307 82%,#2f1a02 100%),linear-gradient(180deg,rgba(113,63,18,.68),rgba(66,42,10,.64));
-        color:rgba(254,240,138,.9);
-        box-shadow:inset 0 1px 0 rgba(254,240,138,.10),0 0 18px rgba(234,179,8,.06);
+        background-image:radial-gradient(circle at 32% 28%,#fff7cc 0%,#f6c84b 28%,#c98a16 58%,#6f4307 100%),linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60));
         order:6;
       }
 
