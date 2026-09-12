@@ -1,1 +1,0 @@
-The final EMAEA stage image is stored as emaea-stage-final.jpg and is the exact validated scene used by the interface.
