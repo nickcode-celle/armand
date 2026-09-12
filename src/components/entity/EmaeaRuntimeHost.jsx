@@ -37,6 +37,30 @@ function tuneEntityMaterial(root){
   });
 }
 
+function makeCoverPlane(texture,camera,z){
+  const image=texture.image;
+  const imageAspect=(image?.naturalWidth||image?.width||1)/(image?.naturalHeight||image?.height||1);
+  const distance=Math.abs(camera.position.z-z);
+  const vFov=THREE.MathUtils.degToRad(camera.fov);
+  const visibleHeight=2*Math.tan(vFov/2)*distance;
+  const visibleWidth=visibleHeight*camera.aspect;
+
+  let width=visibleWidth;
+  let height=width/imageAspect;
+  if(height<visibleHeight){
+    height=visibleHeight;
+    width=height*imageAspect;
+  }
+
+  const plane=new THREE.Mesh(
+    new THREE.PlaneGeometry(width,height),
+    new THREE.MeshBasicMaterial({map:texture,toneMapped:false,depthWrite:false,depthTest:false})
+  );
+  plane.position.set(0,72,z);
+  plane.renderOrder=-100;
+  return plane;
+}
+
 async function dressStage(runtime){
   const{scene,camera,renderer,entityGroup}=runtime;
   renderer.domElement.style.width='100%';
@@ -56,23 +80,18 @@ async function dressStage(runtime){
   let pedestalPlane=null;
   try{
     pedestalTexture=await loadTexture(renderer,PEDESTAL_ART);
-    pedestalPlane=new THREE.Mesh(
-      new THREE.PlaneGeometry(680,680),
-      new THREE.MeshBasicMaterial({map:pedestalTexture,toneMapped:false,depthWrite:false,depthTest:false})
-    );
-    pedestalPlane.position.set(0,-150,-135);
-    pedestalPlane.renderOrder=-100;
+    pedestalPlane=makeCoverPlane(pedestalTexture,camera,-135);
     scene.add(pedestalPlane);
   }catch(error){
     console.error('[EMÆÄ decor] Le visuel du socle est absent. Attendu:',PEDESTAL_ART,error);
   }
 
-  entityGroup.scale.setScalar(1.28);
-  entityGroup.position.set(0,42,4);
+  entityGroup.scale.setScalar(.86);
+  entityGroup.position.set(0,34,4);
   tuneEntityMaterial(entityGroup);
 
   const warm=new THREE.PointLight(0xffc46a,5.4,260,2);
-  warm.position.set(0,-72,84);
+  warm.position.set(0,-62,84);
   scene.add(warm);
   const soft=new THREE.DirectionalLight(0xffead0,.72);
   soft.position.set(-1.4,2.2,2.6);
