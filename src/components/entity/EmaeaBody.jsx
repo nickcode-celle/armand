@@ -52,10 +52,21 @@ export default function EmaeaBody({entityId}){
 
   return <div className="relative mx-auto w-full">
     <style>{`
+      @import url('https://fontlibrary.org//face/nordica-advanced');
+
       body:has([aria-label="EMÆÄ"]),
       body:has([aria-label="EMÆÄ"]) .min-h-screen{background:#000!important;color:#f5f5f4}
       body:has([aria-label="EMÆÄ"]) aside{background:#000!important;border-color:rgba(255,255,255,.08)!important}
       body:has([aria-label="EMÆÄ"]) main{background:#000!important}
+
+      body:has([aria-label="EMÆÄ"]),
+      body:has([aria-label="EMÆÄ"]) *,
+      body:has([aria-label="EMÆÄ"]) button,
+      body:has([aria-label="EMÆÄ"]) input,
+      body:has([aria-label="EMÆÄ"]) textarea{
+        font-family:'NordicaAdvancedRegular',sans-serif!important;
+        font-weight:normal!important;
+      }
 
       body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child){border:1px solid rgba(52,211,153,.52)!important;background:transparent!important;color:rgba(245,245,244,.88)!important;box-shadow:none!important}
       body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child):hover{background:rgba(16,185,129,.07)!important;border-color:rgba(110,231,183,.72)!important}
