@@ -32,44 +32,44 @@ export default function EmaeaBody({entityId}){
         font-size:.875rem;
       }
 
-      /* Barre haute plus discrète : EMÆÄ reste le centre visuel. */
+      /* Barre haute compacte, séparée en 2 + 4. */
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{
         grid-template-columns:repeat(2,minmax(0,1fr))!important;
-        gap:6px!important;
+        gap:5px!important;
         margin-bottom:10px!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div{
-        min-height:44px!important;
-        padding:6px 9px!important;
-        gap:8px!important;
-        border-radius:13px!important;
+        min-height:40px!important;
+        padding:5px 8px!important;
+        gap:7px!important;
+        border-radius:12px!important;
         border-color:rgba(52,211,153,.42)!important;
         background:linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60))!important;
         box-shadow:inset 0 1px 0 rgba(167,243,208,.07),0 0 18px rgba(16,185,129,.04)!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div > span:first-child{
-        width:26px!important;
-        height:26px!important;
+        width:24px!important;
+        height:24px!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:first-child{
-        font-size:15px!important;
-        line-height:16px!important;
+        font-size:14px!important;
+        line-height:15px!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:last-child{
-        font-size:9px!important;
+        font-size:8px!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before,
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{
         min-width:0;
-        min-height:44px;
-        border-radius:13px;
+        min-height:40px;
+        border-radius:12px;
         border:1px solid rgba(52,211,153,.42);
         display:flex;
         align-items:center;
-        padding:6px 9px;
+        padding:5px 8px;
         white-space:pre-line;
-        font-size:9px;
-        line-height:1.25;
+        font-size:8px;
+        line-height:1.2;
         color:rgba(214,211,209,.82);
         box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
       }
@@ -88,8 +88,18 @@ export default function EmaeaBody({entityId}){
       }
       @media(min-width:1024px){
         body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{
-          grid-template-columns:repeat(6,minmax(0,1fr))!important;
+          grid-template-columns:110px 110px 24px 110px 110px 110px 110px!important;
+          justify-content:center!important;
+          max-width:706px!important;
+          margin-left:auto!important;
+          margin-right:auto!important;
         }
+        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(1){grid-column:1!important}
+        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(2){grid-column:2!important}
+        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(3){grid-column:4!important}
+        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(4){grid-column:5!important}
+        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before{grid-column:6!important}
+        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{grid-column:7!important}
       }
     `}</style>
 
