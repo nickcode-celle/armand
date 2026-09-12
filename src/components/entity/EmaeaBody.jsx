@@ -19,19 +19,19 @@ export default function EmaeaBody({entityId}){
       if(!title||!subtitle)return false;
 
       title.textContent='EMÆÄ';
-      title.style.color='#047857';
+      title.style.color='#39CE74';
 
       const line1=document.createElement('span');
       line1.textContent='première observation documentée';
       line1.style.display='block';
       line1.style.whiteSpace='nowrap';
-      line1.style.color='#065f46';
+      line1.style.color='#39CE74';
 
       const line2=document.createElement('span');
       line2.textContent='Dr Allvar LÖFGREN - Suède 1623';
       line2.style.display='block';
       line2.style.whiteSpace='nowrap';
-      line2.style.color='#065f46';
+      line2.style.color='#39CE74';
 
       subtitle.replaceChildren(line1,line2);
       subtitle.style.textTransform='none';
@@ -87,18 +87,20 @@ export default function EmaeaBody({entityId}){
   return <div className="relative mx-auto w-full">
     <style>{`
       @import url('https://fontlibrary.org//face/nordica-advanced');
+      :root{--emaea-green:#39CE74;--emaea-green-rgb:57,206,116;--emaea-green-dark:#0B2F1E;}
       body:has([aria-label="EMÆÄ"]),body:has([aria-label="EMÆÄ"]) .min-h-screen{background:#000!important;color:#f5f5f4}
       body:has([aria-label="EMÆÄ"]) aside{background:#000!important;border-color:rgba(255,255,255,.08)!important}
       body:has([aria-label="EMÆÄ"]) main{background:#000!important}
       body:has([aria-label="EMÆÄ"]),body:has([aria-label="EMÆÄ"]) *,body:has([aria-label="EMÆÄ"]) button,body:has([aria-label="EMÆÄ"]) input,body:has([aria-label="EMÆÄ"]) textarea{font-family:'NordicaAdvancedRegular',sans-serif!important;font-weight:normal!important}
 
-      body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child){border:1px solid rgba(52,211,153,.52)!important;background:transparent!important;color:rgba(245,245,244,.88)!important;box-shadow:none!important}
-      body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child):hover{background:rgba(16,185,129,.07)!important;border-color:rgba(110,231,183,.72)!important}
+      body:has([aria-label="EMÆÄ"]) aside nav button{border-color:var(--emaea-green)!important}
+      body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child){border:1px solid var(--emaea-green)!important;background:transparent!important;color:rgba(245,245,244,.88)!important;box-shadow:none!important}
+      body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child):hover{background:rgba(var(--emaea-green-rgb),.08)!important;border-color:var(--emaea-green)!important}
       body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span{font-size:0!important}
       body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span::after{content:"Évolution";font-size:.875rem}
 
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important;margin-bottom:10px!important}
-      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div{min-height:40px!important;padding:5px 8px!important;gap:7px!important;border-radius:12px!important;border-color:rgba(52,211,153,.42)!important;background:linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60))!important;box-shadow:inset 0 1px 0 rgba(167,243,208,.07),0 0 18px rgba(16,185,129,.04)!important}
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div{min-height:40px!important;padding:5px 8px!important;gap:7px!important;border-radius:12px!important;border-color:var(--emaea-green)!important;background:linear-gradient(180deg,rgba(var(--emaea-green-rgb),.24),rgba(var(--emaea-green-rgb),.11))!important;box-shadow:inset 0 1px 0 rgba(var(--emaea-green-rgb),.18),0 0 18px rgba(var(--emaea-green-rgb),.06)!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div > span:first-child{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;border-radius:999px!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(1) > span:first-child{background:radial-gradient(circle at 32% 28%,#fecaca 0%,#fb7185 28%,#ef4444 58%,#991b1b 100%)!important;border-color:rgba(254,202,202,.75)!important;box-shadow:0 0 14px rgba(239,68,68,.35),inset 0 1px 3px rgba(255,255,255,.45)!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(2) > span:first-child{background:radial-gradient(circle at 31% 25%,rgba(255,255,255,.98) 0 5%,rgba(255,244,176,.95) 7%,transparent 18%),radial-gradient(circle at 36% 31%,#fff1a8 0%,#f6c84b 24%,#c98a16 54%,#6f4307 82%,#2f1a02 100%)!important;border-color:rgba(255,224,120,.88)!important;box-shadow:0 0 12px rgba(234,179,8,.42),inset -3px -4px 7px rgba(63,36,0,.52),inset 3px 3px 5px rgba(255,248,202,.52)!important}
