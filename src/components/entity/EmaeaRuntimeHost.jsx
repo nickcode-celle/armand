@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import {createEmaeaBodyRuntime} from './emaeaBodyRuntime.js';
 
 const PEDESTAL_ART='/assets/emaea/emaea-stage-final.jpg';
+const ENTITY_SCALE=1.08;
+const ENTITY_Y=20;
 
 async function readEvolution(entityId){
   const response=await fetch('/api/entity/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entityId})});
@@ -29,9 +31,9 @@ function tuneEntityMaterial(root){
     const mats=Array.isArray(o.material)?o.material:[o.material];
     for(const m of mats){
       if(!m?.color)continue;
-      if('envMapIntensity'in m)m.envMapIntensity=Math.max(Number(m.envMapIntensity)||0,1.15);
-      if('roughness'in m)m.roughness=Math.max(.2,Math.min(.70,Number(m.roughness??.48)));
-      if('metalness'in m)m.metalness=Math.min(.16,Number(m.metalness??.02));
+      if('envMapIntensity'in m)m.envMapIntensity=Math.min(.72,Number(m.envMapIntensity??.55));
+      if('roughness'in m)m.roughness=Math.max(.28,Math.min(.76,Number(m.roughness??.52)));
+      if('metalness'in m)m.metalness=Math.min(.12,Number(m.metalness??.02));
       m.needsUpdate=true;
     }
   });
@@ -44,14 +46,9 @@ function makeExactPlane(texture,camera,z){
   const vFov=THREE.MathUtils.degToRad(camera.fov);
   const visibleHeight=2*Math.tan(vFov/2)*distance;
   const visibleWidth=visibleHeight*camera.aspect;
-
   let width=visibleWidth;
   let height=width/imageAspect;
-  if(height>visibleHeight){
-    height=visibleHeight;
-    width=height*imageAspect;
-  }
-
+  if(height>visibleHeight){height=visibleHeight;width=height*imageAspect}
   const plane=new THREE.Mesh(
     new THREE.PlaneGeometry(width,height),
     new THREE.MeshBasicMaterial({map:texture,toneMapped:false,depthWrite:false,depthTest:false})
@@ -61,20 +58,28 @@ function makeExactPlane(texture,camera,z){
   return plane;
 }
 
-async function dressStage(runtime){
+function findSatelliteGroup(scene,entityGroup){
+  return scene.children.find(o=>o?.isGroup&&o!==entityGroup&&o.children?.length===5)||null;
+}
+
+async function dressStage(runtime,initialControls){
   const{scene,camera,renderer,entityGroup}=runtime;
   renderer.domElement.style.width='100%';
   renderer.domElement.style.height='100%';
   renderer.domElement.style.display='block';
   renderer.setClearColor(0x000000,1);
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.03;
+  renderer.toneMappingExposure=.96;
   scene.background=new THREE.Color(0x000000);
   scene.fog=null;
 
   camera.position.set(0,5,300);
   camera.lookAt(0,-4,0);
   camera.updateProjectionMatrix();
+
+  const baseAmbient=scene.children.find(o=>o?.isHemisphereLight)||null;
+  const baseSpot=scene.children.find(o=>o?.isSpotLight)||null;
+  const satelliteGroup=findSatelliteGroup(scene,entityGroup);
 
   let pedestalTexture=null;
   let pedestalPlane=null;
@@ -86,51 +91,82 @@ async function dressStage(runtime){
     console.error('[EMÆÄ decor] Le visuel final du socle est absent. Attendu:',PEDESTAL_ART,error);
   }
 
-  entityGroup.scale.setScalar(.86);
-  entityGroup.position.set(0,40,4);
+  entityGroup.scale.setScalar(ENTITY_SCALE);
+  entityGroup.position.set(0,ENTITY_Y,4);
   tuneEntityMaterial(entityGroup);
 
-  const warm=new THREE.PointLight(0xffc46a,5.4,260,2);
+  const warm=new THREE.PointLight(0xffc46a,1,250,2);
   warm.position.set(0,-58,84);
   scene.add(warm);
-  const soft=new THREE.DirectionalLight(0xffead0,.72);
+  const soft=new THREE.DirectionalLight(0xffead0,1);
   soft.position.set(-1.4,2.2,2.6);
   scene.add(soft);
-  const cool=new THREE.DirectionalLight(0x9fc7ff,.30);
+  const cool=new THREE.DirectionalLight(0x9fc7ff,1);
   cool.position.set(2.4,1.2,1.2);
   scene.add(cool);
-  const neutral=new THREE.HemisphereLight(0xffffff,0x080808,.22);
-  scene.add(neutral);
 
-  return()=>{
-    scene.remove(warm,soft,cool,neutral);
-    if(pedestalPlane){
-      scene.remove(pedestalPlane);
-      pedestalPlane.geometry.dispose();
-      pedestalPlane.material.dispose();
+  const applyControls=({ambient=.12,lighting=.58,satellites=.72}={})=>{
+    const a=Math.max(0,Math.min(1,Number(ambient)));
+    const l=Math.max(0,Math.min(1,Number(lighting)));
+    const s=Math.max(.35,Math.min(1,Number(satellites)));
+    if(baseAmbient)baseAmbient.intensity=a;
+    if(baseSpot)baseSpot.intensity=2.25*l;
+    warm.intensity=3.7*l;
+    soft.intensity=.56*l;
+    cool.intensity=.20*l;
+    if(satelliteGroup){
+      satelliteGroup.position.copy(entityGroup.position);
+      satelliteGroup.scale.setScalar(ENTITY_SCALE*s);
     }
-    pedestalTexture?.dispose?.();
-    scene.background=new THREE.Color(0x000000);
+  };
+  applyControls(initialControls);
+
+  return{
+    applyControls,
+    dispose(){
+      scene.remove(warm,soft,cool);
+      if(pedestalPlane){scene.remove(pedestalPlane);pedestalPlane.geometry.dispose();pedestalPlane.material.dispose()}
+      pedestalTexture?.dispose?.();
+      scene.background=new THREE.Color(0x000000);
+    }
   };
 }
 
-export default function EmaeaRuntimeHost({entityId,className=''}){
+export default function EmaeaRuntimeHost({entityId,className='',controls}){
   const hostRef=useRef(null);
+  const runtimeRef=useRef(null);
+  const stageRef=useRef(null);
+  const controlsRef=useRef(controls);
+  controlsRef.current=controls;
+
+  useEffect(()=>{
+    stageRef.current?.applyControls?.(controls);
+  },[controls]);
+
   useEffect(()=>{
     if(!entityId||!hostRef.current)return;
-    let cancelled=false,runtime=null,timer=null,busy=false,undress=null;
+    let cancelled=false,timer=null,busy=false;
     const sync=async()=>{
       if(cancelled||busy)return;
       busy=true;
       try{
         const evolution=await readEvolution(entityId);
         if(cancelled)return;
-        if(!runtime){runtime=createEmaeaBodyRuntime(hostRef.current,evolution);undress=await dressStage(runtime)}
-        else await runtime.applyState?.(evolution);
+        if(!runtimeRef.current){
+          runtimeRef.current=createEmaeaBodyRuntime(hostRef.current,evolution);
+          stageRef.current=await dressStage(runtimeRef.current,controlsRef.current);
+        }else await runtimeRef.current.applyState?.(evolution);
       }catch(error){if(!cancelled)console.error('[EMÆÄ graphic]',error)}finally{busy=false}
     };
     sync().then(()=>{if(!cancelled)timer=setInterval(sync,1500)});
-    return()=>{cancelled=true;if(timer)clearInterval(timer);undress?.();runtime?.dispose?.();runtime=null};
+    return()=>{
+      cancelled=true;
+      if(timer)clearInterval(timer);
+      stageRef.current?.dispose?.();
+      stageRef.current=null;
+      runtimeRef.current?.dispose?.();
+      runtimeRef.current=null;
+    };
   },[entityId]);
 
   return <div ref={hostRef} className={`${className} overflow-hidden bg-black`}/>;
