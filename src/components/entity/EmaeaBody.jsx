@@ -13,33 +13,16 @@ export default function EmaeaBody({entityId}){
       const children=[...grid.children].filter(n=>!n.hasAttribute('data-emaea-cloned-reward'));
       const green=children[2],pink=children[3];
       if(!green||!pink)return false;
-
       const makeClone=(source,kind)=>{
-        const clone=source.cloneNode(true);
-        clone.setAttribute('data-emaea-cloned-reward',kind);
-        const subtitle=clone.querySelector('div > div:last-child');
-        if(subtitle)subtitle.style.display='none';
+        const clone=source.cloneNode(true);clone.setAttribute('data-emaea-cloned-reward',kind);
+        const subtitle=clone.querySelector('div > div:last-child');if(subtitle)subtitle.style.display='none';
         const marble=clone.querySelector(':scope > span:first-child');
-        if(marble){
-          marble.style.width='24px';marble.style.height='24px';marble.style.minWidth='24px';marble.style.minHeight='24px';marble.style.borderRadius='999px';
-          if(kind==='blue'){
-            marble.style.background='radial-gradient(circle at 32% 28%, #dbeafe 0%, #60a5fa 28%, #2563eb 58%, #172554 100%)';
-            marble.style.borderColor='rgba(191,219,254,.78)';
-            marble.style.boxShadow='0 0 12px rgba(37,99,235,.34), inset 0 1px 3px rgba(255,255,255,.42)';
-          }else{
-            marble.style.background='radial-gradient(circle at 31% 25%, rgba(255,255,255,.98) 0 5%, rgba(255,244,176,.95) 7%, transparent 18%), radial-gradient(circle at 36% 31%, #fff1a8 0%, #f6c84b 24%, #c98a16 54%, #6f4307 82%, #2f1a02 100%)';
-            marble.style.borderColor='rgba(255,224,120,.88)';
-            marble.style.boxShadow='0 0 12px rgba(234,179,8,.42), inset -3px -4px 7px rgba(63,36,0,.52), inset 3px 3px 5px rgba(255,248,202,.52)';
-          }
-        }
-        return clone;
-      };
-      grid.append(makeClone(green,'blue'));grid.append(makeClone(pink,'gold'));return true;
-    };
-    if(install())return;
-    const observer=new MutationObserver(()=>{if(install())observer.disconnect()});
-    observer.observe(document.body,{childList:true,subtree:true});
-    return()=>observer.disconnect();
+        if(marble){marble.style.width='24px';marble.style.height='24px';marble.style.minWidth='24px';marble.style.minHeight='24px';marble.style.borderRadius='999px';
+          if(kind==='blue'){marble.style.background='radial-gradient(circle at 32% 28%, #dbeafe 0%, #60a5fa 28%, #2563eb 58%, #172554 100%)';marble.style.borderColor='rgba(191,219,254,.78)';marble.style.boxShadow='0 0 12px rgba(37,99,235,.34), inset 0 1px 3px rgba(255,255,255,.42)';}
+          else{marble.style.background='radial-gradient(circle at 31% 25%, rgba(255,255,255,.98) 0 5%, rgba(255,244,176,.95) 7%, transparent 18%), radial-gradient(circle at 36% 31%, #fff1a8 0%, #f6c84b 24%, #c98a16 54%, #6f4307 82%, #2f1a02 100%)';marble.style.borderColor='rgba(255,224,120,.88)';marble.style.boxShadow='0 0 12px rgba(234,179,8,.42), inset -3px -4px 7px rgba(63,36,0,.52), inset 3px 3px 5px rgba(255,248,202,.52)';}}
+        return clone;};
+      grid.append(makeClone(green,'blue'));grid.append(makeClone(pink,'gold'));return true;};
+    if(!install()){const observer=new MutationObserver(()=>{if(install())observer.disconnect()});observer.observe(document.body,{childList:true,subtree:true});return()=>observer.disconnect();}
   },[]);
 
   return <div className="relative mx-auto w-full">
@@ -50,26 +33,23 @@ export default function EmaeaBody({entityId}){
       body:has([aria-label="EMÆÄ"]) main{background:#000!important}
       body:has([aria-label="EMÆÄ"]),body:has([aria-label="EMÆÄ"]) *,body:has([aria-label="EMÆÄ"]) button,body:has([aria-label="EMÆÄ"]) input,body:has([aria-label="EMÆÄ"]) textarea{font-family:'NordicaAdvancedRegular',sans-serif!important;font-weight:normal!important}
 
-      /* Remove the old header tagline only. */
       body:has([aria-label="EMÆÄ"]) aside > div:first-child p,
       body:has([aria-label="EMÆÄ"]) aside > div:first-child div:last-child:not(:first-child){font-size:0!important;line-height:0!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
+      body:has([aria-label="EMÆÄ"]) aside > div:first-child{position:relative!important;padding-bottom:42px!important}
+      body:has([aria-label="EMÆÄ"]) aside > div:first-child::after{content:"EMAEA\A premiere observation documentée- Dr Allvar LOFGREN- Suède 1623";white-space:pre-wrap;position:absolute;left:64px;top:16px;width:145px;color:rgba(209,250,229,.9);font-family:'NordicaAdvancedRegular',sans-serif;font-size:8px;line-height:1.45;letter-spacing:.035em;text-transform:none;pointer-events:none}
+      body:has([aria-label="EMÆÄ"]) aside > div:first-child::first-line{font-size:15px;letter-spacing:.14em;color:#a7f3d0;text-transform:uppercase}
 
       body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child){border:1px solid rgba(52,211,153,.52)!important;background:transparent!important;color:rgba(245,245,244,.88)!important;box-shadow:none!important}
       body:has([aria-label="EMÆÄ"]) aside nav button:not(:first-child):hover{background:rgba(16,185,129,.07)!important;border-color:rgba(110,231,183,.72)!important}
-      body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span{font-size:0!important}
-      body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span::after{content:"Évolution";font-size:.875rem}
+      body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span{font-size:0!important}body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span::after{content:"Évolution";font-size:.875rem}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important;margin-bottom:10px!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div{min-height:40px!important;padding:5px 8px!important;gap:7px!important;border-radius:12px!important;border-color:rgba(52,211,153,.42)!important;background:linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60))!important;box-shadow:inset 0 1px 0 rgba(167,243,208,.07),0 0 18px rgba(16,185,129,.04)!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div > span:first-child{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;border-radius:999px!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(1) > span:first-child{background:radial-gradient(circle at 32% 28%,#fecaca 0%,#fb7185 28%,#ef4444 58%,#991b1b 100%)!important;border-color:rgba(254,202,202,.75)!important;box-shadow:0 0 14px rgba(239,68,68,.35),inset 0 1px 3px rgba(255,255,255,.45)!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(2) > span:first-child{background:radial-gradient(circle at 31% 25%,rgba(255,255,255,.98) 0 5%,rgba(255,244,176,.95) 7%,transparent 18%),radial-gradient(circle at 36% 31%,#fff1a8 0%,#f6c84b 24%,#c98a16 54%,#6f4307 82%,#2f1a02 100%)!important;border-color:rgba(255,224,120,.88)!important;box-shadow:0 0 12px rgba(234,179,8,.42),inset -3px -4px 7px rgba(63,36,0,.52),inset 3px 3px 5px rgba(255,248,202,.52)!important}
-      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:first-child{font-size:14px!important;line-height:15px!important}
-      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(n+3) div div:last-child{display:none!important}
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:first-child{font-size:14px!important;line-height:15px!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(n+3) div div:last-child{display:none!important}
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before,body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{content:none!important;display:none!important}
-      @media(min-width:1024px){
-        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{grid-template-columns:110px 110px 24px 110px 110px 110px 110px!important;justify-content:center!important;max-width:706px!important;margin-left:auto!important;margin-right:auto!important}
-        body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(1){grid-column:1!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(2){grid-column:2!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(3){grid-column:4!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(4){grid-column:5!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(5){grid-column:6!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(6){grid-column:7!important}
-      }
+      @media(min-width:1024px){body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{grid-template-columns:110px 110px 24px 110px 110px 110px 110px!important;justify-content:center!important;max-width:706px!important;margin-left:auto!important;margin-right:auto!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(1){grid-column:1!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(2){grid-column:2!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(3){grid-column:4!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(4){grid-column:5!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(5){grid-column:6!important}body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(6){grid-column:7!important}}
     `}</style>
     <div className="relative aspect-[1.86/1] w-full overflow-hidden rounded-[30px] border border-white/[.11] bg-black shadow-[0_22px_90px_rgba(0,0,0,.72)]" aria-label="EMÆÄ"><EmaeaRuntimeHost entityId={entityId} controls={controls} className="absolute inset-0"/></div>
   </div>;
