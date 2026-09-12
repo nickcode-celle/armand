@@ -2,7 +2,7 @@ import React,{useEffect,useRef} from 'react';
 import * as THREE from 'three';
 import {createEmaeaBodyRuntime} from './emaeaBodyRuntime.js';
 
-const PEDESTAL_ART='/assets/emaea/emaea-stage-exact.jpg';
+const PEDESTAL_ART='/assets/emaea/emaea-stage-final.jpg';
 
 async function readEvolution(entityId){
   const response=await fetch('/api/entity/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entityId})});
@@ -83,11 +83,11 @@ async function dressStage(runtime){
     pedestalPlane=makeExactPlane(pedestalTexture,camera,-135);
     scene.add(pedestalPlane);
   }catch(error){
-    console.error('[EMÆÄ decor] Le visuel exact du socle est absent. Attendu:',PEDESTAL_ART,error);
+    console.error('[EMÆÄ decor] Le visuel final du socle est absent. Attendu:',PEDESTAL_ART,error);
   }
 
   entityGroup.scale.setScalar(.86);
-  entityGroup.position.set(0,42,4);
+  entityGroup.position.set(0,40,4);
   tuneEntityMaterial(entityGroup);
 
   const warm=new THREE.PointLight(0xffc46a,5.4,260,2);
