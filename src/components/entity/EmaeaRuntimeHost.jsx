@@ -2,7 +2,7 @@ import React,{useEffect,useRef} from 'react';
 import * as THREE from 'three';
 import {createEmaeaBodyRuntime} from './emaeaBodyRuntime.js';
 
-const PEDESTAL_ART='/assets/emaea/emaea-pedestal.png';
+const PEDESTAL_ART='/assets/emaea/emaea-stage-exact.jpg';
 
 async function readEvolution(entityId){
   const response=await fetch('/api/entity/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entityId})});
@@ -37,7 +37,7 @@ function tuneEntityMaterial(root){
   });
 }
 
-function makeContainPlane(texture,camera,z){
+function makeExactPlane(texture,camera,z){
   const image=texture.image;
   const imageAspect=(image?.naturalWidth||image?.width||1)/(image?.naturalHeight||image?.height||1);
   const distance=Math.abs(camera.position.z-z);
@@ -80,18 +80,18 @@ async function dressStage(runtime){
   let pedestalPlane=null;
   try{
     pedestalTexture=await loadTexture(renderer,PEDESTAL_ART);
-    pedestalPlane=makeContainPlane(pedestalTexture,camera,-135);
+    pedestalPlane=makeExactPlane(pedestalTexture,camera,-135);
     scene.add(pedestalPlane);
   }catch(error){
-    console.error('[EMÆÄ decor] Le visuel du socle est absent. Attendu:',PEDESTAL_ART,error);
+    console.error('[EMÆÄ decor] Le visuel exact du socle est absent. Attendu:',PEDESTAL_ART,error);
   }
 
   entityGroup.scale.setScalar(.86);
-  entityGroup.position.set(0,38,4);
+  entityGroup.position.set(0,42,4);
   tuneEntityMaterial(entityGroup);
 
   const warm=new THREE.PointLight(0xffc46a,5.4,260,2);
-  warm.position.set(0,-62,84);
+  warm.position.set(0,-58,84);
   scene.add(warm);
   const soft=new THREE.DirectionalLight(0xffead0,.72);
   soft.position.set(-1.4,2.2,2.6);
