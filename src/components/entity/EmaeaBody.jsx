@@ -23,41 +23,68 @@ export default function EmaeaBody({entityId}){
         background:rgba(16,185,129,.07)!important;
         border-color:rgba(110,231,183,.72)!important;
       }
+      /* Score devient Évolution sans toucher au moteur ni à la navigation. */
+      body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span{
+        font-size:0!important;
+      }
+      body:has([aria-label="EMÆÄ"]) aside nav button:nth-child(2) span::after{
+        content:"Évolution";
+        font-size:.875rem;
+      }
 
-      /* Tuiles du haut : même famille verte que l'onglet EMÆÄ. */
+      /* Barre haute plus discrète : EMÆÄ reste le centre visuel. */
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{
         grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        gap:6px!important;
+        margin-bottom:10px!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div{
-        border-color:rgba(52,211,153,.46)!important;
-        background:linear-gradient(180deg,rgba(6,78,59,.72),rgba(4,47,46,.66))!important;
-        box-shadow:inset 0 1px 0 rgba(167,243,208,.08),0 0 24px rgba(16,185,129,.05)!important;
+        min-height:44px!important;
+        padding:6px 9px!important;
+        gap:8px!important;
+        border-radius:13px!important;
+        border-color:rgba(52,211,153,.42)!important;
+        background:linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60))!important;
+        box-shadow:inset 0 1px 0 rgba(167,243,208,.07),0 0 18px rgba(16,185,129,.04)!important;
+      }
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div > span:first-child{
+        width:26px!important;
+        height:26px!important;
+      }
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:first-child{
+        font-size:15px!important;
+        line-height:16px!important;
+      }
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:last-child{
+        font-size:9px!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before,
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{
         min-width:0;
-        min-height:53px;
-        border-radius:16px;
-        border:1px solid rgba(52,211,153,.46);
+        min-height:44px;
+        border-radius:13px;
+        border:1px solid rgba(52,211,153,.42);
         display:flex;
         align-items:center;
-        padding:10px 12px;
+        padding:6px 9px;
         white-space:pre-line;
-        font-size:10px;
-        line-height:1.35;
+        font-size:9px;
+        line-height:1.25;
         color:rgba(214,211,209,.82);
-        box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before{
         content:"🔵  0\\A récompenses bleues";
-        background:linear-gradient(180deg,rgba(6,78,59,.72),rgba(4,47,46,.66));
+        background:linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60));
+        order:5;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{
         content:"🟡  0\\A récompense or";
         border-color:rgba(250,204,21,.56);
-        background:linear-gradient(180deg,rgba(113,63,18,.72),rgba(66,42,10,.68));
+        background:linear-gradient(180deg,rgba(113,63,18,.68),rgba(66,42,10,.64));
         color:rgba(254,240,138,.9);
-        box-shadow:inset 0 1px 0 rgba(254,240,138,.11),0 0 22px rgba(234,179,8,.07);
+        box-shadow:inset 0 1px 0 rgba(254,240,138,.10),0 0 18px rgba(234,179,8,.06);
+        order:6;
       }
       @media(min-width:1024px){
         body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2{
