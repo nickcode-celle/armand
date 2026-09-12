@@ -19,16 +19,19 @@ export default function EmaeaBody({entityId}){
       if(!title||!subtitle)return false;
 
       title.textContent='EMÆÄ';
+      title.style.color='#059669';
 
       const line1=document.createElement('span');
       line1.textContent='première observation documentée';
       line1.style.display='block';
       line1.style.whiteSpace='nowrap';
+      line1.style.color='#047857';
 
       const line2=document.createElement('span');
       line2.textContent='Dr Allvar LÖFGREN - Suède 1623';
       line2.style.display='block';
       line2.style.whiteSpace='nowrap';
+      line2.style.color='#047857';
 
       subtitle.replaceChildren(line1,line2);
       subtitle.style.textTransform='none';
