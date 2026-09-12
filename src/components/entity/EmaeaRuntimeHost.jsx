@@ -56,11 +56,17 @@ async function dressStage(runtime){
   let pedestalPlane=null;
   try{
     pedestalTexture=await loadTexture(renderer,PEDESTAL_ART);
+    const image=pedestalTexture.image;
+    const imageAspect=(image?.naturalWidth||image?.width||1)/(image?.naturalHeight||image?.height||1);
+    const host=renderer.domElement.parentElement;
+    const viewportAspect=Math.max(.1,(host?.clientWidth||renderer.domElement.clientWidth||1)/(host?.clientHeight||renderer.domElement.clientHeight||1));
+    const height=360;
+    const width=height*Math.max(imageAspect,viewportAspect);
     pedestalPlane=new THREE.Mesh(
-      new THREE.PlaneGeometry(330,330),
+      new THREE.PlaneGeometry(width,height),
       new THREE.MeshBasicMaterial({map:pedestalTexture,toneMapped:false,depthWrite:false,depthTest:false})
     );
-    pedestalPlane.position.set(0,0,-135);
+    pedestalPlane.position.set(0,-62,-135);
     pedestalPlane.renderOrder=-100;
     scene.add(pedestalPlane);
   }catch(error){
@@ -68,11 +74,11 @@ async function dressStage(runtime){
   }
 
   entityGroup.scale.setScalar(1.28);
-  entityGroup.position.set(0,36,4);
+  entityGroup.position.set(0,-2,4);
   tuneEntityMaterial(entityGroup);
 
   const warm=new THREE.PointLight(0xffc46a,5.4,260,2);
-  warm.position.set(0,-48,84);
+  warm.position.set(0,-86,84);
   scene.add(warm);
   const soft=new THREE.DirectionalLight(0xffead0,.72);
   soft.position.set(-1.4,2.2,2.6);
