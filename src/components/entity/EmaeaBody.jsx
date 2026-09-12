@@ -51,12 +51,23 @@ export default function EmaeaBody({entityId}){
         width:24px!important;
         height:24px!important;
       }
+      /* Bille totale : bille rouge. */
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(1) > span:first-child{
+        background:radial-gradient(circle at 32% 28%,#fecaca 0%,#fb7185 28%,#ef4444 58%,#991b1b 100%)!important;
+        border-color:rgba(254,202,202,.75)!important;
+        box-shadow:0 0 14px rgba(239,68,68,.35),inset 0 1px 3px rgba(255,255,255,.45)!important;
+      }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:first-child{
         font-size:14px!important;
         line-height:15px!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > div div div:last-child{
         font-size:8px!important;
+      }
+      /* Les quatre onglets récompenses ne gardent que la couleur et le compteur. */
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(3) div div:last-child,
+      body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2 > :nth-child(4) div div:last-child{
+        display:none!important;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before,
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{
@@ -67,19 +78,19 @@ export default function EmaeaBody({entityId}){
         display:flex;
         align-items:center;
         padding:5px 8px;
-        white-space:pre-line;
-        font-size:8px;
-        line-height:1.2;
-        color:rgba(214,211,209,.82);
+        white-space:nowrap;
+        font-size:12px;
+        line-height:1;
+        color:rgba(245,245,244,.88);
         box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::before{
-        content:"🔵  0\\A récompenses bleues";
+        content:"🔵  0";
         background:linear-gradient(180deg,rgba(6,78,59,.66),rgba(4,47,46,.60));
         order:5;
       }
       body:has([aria-label="EMÆÄ"]) main .mb-4.grid.grid-cols-2.gap-2::after{
-        content:"🟡  0\\A récompense or";
+        content:"🟡  0";
         border-color:rgba(250,204,21,.56);
         background:linear-gradient(180deg,rgba(113,63,18,.68),rgba(66,42,10,.64));
         color:rgba(254,240,138,.9);
