@@ -9,7 +9,7 @@ export default function EmaeaBody({entityId}){
       body:has([aria-label="EMÆÄ"]) aside{background:#000!important;border-color:rgba(255,255,255,.08)!important}
       body:has([aria-label="EMÆÄ"]) main{background:#000!important}
     `}</style>
-    <div className="relative aspect-[1314/549] w-full overflow-hidden rounded-[30px] border border-white/[.11] bg-black shadow-[0_22px_90px_rgba(0,0,0,.72)]" aria-label="EMÆÄ">
+    <div className="relative aspect-video w-full overflow-hidden rounded-[30px] border border-white/[.11] bg-black shadow-[0_22px_90px_rgba(0,0,0,.72)]" aria-label="EMÆÄ">
       <EmaeaRuntimeHost entityId={entityId} className="absolute inset-0"/>
     </div>
   </div>;
