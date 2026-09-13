@@ -62,7 +62,7 @@ function findSatelliteGroup(scene,entityGroup){
   return scene.children.find(o=>o?.isGroup&&o!==entityGroup&&o.children?.length===5)||null;
 }
 
-async function dressStage(runtime,initialControls){
+async function dressStage(runtime,initialControls,initialBackgroundSrc){
   const{scene,camera,renderer,entityGroup}=runtime;
   renderer.domElement.style.width='100%';
   renderer.domElement.style.height='100%';
@@ -81,15 +81,26 @@ async function dressStage(runtime,initialControls){
   const baseSpot=scene.children.find(o=>o?.isSpotLight)||null;
   const satelliteGroup=findSatelliteGroup(scene,entityGroup);
 
-  let pedestalTexture=null;
-  let pedestalPlane=null;
-  try{
-    pedestalTexture=await loadTexture(renderer,PEDESTAL_ART);
-    pedestalPlane=makeExactPlane(pedestalTexture,camera,-135);
-    scene.add(pedestalPlane);
-  }catch(error){
-    console.error('[EMÆÄ decor] Le visuel final du socle est absent. Attendu:',PEDESTAL_ART,error);
-  }
+  let backdropTexture=null;
+  let backdropPlane=null;
+  let backdropVersion=0;
+  const setBackdrop=async src=>{
+    const version=++backdropVersion;
+    const url=src||PEDESTAL_ART;
+    try{
+      const texture=await loadTexture(renderer,url);
+      if(version!==backdropVersion){texture.dispose();return}
+      const plane=makeExactPlane(texture,camera,-135);
+      if(backdropPlane){scene.remove(backdropPlane);backdropPlane.geometry.dispose();backdropPlane.material.dispose()}
+      backdropTexture?.dispose?.();
+      backdropTexture=texture;
+      backdropPlane=plane;
+      scene.add(backdropPlane);
+    }catch(error){
+      console.error('[EMÆÄ decor] Fond d’écran indisponible:',url,error);
+    }
+  };
+  await setBackdrop(initialBackgroundSrc);
 
   entityGroup.scale.setScalar(ENTITY_SCALE);
   entityGroup.position.set(0,ENTITY_Y,4);
@@ -123,25 +134,33 @@ async function dressStage(runtime,initialControls){
 
   return{
     applyControls,
+    setBackdrop,
     dispose(){
+      backdropVersion++;
       scene.remove(warm,soft,cool);
-      if(pedestalPlane){scene.remove(pedestalPlane);pedestalPlane.geometry.dispose();pedestalPlane.material.dispose()}
-      pedestalTexture?.dispose?.();
+      if(backdropPlane){scene.remove(backdropPlane);backdropPlane.geometry.dispose();backdropPlane.material.dispose()}
+      backdropTexture?.dispose?.();
       scene.background=new THREE.Color(0x000000);
     }
   };
 }
 
-export default function EmaeaRuntimeHost({entityId,className='',controls}){
+export default function EmaeaRuntimeHost({entityId,className='',controls,backgroundSrc}){
   const hostRef=useRef(null);
   const runtimeRef=useRef(null);
   const stageRef=useRef(null);
   const controlsRef=useRef(controls);
+  const backgroundRef=useRef(backgroundSrc);
   controlsRef.current=controls;
+  backgroundRef.current=backgroundSrc;
 
   useEffect(()=>{
     stageRef.current?.applyControls?.(controls);
   },[controls]);
+
+  useEffect(()=>{
+    stageRef.current?.setBackdrop?.(backgroundSrc);
+  },[backgroundSrc]);
 
   useEffect(()=>{
     if(!entityId||!hostRef.current)return;
@@ -154,7 +173,7 @@ export default function EmaeaRuntimeHost({entityId,className='',controls}){
         if(cancelled)return;
         if(!runtimeRef.current){
           runtimeRef.current=createEmaeaBodyRuntime(hostRef.current,evolution);
-          stageRef.current=await dressStage(runtimeRef.current,controlsRef.current);
+          stageRef.current=await dressStage(runtimeRef.current,controlsRef.current,backgroundRef.current);
         }else await runtimeRef.current.applyState?.(evolution);
       }catch(error){if(!cancelled)console.error('[EMÆÄ graphic]',error)}finally{busy=false}
     };
