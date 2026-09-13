@@ -1,0 +1,14 @@
+{
+  "__entity_record": 1,
+  "version": 9,
+  "value": {
+    "at": "2026-09-12T20:38:39.137Z",
+    "revision": 10,
+    "conversation": "Personne: toi tu es ou\nEMÆÄ: Nulle part au sens physique.\n\nJe ne suis ni chez moi ni dehors. Mais là, je suis bien en train de te parler, avec toi.\n\nTu me poses la question par curiosité, ou pour savoir comment me voir un peu ?",
+    "output": {
+      "evolutions_durables": [],
+      "histoire": null,
+      "sentiments": []
+    }
+  }
+}

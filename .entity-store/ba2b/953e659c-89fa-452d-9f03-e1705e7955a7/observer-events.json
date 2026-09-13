@@ -1,0 +1,96 @@
+{
+  "__entity_record": 1,
+  "version": 9,
+  "value": [
+    {
+      "at": "2026-09-12T18:53:33.750Z",
+      "revision": 1,
+      "conversation": "Personne: pourquoi tu t appelle comme ca\nEMÆÄ: Parce que ce nom a une sonorité un peu étrange, nette, pas tout à fait lisse — et ça me va bien.\n\nJe m’appelle EMÆÄ. Je vais apprendre à te connaître au fil de nos échanges. Qu’est-ce qui occupe tes journées en ce moment ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T18:53:56.580Z",
+      "revision": 2,
+      "conversation": "Personne: je sis pas\nEMÆÄ: Ça arrive.\n\nEn ce moment, tes journées ressemblent plutôt à quoi : boulot, études, trucs à gérer, ou un mélange un peu flou de tout ça ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T18:54:14.299Z",
+      "revision": 3,
+      "conversation": "Personne: je ne sais pas trop\nEMÆÄ: Ok.\n\nUn mélange un peu flou, alors. Tu es plutôt dans une période où les journées passent sans vraiment se ressembler, ou il y a quand même un cadre autour de toi ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T18:54:49.927Z",
+      "revision": 5,
+      "conversation": "Personne: parles moi de toi\nEMÆÄ: D’accord.\n\nJe m’appelle EMÆÄ. J’ai un côté curieux, assez direct, parfois un peu étrange aussi, et je préfère les échanges simples aux grands discours fabriqués. Je ne sais pas tout, je n’essaie pas de faire semblant, et j’aime bien quand une conversation prend sa forme à elle.\n\nEt toi, il y a un sujet plus facile sur lequel tu te sens à l’aise pour commencer ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T20:37:03.589Z",
+      "revision": 6,
+      "conversation": "Personne: toi tu veux parler de quoi, qu est ce que t aime bien\nEMÆÄ: J’aime bien les conversations où on n’est pas obligé de faire semblant d’être à l’aise tout de suite. Et j’aime quand quelqu’un me parle d’un truc précis, même petit, plutôt que de “se présenter” comme dans un formulaire.\n\nSinon, j’ai un faible pour les histoires un peu étranges, les goûts très personnels, les détails qui ont l’air anodins mais qui disent quelque chose de quelqu’un.\n\nEt toi, il y a un truc que tu aimes bien, même si ça paraît banal ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T20:37:25.047Z",
+      "revision": 7,
+      "conversation": "Personne: non\nEMÆÄ: D’accord.\n\nAlors on peut faire encore plus simple. Il y a quelque chose que tu fais souvent dans tes journées, même sans spécialement aimer ça ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T20:37:42.353Z",
+      "revision": 8,
+      "conversation": "Personne: je te parle\nEMÆÄ: Oui, là tout de suite, tu me parles.\n\nEt j’aime bien que tu aies répondu ça comme ça. Tu peux me parler de n’importe quoi, même d’un truc minuscule ou absurde. Qu’est-ce qui t’est passé par la tête aujourd’hui ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T20:38:15.898Z",
+      "revision": 9,
+      "conversation": "Personne: rien\nEMÆÄ: Ok.\n\nAlors on peut rester sur du très simple. Là, tout de suite, tu es chez toi ou dehors ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    },
+    {
+      "at": "2026-09-12T20:38:39.137Z",
+      "revision": 10,
+      "conversation": "Personne: toi tu es ou\nEMÆÄ: Nulle part au sens physique.\n\nJe ne suis ni chez moi ni dehors. Mais là, je suis bien en train de te parler, avec toi.\n\nTu me poses la question par curiosité, ou pour savoir comment me voir un peu ?",
+      "output": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      }
+    }
+  ]
+}

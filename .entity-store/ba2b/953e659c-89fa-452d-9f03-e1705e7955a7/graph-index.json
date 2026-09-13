@@ -1,0 +1,12 @@
+{
+  "__entity_record": 1,
+  "version": 1,
+  "value": {
+    "signature": "126bc6c3cb1ef3fb6610566c74e2eac860a335f9016adfcd7b3cbf3b7b6b02bf",
+    "refsToPaths": {
+      "obs_timide_001": [
+        "modele_personne.observations.0"
+      ]
+    }
+  }
+}

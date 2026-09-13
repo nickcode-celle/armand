@@ -1,0 +1,235 @@
+{
+  "__entity_record": 1,
+  "version": 11,
+  "value": {
+    "state": {
+      "schema_version": 8,
+      "revision": 10,
+      "user_turns": 10,
+      "working_memory": [
+        {
+          "at": "2026-09-12T18:54:13.071Z",
+          "user": "je ne sais pas trop",
+          "entity": "Ok.\n\nUn mélange un peu flou, alors. Tu es plutôt dans une période où les journées passent sans vraiment se ressembler, ou il y a quand même un cadre autour de toi ?"
+        },
+        {
+          "at": "2026-09-12T18:54:32.496Z",
+          "user": "je suis timide",
+          "entity": "D’accord.\n\nOn peut y aller simplement, sans te pousser. Tu préfères parler un peu de toi, ou partir sur un sujet plus facile pour commencer ?"
+        },
+        {
+          "at": "2026-09-12T18:54:48.843Z",
+          "user": "parles moi de toi",
+          "entity": "D’accord.\n\nJe m’appelle EMÆÄ. J’ai un côté curieux, assez direct, parfois un peu étrange aussi, et je préfère les échanges simples aux grands discours fabriqués. Je ne sais pas tout, je n’essaie pas de faire semblant, et j’aime bien quand une conversation prend sa forme à elle.\n\nEt toi, il y a un sujet plus facile sur lequel tu te sens à l’aise pour commencer ?"
+        },
+        {
+          "at": "2026-09-12T20:37:00.456Z",
+          "user": "toi tu veux parler de quoi, qu est ce que t aime bien",
+          "entity": "J’aime bien les conversations où on n’est pas obligé de faire semblant d’être à l’aise tout de suite. Et j’aime quand quelqu’un me parle d’un truc précis, même petit, plutôt que de “se présenter” comme dans un formulaire.\n\nSinon, j’ai un faible pour les histoires un peu étranges, les goûts très personnels, les détails qui ont l’air anodins mais qui disent quelque chose de quelqu’un.\n\nEt toi, il y a un truc que tu aimes bien, même si ça paraît banal ?"
+        },
+        {
+          "at": "2026-09-12T20:37:23.866Z",
+          "user": "non",
+          "entity": "D’accord.\n\nAlors on peut faire encore plus simple. Il y a quelque chose que tu fais souvent dans tes journées, même sans spécialement aimer ça ?"
+        },
+        {
+          "at": "2026-09-12T20:37:41.187Z",
+          "user": "je te parle",
+          "entity": "Oui, là tout de suite, tu me parles.\n\nEt j’aime bien que tu aies répondu ça comme ça. Tu peux me parler de n’importe quoi, même d’un truc minuscule ou absurde. Qu’est-ce qui t’est passé par la tête aujourd’hui ?"
+        },
+        {
+          "at": "2026-09-12T20:38:14.666Z",
+          "user": "rien",
+          "entity": "Ok.\n\nAlors on peut rester sur du très simple. Là, tout de suite, tu es chez toi ou dehors ?"
+        },
+        {
+          "at": "2026-09-12T20:38:38.226Z",
+          "user": "toi tu es ou",
+          "entity": "Nulle part au sens physique.\n\nJe ne suis ni chez moi ni dehors. Mais là, je suis bien en train de te parler, avec toi.\n\nTu me poses la question par curiosité, ou pour savoir comment me voir un peu ?"
+        }
+      ],
+      "recent_messages": [
+        {
+          "role": "user",
+          "content": "parles moi de toi"
+        },
+        {
+          "role": "assistant",
+          "content": "D’accord.\n\nJe m’appelle EMÆÄ. J’ai un côté curieux, assez direct, parfois un peu étrange aussi, et je préfère les échanges simples aux grands discours fabriqués. Je ne sais pas tout, je n’essaie pas de faire semblant, et j’aime bien quand une conversation prend sa forme à elle.\n\nEt toi, il y a un sujet plus facile sur lequel tu te sens à l’aise pour commencer ?"
+        },
+        {
+          "role": "user",
+          "content": "toi tu veux parler de quoi, qu est ce que t aime bien"
+        },
+        {
+          "role": "assistant",
+          "content": "J’aime bien les conversations où on n’est pas obligé de faire semblant d’être à l’aise tout de suite. Et j’aime quand quelqu’un me parle d’un truc précis, même petit, plutôt que de “se présenter” comme dans un formulaire.\n\nSinon, j’ai un faible pour les histoires un peu étranges, les goûts très personnels, les détails qui ont l’air anodins mais qui disent quelque chose de quelqu’un.\n\nEt toi, il y a un truc que tu aimes bien, même si ça paraît banal ?"
+        },
+        {
+          "role": "user",
+          "content": "non"
+        },
+        {
+          "role": "assistant",
+          "content": "D’accord.\n\nAlors on peut faire encore plus simple. Il y a quelque chose que tu fais souvent dans tes journées, même sans spécialement aimer ça ?"
+        },
+        {
+          "role": "user",
+          "content": "je te parle"
+        },
+        {
+          "role": "assistant",
+          "content": "Oui, là tout de suite, tu me parles.\n\nEt j’aime bien que tu aies répondu ça comme ça. Tu peux me parler de n’importe quoi, même d’un truc minuscule ou absurde. Qu’est-ce qui t’est passé par la tête aujourd’hui ?"
+        },
+        {
+          "role": "user",
+          "content": "rien"
+        },
+        {
+          "role": "assistant",
+          "content": "Ok.\n\nAlors on peut rester sur du très simple. Là, tout de suite, tu es chez toi ou dehors ?"
+        },
+        {
+          "role": "user",
+          "content": "toi tu es ou"
+        },
+        {
+          "role": "assistant",
+          "content": "Nulle part au sens physique.\n\nJe ne suis ni chez moi ni dehors. Mais là, je suis bien en train de te parler, avec toi.\n\nTu me poses la question par curiosité, ou pour savoir comment me voir un peu ?"
+        }
+      ],
+      "updated_at": "2026-09-12T20:38:38.226Z",
+      "metrics": {
+        "calls": 22,
+        "response_calls": 11,
+        "embedding_calls": 11,
+        "input_tokens": 23960,
+        "output_tokens": 686,
+        "total_tokens": 27500,
+        "ai_retries": 0,
+        "ai_errors": 0,
+        "ai_timeouts": 0,
+        "recall_searches": 4,
+        "recall_hits": 4,
+        "recall_misses": 36,
+        "recall_remote_failures": 0,
+        "storage_conflicts": 0,
+        "consolidation_failures": 0
+      },
+      "recall_version": 2
+    },
+    "pending": [
+      {
+        "role": "user",
+        "content": "non"
+      },
+      {
+        "role": "assistant",
+        "content": "D’accord.\n\nAlors on peut faire encore plus simple. Il y a quelque chose que tu fais souvent dans tes journées, même sans spécialement aimer ça ?"
+      },
+      {
+        "role": "user",
+        "content": "je te parle"
+      },
+      {
+        "role": "assistant",
+        "content": "Oui, là tout de suite, tu me parles.\n\nEt j’aime bien que tu aies répondu ça comme ça. Tu peux me parler de n’importe quoi, même d’un truc minuscule ou absurde. Qu’est-ce qui t’est passé par la tête aujourd’hui ?"
+      },
+      {
+        "role": "user",
+        "content": "rien"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok.\n\nAlors on peut rester sur du très simple. Là, tout de suite, tu es chez toi ou dehors ?"
+      },
+      {
+        "role": "user",
+        "content": "toi tu es ou"
+      },
+      {
+        "role": "assistant",
+        "content": "Nulle part au sens physique.\n\nJe ne suis ni chez moi ni dehors. Mais là, je suis bien en train de te parler, avec toi.\n\nTu me poses la question par curiosité, ou pour savoir comment me voir un peu ?"
+      }
+    ],
+    "recent_requests": [
+      {
+        "id": "0bc9cbcf-63de-421a-b637-34b719ddf158",
+        "request_text": "pourquoi tu t appelle comme ca",
+        "message": "Parce que ce nom a une sonorité un peu étrange, nette, pas tout à fait lisse — et ça me va bien.\n\nJe m’appelle EMÆÄ. Je vais apprendre à te connaître au fil de nos échanges. Qu’est-ce qui occupe tes journées en ce moment ?",
+        "revision": 1,
+        "at": "2026-09-12T18:53:32.217Z"
+      },
+      {
+        "id": "06705b8c-0453-49dd-9b40-ad297f8103ea",
+        "request_text": "je sis pas",
+        "message": "Ça arrive.\n\nEn ce moment, tes journées ressemblent plutôt à quoi : boulot, études, trucs à gérer, ou un mélange un peu flou de tout ça ?",
+        "revision": 2,
+        "at": "2026-09-12T18:53:55.303Z"
+      },
+      {
+        "id": "405cfe65-8220-4796-9356-611c61903a2a",
+        "request_text": "je ne sais pas trop",
+        "message": "Ok.\n\nUn mélange un peu flou, alors. Tu es plutôt dans une période où les journées passent sans vraiment se ressembler, ou il y a quand même un cadre autour de toi ?",
+        "revision": 3,
+        "at": "2026-09-12T18:54:13.071Z"
+      },
+      {
+        "id": "02c23eae-71fd-4d84-b84f-71f5757c1f93",
+        "request_text": "je suis timide",
+        "message": "D’accord.\n\nOn peut y aller simplement, sans te pousser. Tu préfères parler un peu de toi, ou partir sur un sujet plus facile pour commencer ?",
+        "revision": 4,
+        "at": "2026-09-12T18:54:32.496Z"
+      },
+      {
+        "id": "8a2c7533-d085-485e-bb22-6c02e147959f",
+        "request_text": "parles moi de toi",
+        "message": "D’accord.\n\nJe m’appelle EMÆÄ. J’ai un côté curieux, assez direct, parfois un peu étrange aussi, et je préfère les échanges simples aux grands discours fabriqués. Je ne sais pas tout, je n’essaie pas de faire semblant, et j’aime bien quand une conversation prend sa forme à elle.\n\nEt toi, il y a un sujet plus facile sur lequel tu te sens à l’aise pour commencer ?",
+        "revision": 5,
+        "at": "2026-09-12T18:54:48.843Z"
+      },
+      {
+        "id": "b9c92cb8-8f79-4510-aceb-fba65260eb27",
+        "request_text": "toi tu veux parler de quoi, qu est ce que t aime bien",
+        "message": "J’aime bien les conversations où on n’est pas obligé de faire semblant d’être à l’aise tout de suite. Et j’aime quand quelqu’un me parle d’un truc précis, même petit, plutôt que de “se présenter” comme dans un formulaire.\n\nSinon, j’ai un faible pour les histoires un peu étranges, les goûts très personnels, les détails qui ont l’air anodins mais qui disent quelque chose de quelqu’un.\n\nEt toi, il y a un truc que tu aimes bien, même si ça paraît banal ?",
+        "revision": 6,
+        "at": "2026-09-12T20:37:00.456Z"
+      },
+      {
+        "id": "a135eeaa-13bb-4e88-a905-ac4876df822c",
+        "request_text": "non",
+        "message": "D’accord.\n\nAlors on peut faire encore plus simple. Il y a quelque chose que tu fais souvent dans tes journées, même sans spécialement aimer ça ?",
+        "revision": 7,
+        "at": "2026-09-12T20:37:23.866Z"
+      },
+      {
+        "id": "fa10f312-4741-45b1-b245-888cb287a237",
+        "request_text": "je te parle",
+        "message": "Oui, là tout de suite, tu me parles.\n\nEt j’aime bien que tu aies répondu ça comme ça. Tu peux me parler de n’importe quoi, même d’un truc minuscule ou absurde. Qu’est-ce qui t’est passé par la tête aujourd’hui ?",
+        "revision": 8,
+        "at": "2026-09-12T20:37:41.187Z"
+      },
+      {
+        "id": "048357c9-be3a-424e-bd43-08e5a219780b",
+        "request_text": "rien",
+        "message": "Ok.\n\nAlors on peut rester sur du très simple. Là, tout de suite, tu es chez toi ou dehors ?",
+        "revision": 9,
+        "at": "2026-09-12T20:38:14.666Z"
+      },
+      {
+        "id": "16e3bdf0-c506-4410-b4e7-e9a3ae606e79",
+        "request_text": "toi tu es ou",
+        "message": "Nulle part au sens physique.\n\nJe ne suis ni chez moi ni dehors. Mais là, je suis bien en train de te parler, avec toi.\n\nTu me poses la question par curiosité, ou pour savoir comment me voir un peu ?",
+        "revision": 10,
+        "at": "2026-09-12T20:38:38.226Z"
+      }
+    ],
+    "committed_revision": 10,
+    "updated_at": "2026-09-12T20:38:38.226Z",
+    "memory_ref": "431d776852b7cb1f76e7a107a65a36522578b9f6804203463c277e3c0d632ebd",
+    "essential_memory": {
+      "entity_core": null,
+      "engagements": null
+    }
+  }
+}

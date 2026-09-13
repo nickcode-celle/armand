@@ -1,0 +1,5656 @@
+{
+  "__entity_record": 1,
+  "version": 524,
+  "value": {
+    "evolution": {
+      "marbles": [
+        {
+          "id": "bille-001",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 24.003574
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 5.540214
+            }
+          }
+        },
+        {
+          "id": "bille-002",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 28.507317
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 53.969609
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 1.27364
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 19.049619
+            }
+          }
+        },
+        {
+          "id": "bille-003",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 16.324605
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 16.614095
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 38.9699
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 28.536232
+            }
+          }
+        },
+        {
+          "id": "bille-004",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 20.415677
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 15.615129
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 19.936122
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 30.353326
+            }
+          }
+        },
+        {
+          "id": "bille-005",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 9.161781
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 17.86733
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 67.351769
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 19.124207
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 6.993521
+            }
+          }
+        },
+        {
+          "id": "bille-006",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 34.143138
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 22.029144
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 37.273454
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 20.13038
+            }
+          }
+        },
+        {
+          "id": "bille-007",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 12.492799
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 21.337494
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 12.434231
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 7.512281
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.156746
+            }
+          }
+        },
+        {
+          "id": "bille-008",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 26.568034
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 18.128011
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 7.971922
+            }
+          }
+        },
+        {
+          "id": "bille-009",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 27.829037
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 46.778761
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 43.9879
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 24.911912
+            }
+          }
+        },
+        {
+          "id": "bille-010",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 45.848394
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 26.98645
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 25.230096
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 6.609127
+            }
+          }
+        },
+        {
+          "id": "bille-011",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 9.062206
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 22.131625
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 15.46617
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 48.822987
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 5.086131
+            }
+          }
+        },
+        {
+          "id": "bille-012",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 32.445305
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 45.037051
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 4.158297
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 27.873348
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 20.975684
+            }
+          }
+        },
+        {
+          "id": "bille-013",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 14.529118
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 37.283961
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 19.185724
+            }
+          }
+        },
+        {
+          "id": "bille-014",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 61.330828
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 9.904903
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 31.872505
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-015",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 1.988156
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 8.673832
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 14.648396
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 9.612231
+            }
+          }
+        },
+        {
+          "id": "bille-016",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 36.222574
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 33.603124
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 13.235897
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 6.734459
+            }
+          }
+        },
+        {
+          "id": "bille-017",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 45.035916
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 25.210515
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 15.697172
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 19.195388
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-018",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 23.809047
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 26.195623
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 12.203226
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 0.901746
+            }
+          }
+        },
+        {
+          "id": "bille-019",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 51.499112
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 32.924577
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 27.968441
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 49.072629
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-020",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 38.357813
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 7.964514
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 28.644585
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 37.54256
+            }
+          }
+        },
+        {
+          "id": "bille-021",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 9.4341
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 2.307954
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 33.023514
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-022",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 17.588303
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 8.343749
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 17.643242
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 7.038259
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.156746
+            }
+          }
+        },
+        {
+          "id": "bille-023",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 42.529001
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 36.389284
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 31.282059
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-024",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 10.784355
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 10.147129
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 16.796543
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 6.304397
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 23.690422
+            }
+          }
+        },
+        {
+          "id": "bille-025",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 6.081535
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 16.483237
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 2.607496
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 40.663983
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 20.940796
+            }
+          }
+        },
+        {
+          "id": "bille-026",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 19.904218
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 22.222066
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 21.995204
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 24.200032
+            }
+          }
+        },
+        {
+          "id": "bille-027",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 23.895378
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 32.883806
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 27.214309
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-028",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 35.30663
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 29.075232
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 27.697349
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 35.515056
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 16.881047
+            }
+          }
+        },
+        {
+          "id": "bille-029",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 37.346022
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 37.555892
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 32.859867
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 2.519164
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-030",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 36.10941
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 21.405198
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 36.69557
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 6.04837
+            }
+          }
+        },
+        {
+          "id": "bille-031",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 36.857335
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 20.620198
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 0
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-032",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 44.81959
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 19.674751
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 3.260745
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 46.144095
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-033",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 20.076934
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 23.422537
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 29.852733
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 19.543159
+            }
+          }
+        },
+        {
+          "id": "bille-034",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 67.393689
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 20.373427
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 42.480975
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 14.450217
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 24.928691
+            }
+          }
+        },
+        {
+          "id": "bille-035",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 23.032879
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 40.351443
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 1.398111
+            }
+          }
+        },
+        {
+          "id": "bille-036",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 71.785818
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 7.32922
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 32.705207
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 13.495292
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-037",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 29.100936
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 16.911815
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 14.627843
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 31.168113
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 13.706568
+            }
+          }
+        },
+        {
+          "id": "bille-038",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 6.087143
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 47.043779
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 29.773606
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 33.59491
+            }
+          }
+        },
+        {
+          "id": "bille-039",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 33.95554
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 43.038905
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 15.445676
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 14.414552
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.156746
+            }
+          }
+        },
+        {
+          "id": "bille-040",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 48.301763
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 23.092274
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 39.649817
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 35.604677
+            }
+          }
+        },
+        {
+          "id": "bille-041",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 52.244834
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 33.338254
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 20.979798
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 31.933177
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-042",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 13.441739
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 29.520895
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 10.847428
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 40.33878
+            }
+          }
+        },
+        {
+          "id": "bille-043",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 11.979759
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 23.51495
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 13.190977
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 7.137288
+            }
+          }
+        },
+        {
+          "id": "bille-044",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 1.988156
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 32.968672
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 12.271532
+            }
+          }
+        },
+        {
+          "id": "bille-045",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 37.393961
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 20.584225
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 6.342668
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-046",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 27.384809
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 19.93031
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 17.871362
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 1.398111
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 22.71091
+            }
+          }
+        },
+        {
+          "id": "bille-047",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 13.550949
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 19.995578
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 10.732479
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 35.376105
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 25.308354
+            }
+          }
+        },
+        {
+          "id": "bille-048",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 14.654874
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 21.209412
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 38.685165
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 6.554292
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 16.716738
+            }
+          }
+        },
+        {
+          "id": "bille-049",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 26.349207
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 23.915831
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 45.748366
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 1.499767
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-050",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 15.791792
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 43.407829
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 61.287495
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 18.580185
+            }
+          }
+        },
+        {
+          "id": "bille-051",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 6.077942
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 46.456392
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 31.472591
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 19.592606
+            }
+          }
+        },
+        {
+          "id": "bille-052",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 32.335585
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 23.183885
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 8.359813
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 20.078661
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-053",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 9.186152
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 41.206118
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 27.077152
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 25.920883
+            }
+          }
+        },
+        {
+          "id": "bille-054",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 35.649134
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 22.72748
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 36.021805
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 1.12208
+            }
+          }
+        },
+        {
+          "id": "bille-055",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 3.409084
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 22.503509
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 28.721891
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 27.144871
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 28.607605
+            }
+          }
+        },
+        {
+          "id": "bille-056",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 36.244237
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 7.849123
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 23.855572
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 23.606159
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-057",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 13.270888
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 31.932172
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 36.584906
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 40.379914
+            }
+          }
+        },
+        {
+          "id": "bille-058",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 14.691561
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 21.45538
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 30.538299
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 20.715689
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 12.350152
+            }
+          }
+        },
+        {
+          "id": "bille-059",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 56.514349
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 16.47315
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 49.857475
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 23.950754
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 7.220179
+            }
+          }
+        },
+        {
+          "id": "bille-060",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 1.988156
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 29.600106
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 23.906737
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 39.281086
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 28.269409
+            }
+          }
+        },
+        {
+          "id": "bille-061",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 34.389383
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 19.957285
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 8.324188
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 23.669496
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 11.171172
+            }
+          }
+        },
+        {
+          "id": "bille-062",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 20.95612
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 28.473996
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 25.112977
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 13.413644
+            }
+          }
+        },
+        {
+          "id": "bille-063",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 37.702892
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 8.716355
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 25.723866
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 20.40656
+            }
+          }
+        },
+        {
+          "id": "bille-064",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 37.528282
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 37.226998
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 39.994526
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 26.432619
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 34.09329
+            }
+          }
+        },
+        {
+          "id": "bille-065",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 3.409084
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 28.890664
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 26.664202
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 14.848581
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 2.654685
+            }
+          }
+        },
+        {
+          "id": "bille-066",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 10.925413
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 25.494024
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 25.647859
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 20.238179
+            }
+          }
+        },
+        {
+          "id": "bille-067",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 45.324879
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 25.785856
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 24.722737
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 11.329082
+            }
+          }
+        },
+        {
+          "id": "bille-068",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 40.810617
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 48.460284
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 30.263051
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 25.345913
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 4.688798
+            }
+          }
+        },
+        {
+          "id": "bille-069",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 0.823261
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 6.483758
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 17.867538
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 4.769782
+            }
+          }
+        },
+        {
+          "id": "bille-070",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 40.556727
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 8.610659
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 39.056963
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 33.263914
+            }
+          }
+        },
+        {
+          "id": "bille-071",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 31.009744
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 13.876417
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 0.82802
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 29.939206
+            }
+          }
+        },
+        {
+          "id": "bille-072",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 4.713984
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 10.664616
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 9.070088
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 33.00556
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 10.979151
+            }
+          }
+        },
+        {
+          "id": "bille-073",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 20.94215
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 10.31138
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 19.297227
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 17.677615
+            }
+          }
+        },
+        {
+          "id": "bille-074",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 28.950308
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 41.467389
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 22.408797
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 6.342668
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 24.878154
+            }
+          }
+        },
+        {
+          "id": "bille-075",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 21.001184
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 19.690121
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 7.992501
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 20.918987
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 21.647276
+            }
+          }
+        },
+        {
+          "id": "bille-076",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 7.345714
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 42.473242
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 23.635385
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 0.969101
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-077",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 15.450678
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 49.103238
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 9.546407
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 25.844544
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-078",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 23.067862
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 0.429649
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 48.83311
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 35.628211
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-079",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 31.374619
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 1.478563
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 19.795341
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 11.305954
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 27.199747
+            }
+          }
+        },
+        {
+          "id": "bille-080",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 23.463276
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 40.586786
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 0.923085
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 39.624198
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 20.184835
+            }
+          }
+        },
+        {
+          "id": "bille-081",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 34.237583
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 35.451942
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 33.362192
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 7.455984
+            }
+          }
+        },
+        {
+          "id": "bille-082",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 12.873211
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 26.078186
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 0.901746
+            }
+          }
+        },
+        {
+          "id": "bille-083",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 24.482708
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 1.265736
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 35.733617
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 36.282266
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 4.168225
+            }
+          }
+        },
+        {
+          "id": "bille-084",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 33.499807
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 42.000274
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 33.622807
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 42.476237
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 21.987794
+            }
+          }
+        },
+        {
+          "id": "bille-085",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 18.089354
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 8.488018
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 32.942353
+            }
+          }
+        },
+        {
+          "id": "bille-086",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 49.070583
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 29.486481
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 22.777962
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 25.375643
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 28.290966
+            }
+          }
+        },
+        {
+          "id": "bille-087",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 42.060377
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 5.430338
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 16.362132
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 11.793422
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 4.42676
+            }
+          }
+        },
+        {
+          "id": "bille-088",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 41.311557
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 2.434289
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 19.986702
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 0.299463
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 7.638191
+            }
+          }
+        },
+        {
+          "id": "bille-089",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 22.818067
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 2.527121
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 12.434786
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 2.374354
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 17.109052
+            }
+          }
+        },
+        {
+          "id": "bille-090",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 26.995487
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 29.123415
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 4.22112
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 36.010981
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-091",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 46.589992
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 25.176645
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 14.242792
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 10.716094
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 31.28784
+            }
+          }
+        },
+        {
+          "id": "bille-092",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 21.03983
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 49.3997
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 11.122542
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 2.000985
+            }
+          }
+        },
+        {
+          "id": "bille-093",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 43.638469
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 29.869659
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 60.760724
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 43.818817
+            }
+          }
+        },
+        {
+          "id": "bille-094",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 32.028973
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 2.434289
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 74.603897
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 37.597411
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 10.684442
+            }
+          }
+        },
+        {
+          "id": "bille-095",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 35.987521
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 22.951269
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 29.50148
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 0.901746
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 5.955647
+            }
+          }
+        },
+        {
+          "id": "bille-096",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 1.988156
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 29.899941
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 2.179977
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 23.356698
+            }
+          }
+        },
+        {
+          "id": "bille-097",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 48.220699
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 52.420349
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 24.966555
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 7.965047
+            }
+          }
+        },
+        {
+          "id": "bille-098",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 38.613652
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 8.668169
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 15.785993
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 22.372509
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-099",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 13.917277
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 1.398111
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 8.137096
+            }
+          }
+        },
+        {
+          "id": "bille-100",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 55.640329
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 2.434289
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 34.585489
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 8.2455
+            }
+          }
+        },
+        {
+          "id": "bille-101",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 14.073988
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 16.971909
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 4.772762
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 28.94461
+            }
+          }
+        },
+        {
+          "id": "bille-102",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 13.461394
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 4.564705
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 23.531325
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 8.51526
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 17.411523
+            }
+          }
+        },
+        {
+          "id": "bille-103",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 24.40374
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 24.295348
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 11.247861
+            }
+          }
+        },
+        {
+          "id": "bille-104",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 15.360816
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 11.774199
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 22.022395
+            }
+          }
+        },
+        {
+          "id": "bille-105",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 6.199322
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 12.851694
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 37.264597
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 3.149954
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-106",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 36.616007
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 0.429649
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 13.633252
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 48.099908
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 21.88099
+            }
+          }
+        },
+        {
+          "id": "bille-107",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 1.988156
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 20.57894
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 37.208484
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 19.494785
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 33.47245
+            }
+          }
+        },
+        {
+          "id": "bille-108",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 23.431991
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 25.79767
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 10.766869
+            }
+          }
+        },
+        {
+          "id": "bille-109",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 50.179635
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 34.153605
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 39.075264
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 2.179977
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 5.789536
+            }
+          }
+        },
+        {
+          "id": "bille-110",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 28.557876
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 14.674367
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 32.900616
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 25.617265
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.156746
+            }
+          }
+        },
+        {
+          "id": "bille-111",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 36.525863
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 18.3166
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 29.527233
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 27.342444
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-112",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 19.741462
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 19.580825
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 21.328655
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 11.768373
+            }
+          }
+        },
+        {
+          "id": "bille-113",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 6.034723
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 28.542095
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 31.30279
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 16.266792
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-114",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 13.051854
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 4.187779
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 30.818098
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 3.081461
+            }
+          }
+        },
+        {
+          "id": "bille-115",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 35.282416
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 38.918287
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 40.445917
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 37.63695
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-116",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 8.926699
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 22.922098
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 21.122021
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 7.911407
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 14.462905
+            }
+          }
+        },
+        {
+          "id": "bille-117",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 14.198805
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 4.809899
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 19.191307
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 53.592479
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 35.231145
+            }
+          }
+        },
+        {
+          "id": "bille-118",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 16.390999
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 13.614878
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 22.836492
+            }
+          }
+        },
+        {
+          "id": "bille-119",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 19.481385
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 36.044931
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 52.043244
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 12.017534
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 35.737319
+            }
+          }
+        },
+        {
+          "id": "bille-120",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 33.276626
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 40.473451
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 11.824266
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 17.181523
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 5.230996
+            }
+          }
+        },
+        {
+          "id": "bille-121",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 1.337147
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 40.039997
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 1.770138
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 17.101833
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-122",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 8.702702
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 15.833122
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 36.204351
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 4.624591
+            }
+          }
+        },
+        {
+          "id": "bille-123",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 42.859458
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 19.027969
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 17.19197
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 17.84362
+            }
+          }
+        },
+        {
+          "id": "bille-124",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 32.845581
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 7.987814
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 67.783312
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 31.086693
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.156746
+            }
+          }
+        },
+        {
+          "id": "bille-125",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 43.380906
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 15.225426
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 3.755497
+            }
+          }
+        },
+        {
+          "id": "bille-126",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 21.289185
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 7.830227
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 69.783615
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 11.069367
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 35.56401
+            }
+          }
+        },
+        {
+          "id": "bille-127",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 17.328596
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 30.077413
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 10.92692
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-128",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 27.314585
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 11.672266
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 54.944387
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 26.858052
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-129",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 24.480561
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 19.875455
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 31.686936
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 12.826087
+            }
+          }
+        },
+        {
+          "id": "bille-130",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 11.395787
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 8.872217
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 20.191269
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 28.399762
+            }
+          }
+        },
+        {
+          "id": "bille-131",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 18.077793
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 24.820008
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 34.803884
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.156746
+            }
+          }
+        },
+        {
+          "id": "bille-132",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 8.409617
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 5.783963
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 11.288134
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 14.806538
+            }
+          }
+        },
+        {
+          "id": "bille-133",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 25.181294
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 19.653544
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 6.265959
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-134",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 54.332815
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 73.234474
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 0.901746
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-135",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 42.025503
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 34.011338
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 2.80564
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 5.375118
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 10.442917
+            }
+          }
+        },
+        {
+          "id": "bille-136",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 33.630541
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 34.77702
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 6.598794
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 24.539793
+            }
+          }
+        },
+        {
+          "id": "bille-137",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 52.67758
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 8.762661
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 23.805685
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 9.094348
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 28.512424
+            }
+          }
+        },
+        {
+          "id": "bille-138",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 33.15746
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 63.033282
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 4.927435
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 3.784374
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 16.970301
+            }
+          }
+        },
+        {
+          "id": "bille-139",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 12.820041
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 20.382953
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 49.463671
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 29.1446
+            }
+          }
+        },
+        {
+          "id": "bille-140",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 33.997195
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 16.987231
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 7.523258
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 10.852082
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 1.682407
+            }
+          }
+        },
+        {
+          "id": "bille-141",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 60.672792
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 13.550093
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 38.732431
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 1.398111
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.156746
+            }
+          }
+        },
+        {
+          "id": "bille-142",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 25.200997
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 26.661521
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 31.955278
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 69.027423
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 3.735334
+            }
+          }
+        },
+        {
+          "id": "bille-143",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 45.576612
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 8.591042
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 45.130936
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 43.053758
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 3.687208
+            }
+          }
+        },
+        {
+          "id": "bille-144",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 34.867589
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 37.088072
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 37.142498
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 0
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 0.460261
+            }
+          }
+        },
+        {
+          "id": "bille-145",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 0.155531
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 20.382111
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 28.542536
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 22.59216
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-146",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 4.757021
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 29.864267
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 23.989421
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 32.884897
+            }
+          }
+        },
+        {
+          "id": "bille-147",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 21.877216
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 34.790708
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 14.455669
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 72.22548
+            }
+          }
+        },
+        {
+          "id": "bille-148",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 6.677347
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 26.772633
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 28.894425
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 12.027477
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-149",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 35.926978
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 24.203561
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 4.100443
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 39.443378
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-150",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 24.838536
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 3.150219
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 24.675315
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 27.067135
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 29.058758
+            }
+          }
+        },
+        {
+          "id": "bille-151",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 18.922533
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 26.373243
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 12.799225
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 5.905861
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 30.372171
+            }
+          }
+        },
+        {
+          "id": "bille-152",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 35.863861
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 41.760175
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 78.188366
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 39.19412
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 21.437589
+            }
+          }
+        },
+        {
+          "id": "bille-153",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 18.882887
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 33.222133
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 39.707987
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 19.670898
+            }
+          }
+        },
+        {
+          "id": "bille-154",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 55.621688
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 14.899429
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 11.96367
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 17.491544
+            }
+          }
+        },
+        {
+          "id": "bille-155",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 16.994329
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 45.702108
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 19.418666
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 33.047962
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 27.926555
+            }
+          }
+        },
+        {
+          "id": "bille-156",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 24.719111
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 22.146549
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 36.785056
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 10.70383
+            }
+          }
+        },
+        {
+          "id": "bille-157",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 21.878472
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 14.039576
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 35.183008
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 15.67734
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 30.98853
+            }
+          }
+        },
+        {
+          "id": "bille-158",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 6.968356
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 58.374326
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 12.804207
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 2.834372
+            }
+          }
+        },
+        {
+          "id": "bille-159",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 28.964975
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 14.962734
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 56.930205
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 8.710115
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 19.901198
+            }
+          }
+        },
+        {
+          "id": "bille-160",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 16.875422
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 25.408675
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 3.542299
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 2.968205
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-161",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 30.608025
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 22.275689
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 2.923894
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 40.794118
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-162",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 11.078761
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 35.958411
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 28.481383
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 34.436021
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 1.009124
+            }
+          }
+        },
+        {
+          "id": "bille-163",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 20.533655
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 78.535794
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 8.265993
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 15.139701
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 13.520549
+            }
+          }
+        },
+        {
+          "id": "bille-164",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 42.634855
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 47.841869
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 10.25195
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 9.17284
+            }
+          }
+        },
+        {
+          "id": "bille-165",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 5.487356
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 31.422616
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 46.98361
+            }
+          }
+        },
+        {
+          "id": "bille-166",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 11.475242
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 0
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 14.112001
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 0
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 10.230882
+            }
+          }
+        },
+        {
+          "id": "bille-167",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 26.00644
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 11.517353
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 37.790156
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 31.742451
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-168",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 46.785555
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 31.325057
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 7.323665
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 50.627662
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 2.501184
+            }
+          }
+        },
+        {
+          "id": "bille-169",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 24.119044
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 41.096874
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 13.028889
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 31.661332
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-170",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 33.149665
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 20.287795
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 11.927823
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 38.074352
+            }
+          }
+        },
+        {
+          "id": "bille-171",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 28.271728
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 25.620745
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 12.151463
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 5.821901
+            }
+          }
+        },
+        {
+          "id": "bille-172",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 34.002125
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 6.036148
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 19.742804
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 0.955383
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 15.02026
+            }
+          }
+        },
+        {
+          "id": "bille-173",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 51.764324
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 21.235074
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 25.858558
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 0.901746
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 4.907195
+            }
+          }
+        },
+        {
+          "id": "bille-174",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 10.678522
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 25.347928
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 16.890334
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 9.984416
+            }
+          }
+        },
+        {
+          "id": "bille-175",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 8.285751
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 11.853667
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 17.516797
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 28.741818
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 32.565052
+            }
+          }
+        },
+        {
+          "id": "bille-176",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 4.921112
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 15.825954
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 34.113597
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 18.049788
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 33.039939
+            }
+          }
+        },
+        {
+          "id": "bille-177",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 28.219247
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 40.762443
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 23.093284
+            },
+            "Monde propre": {
+              "subdomain": "Rituels",
+              "value": 19.639551
+            }
+          }
+        },
+        {
+          "id": "bille-178",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 24.410055
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Culture/idées",
+              "value": 0.429649
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 21.088054
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 29.712724
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-179",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 15.153619
+            },
+            "Relation": {
+              "subdomain": "Confiance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 30.308443
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 0.299463
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 13.563644
+            }
+          }
+        },
+        {
+          "id": "bille-180",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 35.404567
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 14.89853
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 29.312537
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 33.648014
+            }
+          }
+        },
+        {
+          "id": "bille-181",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 17.365002
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 37.79165
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 24.810858
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 36.274984
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 22.33362
+            }
+          }
+        },
+        {
+          "id": "bille-182",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 28.322061
+            },
+            "Relation": {
+              "subdomain": "Compréhension",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 3.172205
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 23.130831
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 22.390255
+            }
+          }
+        },
+        {
+          "id": "bille-183",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Spontanéité",
+              "value": 23.287355
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Musique",
+              "value": 20.030491
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 0
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 32.546518
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 23.472766
+            }
+          }
+        },
+        {
+          "id": "bille-184",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Contradiction",
+              "value": 36.969927
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 26.139998
+            },
+            "Connaissances": {
+              "subdomain": "Arts/création",
+              "value": 12.789524
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 7.579188
+            }
+          }
+        },
+        {
+          "id": "bille-185",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 26.258483
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 27.414325
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 16.682216
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 15.61657
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-186",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Franchise",
+              "value": 25.110597
+            },
+            "Relation": {
+              "subdomain": "Respect",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 30.911328
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Loyauté",
+              "value": 11.981441
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 27.401261
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-187",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Curiosité",
+              "value": 29.30315
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 70.274878
+            },
+            "Connaissances": {
+              "subdomain": "Histoire/civilisations",
+              "value": 25.00788
+            },
+            "Monde propre": {
+              "subdomain": "Continuité",
+              "value": 14.01833
+            }
+          }
+        },
+        {
+          "id": "bille-188",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 36.972304
+            },
+            "Relation": {
+              "subdomain": "Proximité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 13.86314
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Acceptation des différences",
+              "value": 14.385527
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 15.536286
+            },
+            "Monde propre": {
+              "subdomain": "Imaginaire",
+              "value": 8.572597
+            }
+          }
+        },
+        {
+          "id": "bille-189",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 43.749181
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Lieux/atmosphères",
+              "value": 33.907502
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 2.74108
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 38.334622
+            },
+            "Monde propre": {
+              "subdomain": "Lieux imaginés",
+              "value": 3.796894
+            }
+          }
+        },
+        {
+          "id": "bille-190",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Humour",
+              "value": 53.393496
+            },
+            "Relation": {
+              "subdomain": "Synchronisation",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 26.642085
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 38.669187
+            },
+            "Connaissances": {
+              "subdomain": "Économie/monde professionnel",
+              "value": 49.572948
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 13.612966
+            }
+          }
+        },
+        {
+          "id": "bille-191",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Réserve",
+              "value": 32.878919
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Nature/vivant",
+              "value": 62.595452
+            },
+            "Connaissances": {
+              "subdomain": "Psychologie/humain",
+              "value": 23.396342
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 1.618279
+            }
+          }
+        },
+        {
+          "id": "bille-192",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 13.147422
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 37.516983
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Justice/équité",
+              "value": 52.351588
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 26.432499
+            }
+          }
+        },
+        {
+          "id": "bille-193",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 49.678117
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Pardon",
+              "value": 26.979014
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 8.543338
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 16.240427
+            }
+          }
+        },
+        {
+          "id": "bille-194",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Chaleur",
+              "value": 27.571535
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Activités/expériences",
+              "value": 46.28581
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Liberté",
+              "value": 13.823123
+            },
+            "Connaissances": {
+              "subdomain": "Société/cultures",
+              "value": 26.10284
+            }
+          }
+        },
+        {
+          "id": "bille-195",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 3.141791
+            },
+            "Relation": {
+              "subdomain": "Complicité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Sensations/ambiances",
+              "value": 38.349734
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 21.94696
+            },
+            "Connaissances": {
+              "subdomain": "Lieux/monde",
+              "value": 21.084422
+            },
+            "Monde propre": {
+              "subdomain": "Références propres",
+              "value": 7.733991
+            }
+          }
+        },
+        {
+          "id": "bille-196",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Imagination",
+              "value": 2.649072
+            },
+            "Relation": {
+              "subdomain": "Tolérance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 9.192682
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Respect des règles",
+              "value": 20.280378
+            },
+            "Connaissances": {
+              "subdomain": "Vie pratique/savoir-faire",
+              "value": 0.901746
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 0
+            }
+          }
+        },
+        {
+          "id": "bille-197",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Familiarité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Arts/esthétique",
+              "value": 6.821809
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 59.101103
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 20.717399
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 16.04802
+            }
+          }
+        },
+        {
+          "id": "bille-198",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 10.945159
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Architecture/design",
+              "value": 2.434289
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Solidarité",
+              "value": 8.756452
+            },
+            "Connaissances": {
+              "subdomain": "Sciences/nature",
+              "value": 43.183576
+            },
+            "Monde propre": {
+              "subdomain": "Préoccupations",
+              "value": 4.04618
+            }
+          }
+        },
+        {
+          "id": "bille-199",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Sensibilité",
+              "value": 43.12752
+            },
+            "Relation": {
+              "subdomain": "Réciprocité",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Gastronomie/saveurs",
+              "value": 11.329122
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Responsabilité",
+              "value": 44.579474
+            },
+            "Connaissances": {
+              "subdomain": "Sport",
+              "value": 37.505795
+            },
+            "Monde propre": {
+              "subdomain": "Symboles",
+              "value": 1.476828
+            }
+          }
+        },
+        {
+          "id": "bille-200",
+          "domains": {
+            "Personnalité": {
+              "subdomain": "Esprit critique",
+              "value": 0
+            },
+            "Relation": {
+              "subdomain": "Aisance",
+              "value": 0
+            },
+            "Goûts": {
+              "subdomain": "Cinéma/fiction",
+              "value": 42.89659
+            },
+            "Opinions/Valeurs": {
+              "subdomain": "Vérité/sincérité",
+              "value": 3.082634
+            },
+            "Connaissances": {
+              "subdomain": "Technologie",
+              "value": 27.098901
+            },
+            "Monde propre": {
+              "subdomain": "Associations",
+              "value": 6.208198
+            }
+          }
+        }
+      ],
+      "durable_levels": {
+        "Personnalité": {
+          "Curiosité": 16.138723,
+          "Humour": 32.627393,
+          "Franchise": 21.16178,
+          "Chaleur": 30.361652,
+          "Réserve": 33.481276,
+          "Contradiction": 19.276927,
+          "Imagination": 18.330694,
+          "Spontanéité": 27.224796,
+          "Sensibilité": 19.213825,
+          "Esprit critique": 19.284238
+        },
+        "Relation": {
+          "Familiarité": 0,
+          "Confiance": 0,
+          "Complicité": 0,
+          "Proximité": 0,
+          "Compréhension": 0,
+          "Aisance": 0,
+          "Synchronisation": 0,
+          "Tolérance": 0,
+          "Respect": 0,
+          "Réciprocité": 0
+        },
+        "Goûts": {
+          "Musique": 23.751939,
+          "Cinéma/fiction": 28.324606,
+          "Arts/esthétique": 19.495909,
+          "Culture/idées": 16.272779,
+          "Gastronomie/saveurs": 22.428852,
+          "Lieux/atmosphères": 23.00895,
+          "Activités/expériences": 23.70324,
+          "Architecture/design": 21.083743,
+          "Nature/vivant": 21.204469,
+          "Sensations/ambiances": 28.536041
+        },
+        "Opinions/Valeurs": {
+          "Liberté": 26.148478,
+          "Justice/équité": 26.867449,
+          "Loyauté": 21.269321,
+          "Vérité/sincérité": 20.144325,
+          "Pardon": 16.379653,
+          "Responsabilité": 29.316443,
+          "Solidarité": 16.888647,
+          "Acceptation des différences": 29.505163,
+          "Respect des règles": 20.373342
+        },
+        "Connaissances": {
+          "Sciences/nature": 25.412578,
+          "Technologie": 27.798775,
+          "Histoire/civilisations": 27.040318,
+          "Arts/création": 15.804242,
+          "Psychologie/humain": 15.945267,
+          "Société/cultures": 26.994975,
+          "Économie/monde professionnel": 23.479037,
+          "Vie pratique/savoir-faire": 16.81944,
+          "Lieux/monde": 19.823098,
+          "Sport": 21.68435
+        },
+        "Monde propre": {
+          "Imaginaire": 12.683758,
+          "Références propres": 12.808227,
+          "Associations": 6.041896,
+          "Préoccupations": 13.561333,
+          "Rituels": 13.019552,
+          "Symboles": 5.014182,
+          "Lieux imaginés": 12.20563,
+          "Continuité": 19.189995
+        },
+        "Capacités": 0
+      },
+      "history_level": null,
+      "history_events": [],
+      "initialized_at": "2026-09-12T15:45:05.151Z",
+      "updated_at": "2026-09-12T20:38:39.137Z",
+      "history_last_change": null,
+      "observer_last": {
+        "evolutions_durables": [],
+        "histoire": null,
+        "sentiments": []
+      },
+      "last_changes": [],
+      "last_marble_changes": []
+    },
+    "last_observer_revision": 10,
+    "last_observer_at": "2026-09-12T20:38:39.137Z"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "__entity_record": 1,
+  "version": 1,
+  "value": {
+    "modele_personne": {
+      "observations": [
+        {
+          "id": "obs_timide_001",
+          "type": "trait_personnel",
+          "contenu": "La personne se dit timide.",
+          "niveau": "etabli",
+          "confiance": 1,
+          "indices": [
+            {
+              "type": "declaration_explicite",
+              "contenu": "je suis timide"
+            }
+          ],
+          "statut": "actif"
+        }
+      ]
+    }
+  }
+}
