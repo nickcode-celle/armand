@@ -2,5 +2,5 @@ import React,{useMemo}from"react";
 import EmaeaRuntimeHost from"./EmaeaRuntimeHost.jsx";
 import"./entity-stage-wallpaper.css";
 const WALLPAPER_KEY="emaea-wallpaper";
-function selectedBackground(){const id=localStorage.getItem(WALLPAPER_KEY)||"original";const match=/^bg-(\d{2})$/.exec(id);return match?`/assets/emaea/backgrounds/emaea-bg-${match[1]}.jpg`:null}
-export default function EmaeaBody({entityId}){const controls=useMemo(()=>({ambient:.50,lighting:.90,satellites:.86}),[]);const backgroundSrc=selectedBackground();return <div className="emaea-stage" aria-label="EMÆÄ"><EmaeaRuntimeHost entityId={entityId} controls={controls} backgroundSrc={backgroundSrc} className="absolute inset-0"/></div>}
+function selectedBackgroundKey(){return localStorage.getItem(WALLPAPER_KEY)||"original"}
+export default function EmaeaBody({entityId}){const controls=useMemo(()=>({ambient:.50,lighting:.90,satellites:.86}),[]);const backgroundKey=selectedBackgroundKey();return <div className="emaea-stage" aria-label="EMÆÄ"><EmaeaRuntimeHost key={backgroundKey} entityId={entityId} controls={controls} className="absolute inset-0"/></div>}
