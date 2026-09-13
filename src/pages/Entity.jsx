@@ -7,7 +7,7 @@ import"./entity-ui.css";
 
 const INITIAL_MESSAGE="Bonjour, moi c’est EMÆÄ. Et toi ?";
 const ENTITY_ID_KEY="entity-instance-id",ENTITY_MESSAGES_KEY="entity-conversation",THEME_KEY="emaea-theme",WALLPAPER_KEY="emaea-wallpaper";
-const THEMES={green:{label:"Vert",accent:"#39CE74",rgb:"57,206,116",logo:"/assets/emaea/emaea-logo-green.webp"},blue:{label:"Bleu",accent:"#3B82F6",rgb:"59,130,246",logo:"/assets/emaea/emaea-logo-blue.png"},yellow:{label:"Jaune",accent:"#F2C94C",rgb:"242,201,76",logo:"/assets/emaea/emaea-logo-yellow.png"},red:{label:"Rouge",accent:"#EF4444",rgb:"239,68,68",logo:"/assets/emaea/emaea-logo-red.png"}};
+const THEMES={green:{label:"Vert",accent:"#39CE74",rgb:"57,206,116",logo:"/assets/emaea/emaea-logo-green.png"},blue:{label:"Bleu",accent:"#3B82F6",rgb:"59,130,246",logo:"/assets/emaea/emaea-logo-blue.png"},yellow:{label:"Jaune",accent:"#F2C94C",rgb:"242,201,76",logo:"/assets/emaea/emaea-logo-yellow.png"},red:{label:"Rouge",accent:"#EF4444",rgb:"239,68,68",logo:"/assets/emaea/emaea-logo-red.png"}};
 const WALLPAPERS=[{id:"original",label:"Original",src:null},...Array.from({length:12},(_,i)=>({id:`bg-${String(i+1).padStart(2,"0")}`,label:`Fond ${String(i+1).padStart(2,"0")}`,src:`/assets/emaea/backgrounds/emaea-bg-${String(i+1).padStart(2,"0")}.jpg`,premium:true}))];
 function getEntityId(){let id=localStorage.getItem(ENTITY_ID_KEY);if(!id){id=crypto.randomUUID();localStorage.setItem(ENTITY_ID_KEY,id)}return id}
 function resetEntityId(){const id=crypto.randomUUID();localStorage.setItem(ENTITY_ID_KEY,id);return id}
