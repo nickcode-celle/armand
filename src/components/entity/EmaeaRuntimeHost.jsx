@@ -6,6 +6,12 @@ const PEDESTAL_ART='/assets/emaea/emaea-stage-final.jpg';
 const ENTITY_SCALE=1.08;
 const ENTITY_Y=20;
 
+function currentPedestalArt(){
+  const id=localStorage.getItem('emaea-wallpaper')||'original';
+  const match=/^bg-(\d{2})$/.exec(id);
+  return match?`/assets/emaea/backgrounds/emaea-bg-${match[1]}.jpg`:PEDESTAL_ART;
+}
+
 async function readEvolution(entityId){
   const response=await fetch('/api/entity/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entityId})});
   let data={};try{data=await response.json()}catch{}
@@ -62,7 +68,7 @@ function findSatelliteGroup(scene,entityGroup){
   return scene.children.find(o=>o?.isGroup&&o!==entityGroup&&o.children?.length===5)||null;
 }
 
-async function dressStage(runtime,initialControls,backgroundSrc){
+async function dressStage(runtime,initialControls){
   const{scene,camera,renderer,entityGroup}=runtime;
   renderer.domElement.style.width='100%';
   renderer.domElement.style.height='100%';
@@ -84,11 +90,12 @@ async function dressStage(runtime,initialControls,backgroundSrc){
   let pedestalTexture=null;
   let pedestalPlane=null;
   try{
-    pedestalTexture=await loadTexture(renderer,backgroundSrc||PEDESTAL_ART);
+    const pedestalArt=currentPedestalArt();
+    pedestalTexture=await loadTexture(renderer,pedestalArt);
     pedestalPlane=makeExactPlane(pedestalTexture,camera,-135);
     scene.add(pedestalPlane);
   }catch(error){
-    console.error('[EMÆÄ decor] Le fond de l’écran Entity est absent:',backgroundSrc||PEDESTAL_ART,error);
+    console.error('[EMÆÄ decor] Le visuel final du socle est absent.',error);
   }
 
   entityGroup.scale.setScalar(ENTITY_SCALE);
@@ -132,7 +139,7 @@ async function dressStage(runtime,initialControls,backgroundSrc){
   };
 }
 
-export default function EmaeaRuntimeHost({entityId,className='',controls,backgroundSrc}){
+export default function EmaeaRuntimeHost({entityId,className='',controls}){
   const hostRef=useRef(null);
   const runtimeRef=useRef(null);
   const stageRef=useRef(null);
@@ -154,7 +161,7 @@ export default function EmaeaRuntimeHost({entityId,className='',controls,backgro
         if(cancelled)return;
         if(!runtimeRef.current){
           runtimeRef.current=createEmaeaBodyRuntime(hostRef.current,evolution);
-          stageRef.current=await dressStage(runtimeRef.current,controlsRef.current,backgroundSrc);
+          stageRef.current=await dressStage(runtimeRef.current,controlsRef.current);
         }else await runtimeRef.current.applyState?.(evolution);
       }catch(error){if(!cancelled)console.error('[EMÆÄ graphic]',error)}finally{busy=false}
     };
@@ -167,7 +174,7 @@ export default function EmaeaRuntimeHost({entityId,className='',controls,backgro
       runtimeRef.current?.dispose?.();
       runtimeRef.current=null;
     };
-  },[entityId,backgroundSrc]);
+  },[entityId]);
 
   return <div ref={hostRef} className={`${className} overflow-hidden bg-black`}/>;
 }
